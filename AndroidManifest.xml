@@ -15,7 +15,9 @@
         </activity>
         
     	<!--  AdView SDK for AdChina  -->
-	<activity 	android:name="com.adchina.android.ads.views.AdBrowserView" />
+	<activity 	android:name="com.adchina.android.ads.views.AdBrowserView" 
+		android:theme="@android:style/Theme.Translucent"
+		android:configChanges="orientation|keyboard|keyboardHidden"/> 
 		
 	<!-- AdView SDK for AdMob -->
 	<activity android:name="com.google.ads.AdActivity"
@@ -86,15 +88,6 @@
 	<!-- AdView SDK for Vpon -->
 	<activity android:name="com.vpon.adon.android.WebInApp" android:screenOrientation="portrait"
     		android:configChanges="orientation|keyboardHidden|navigation|keyboard"/>
-
-	<!-- AdView SDK for WinAd --> 
-	<activity android:name="com.winad.android.ads.VideoPlayerActivity" />
-	<receiver android:name="com.winad.android.ads.ReciveInstallPackage" ><!-- support CPA -->    
-		<intent-filter >                
-			<action android:name="android.intent.action.PACKAGE_ADDED" />
-			<data android:scheme="package" />
-		</intent-filter>
-	</receiver>
 
     	<!-- AdView SDK for Wooboo -->
     	<meta-data android:value="1" android:name="Market_ID"/>

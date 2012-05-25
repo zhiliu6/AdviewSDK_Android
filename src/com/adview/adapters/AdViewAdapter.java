@@ -166,13 +166,13 @@ public abstract class AdViewAdapter {
 					else {
 						return unknownAdNetwork(adViewLayout, ration);
 					}
-				case AdViewUtil.NETWORK_TYPE_YINGGAO:
+/*				case AdViewUtil.NETWORK_TYPE_YINGGAO:
 					if(Class.forName("com.winad.android.ads.AdView") != null) {
 						return getNetworkAdapter("com.adview.adapters.WinAdAdapter", adViewLayout, ration);
 					}
 					else {
 						return unknownAdNetwork(adViewLayout, ration);
-					}
+					}*/
 				case AdViewUtil.NETWORK_TYPE_ZESTADZ:
 					if(Class.forName("com.zestadz.android.ZestADZAdView") != null) {
 						return getNetworkAdapter("com.adview.adapters.ZestADZAdapter", adViewLayout, ration);
@@ -271,6 +271,10 @@ public abstract class AdViewAdapter {
 					else {
 						return unknownAdNetwork(adViewLayout, ration);
 					}
+				case AdViewUtil.NETWORK_TYPE_CUSTOMIZE:
+					//here, developer may add self-code
+					return null;
+					
 				default:
 					return unknownAdNetwork(adViewLayout, ration);
 			}

@@ -12,9 +12,9 @@ public class AdViewUtil {
 	// Don't change anything below this line
 	/***********************************************/ 
 	 
-	public static final int VERSION = 169;
+	public static final int VERSION = 170;
 
-	public static final String ADVIEW = "AdView SDK v1.6.9";
+	public static final String ADVIEW = "AdView SDK v1.7.0";
 	
 	// Could be an enum, but this gives us a slight performance improvement
 	//abroad
@@ -45,7 +45,7 @@ public class AdViewUtil {
 	public static final int NETWORK_TYPE_TINMOO=37;
 	public static final int NETWORK_TYPE_BAIDU=38;
 	public static final int NETWORK_TYPE_LSENSE=39;
-	public static final int NETWORK_TYPE_YINGGAO=40;
+//	public static final int NETWORK_TYPE_YINGGAO=40;
 	public static final int NETWORK_TYPE_IZPTEC=41;
 	public static final int NETWORK_TYPE_ADSAGE=42;
 	public static final int NETWORK_TYPE_UMENG=43;
@@ -55,6 +55,8 @@ public class AdViewUtil {
 	public static final int NETWORK_TYPE_SUIZONG=47;	
 	public static final int NETWORK_TYPE_ADUU=48;
 	public static final int NETWORK_TYPE_MOMARK=49;
+	
+	public static final int NETWORK_TYPE_CUSTOMIZE=999;
 	
 	public static String convertToHex(byte[] data) {
         StringBuffer buf = new StringBuffer();

@@ -505,6 +505,7 @@ public class AdViewManager {
 			    case AdViewUtil.NETWORK_TYPE_UMENG:	
 			    case AdViewUtil.NETWORK_TYPE_ADUU:
 			    case AdViewUtil.NETWORK_TYPE_MOMARK:		
+			    case AdViewUtil.NETWORK_TYPE_CUSTOMIZE:		
 			    	ration.key = jsonRation.getString("key");
 			    	ration.key2 = jsonRation.getString("key2");
 			    	break;
@@ -522,70 +523,9 @@ public class AdViewManager {
 				    break;
 			    }
 				
-			    switch(ration.type) {
-			    //china AD
-			    case AdViewUtil.NETWORK_TYPE_WOOBOO:
-			    case AdViewUtil.NETWORK_TYPE_YOUMI:	
-			    case AdViewUtil.NETWORK_TYPE_KUAIYOU:
-			    case AdViewUtil.NETWORK_TYPE_CASEE:	
-			    case AdViewUtil.NETWORK_TYPE_WIYUN:
-			    case AdViewUtil.NETWORK_TYPE_ADCHINA:	
-			    case AdViewUtil.NETWORK_TYPE_ADVIEWAD:
-			    case AdViewUtil.NETWORK_TYPE_SMARTAD:	
-			    case AdViewUtil.NETWORK_TYPE_DOMOB:
-			    case AdViewUtil.NETWORK_TYPE_VPON:	
-			    case AdViewUtil.NETWORK_TYPE_ADTOUCH:
-			    case AdViewUtil.NETWORK_TYPE_ADWO:	
-			    case AdViewUtil.NETWORK_TYPE_AIRAD:
-			    case AdViewUtil.NETWORK_TYPE_WQ:	
-			    case AdViewUtil.NETWORK_TYPE_APPMEDIA:
-			    case AdViewUtil.NETWORK_TYPE_TINMOO:	
-			    case AdViewUtil.NETWORK_TYPE_BAIDU:
-			    case AdViewUtil.NETWORK_TYPE_LSENSE:	
-			    case AdViewUtil.NETWORK_TYPE_YINGGAO:
-			    case AdViewUtil.NETWORK_TYPE_IZPTEC:	
-			    case AdViewUtil.NETWORK_TYPE_ADSAGE:	
-			    case AdViewUtil.NETWORK_TYPE_UMENG:
-			    case AdViewUtil.NETWORK_TYPE_FRACTAL:
-			    case AdViewUtil.NETWORK_TYPE_LMMOB:		
-			    case AdViewUtil.NETWORK_TYPE_MOBWIN:
-			    case AdViewUtil.NETWORK_TYPE_SUIZONG:	
-			    case AdViewUtil.NETWORK_TYPE_ADUU:
-			    case AdViewUtil.NETWORK_TYPE_MOMARK:			
-			    {
-			    	//if(ration.weight > 0)
-				{
 			    		rationsList.add(ration);
 			    		totalweight += ration.weight;
 			    	}
-/*			    	if(ration.priority > 0){
-			    		rationsList_pri.add(ration);
-			    	}*/
-			    	break;
-			    }
-			    //abroad ad
-			    case AdViewUtil.NETWORK_TYPE_ADMOB:
-			    case AdViewUtil.NETWORK_TYPE_GREYSTRIP:	
-			    case AdViewUtil.NETWORK_TYPE_INMOBI:
-			    case AdViewUtil.NETWORK_TYPE_MDOTM:	
-			    case AdViewUtil.NETWORK_TYPE_ZESTADZ:
-			    case AdViewUtil.NETWORK_TYPE_MILLENNIAL:	
-			    case AdViewUtil.NETWORK_TYPE_SMAATO:
-			    {
-			    	//if(ration.weight > 0)
-				{
-			    		rationsList_ex.add(ration);
-			    		totalweight_ex += ration.weight;
-			    	}
-/*			    	if(ration.priority > 0){
-			    		rationsList_pri_ex.add(ration);
-			    	}*/	
-			    	break;
-			    }  
-			    default:
-			    	break;
-			    }
-	    	}
     	}
     	catch (JSONException e) {
     	

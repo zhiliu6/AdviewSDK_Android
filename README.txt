@@ -44,11 +44,11 @@ APKOK(乐致网)
 
 
 
-当前AdView更新版本:1.6.9
+当前AdView更新版本:1.7.0
 目录结构介绍：
 libs：包括AdView的SDK和各个广告公司的SDK,其中：
 	库名					广告平台				版本
-	AdViewSDK_Android.jar:			AdView的SDK				1.6.9
+	AdViewSDK_Android.jar:			AdView的SDK				1.7.0
 	adchina_android_sdk.jar:		易传媒广告公司的SDK			2.5.1
 	adlib_android.jar:			哇棒广告公司的SDK			2.2	
 	adOn-3.2.4.jar:				Vpon广告公司的SDK			3.2.4
@@ -60,7 +60,7 @@ libs：包括AdView的SDK和各个广告公司的SDK,其中：
 	android_api.jar: 			百度移动联盟的sdk			1.0
 	AppMediaAdAndroidSdk-1.1.0.jar: 	AppMedia广告公司的sdk			1.1.0
 	casee-ad-sdk-3.0.jar:			架势无线广告公司的SDK			3.0
-	domob_android_sdk-2.0.2.jar:		多盟广告公司的SDK			2.2.0
+	domob_android_sdk-3.0.1.jar:		多盟广告公司的SDK			3.0.1
 	GoogleAdMobAdsSdk-6.0.0.jar:		AdMOB广告公司的SDK			6.0.0	
 	gssdk_1.6.1.jar:			GreyStripe广告公司的SDK			1.6.1
 	InMobiAndroidSDK.jar			InMobi广告公司的SDK			3.0.1
@@ -84,11 +84,18 @@ libs：包括AdView的SDK和各个广告公司的SDK,其中：
 	WiAd.jar:				微云广告公司的SDK			1.2.3	
 	winAd-android-sdk.jar:			赢告广告公司的SDK			2.0
 	WQAndroidSDK_2.0.2.jar: 		惟千广告公司sdk				2.0.2
-	youmi-android_v3.05.jar:		有米广告公司的SDK			3.05
+	youmi-android.jar:			有米广告公司的SDK			3.07
 	zestadz_sdk_androidv1.2.jar:		ZestADZ广告公司的SDK			1.2
 	
 
 
+AdView SDK 安装指南
+AdView应用推广使用指南
+java_doc:详细的java接口说明
+
+
+
+Android sdk源代码地址：https://github.com/adview/AdviewSDK_Android
 
 
 联系AdView

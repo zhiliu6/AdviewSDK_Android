@@ -1,19 +1,20 @@
 package com.adview.adapters;
 
 import android.app.Activity;
-import android.graphics.Color;
+//import android.graphics.Color;
 import android.util.Log;
 
 
 import cn.domob.android.ads.DomobAdListener;
-import cn.domob.android.ads.DomobAdManager;
+//import cn.domob.android.ads.DomobAdManager;
 import cn.domob.android.ads.DomobAdView;
+
 
 import com.adview.AdViewLayout;
 import com.adview.AdViewTargeting;
 import com.adview.AdViewLayout.ViewAdRunnable;
 import com.adview.AdViewTargeting.RunMode;
-import com.adview.obj.Extra;
+//import com.adview.obj.Extra;
 import com.adview.obj.Ration;
 import com.adview.util.AdViewUtil;
 
@@ -35,17 +36,17 @@ public class DomobAdapter extends AdViewAdapter implements DomobAdListener{
 		if(adViewLayout == null) {
 			return;
 	 	}
-	 	Extra extra = adViewLayout.extra;
-	    int bgColor = Color.rgb(extra.bgRed, extra.bgGreen, extra.bgBlue);
-	    int fgColor = Color.rgb(extra.fgRed, extra.fgGreen, extra.fgBlue);
+	 	//Extra extra = adViewLayout.extra;
+	  //  int bgColor = Color.rgb(extra.bgRed, extra.bgGreen, extra.bgBlue);
+	  // int fgColor = Color.rgb(extra.fgRed, extra.fgGreen, extra.fgBlue);
 	    Activity activity = adViewLayout.activityReference.get();
 		  if(activity == null) {
 			  return;
 		  }  	     
 	    // Instantiate an ad view and add it to the view
 		
-	    DomobAdView ad=new DomobAdView(activity);
-	    DomobAdManager.setPublisherId(ration.key);
+	    DomobAdView ad=new DomobAdView(activity, ration.key, DomobAdView.INLINE_SIZE_320X50);
+	    //DomobAdManager.setPublisherId(ration.key);
 /*	    if(AdViewTargeting.getRunMode()==RunMode.TEST)
 	    	DomobAdManager.setIsTestMode(true);
 	    else if(AdViewTargeting.getRunMode()==RunMode.NORMAL)
@@ -53,12 +54,12 @@ public class DomobAdapter extends AdViewAdapter implements DomobAdListener{
 	    else{
 	    	DomobAdManager.setIsTestMode(false);
 	    }*/
-	    ad.setAdListener(this);
-	    ad.setBackgroundColor(bgColor);
-	    ad.setPrimaryTextColor(fgColor);
+	    ad.setOnAdListener(this);
+	    //ad.setBackgroundColor(bgColor);
+	    //ad.setPrimaryTextColor(fgColor);
 	
-	    ad.requestFreshAd() ;
-	    ad.setRequestInterval(0);
+	   ad.requestRefreshAd() ;
+	    //ad.setRequestInterval(0);
 		
 	   
 	}
@@ -70,7 +71,7 @@ public class DomobAdapter extends AdViewAdapter implements DomobAdListener{
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			  Log.d(AdViewUtil.ADVIEW, "Domob failure");
 	    
-		  arg0.setAdListener(null);
+		  arg0.setOnAdListener(null);
 
 		  AdViewLayout adViewLayout = adViewLayoutReference.get();
 		  if(adViewLayout == null) {
@@ -88,7 +89,7 @@ public class DomobAdapter extends AdViewAdapter implements DomobAdListener{
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			  Log.d(AdViewUtil.ADVIEW, "Domob success");
 
-		arg0.setAdListener(null);
+		arg0.setOnAdListener(null);
 		
 		  AdViewLayout adViewLayout = adViewLayoutReference.get();
 		  if(adViewLayout == null) {

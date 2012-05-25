@@ -15,13 +15,11 @@
 	<classpathentry kind="lib" path="libs/InMobiAndroidSDK.jar"/>
 	<classpathentry kind="lib" path="libs/IZPView.jar"/>
 	<classpathentry kind="lib" path="libs/adwosdk2.5.1.jar"/>
-	<classpathentry kind="lib" path="libs/winAd-android-sdk.jar"/>
 	<classpathentry kind="lib" path="libs/ad-fractalist-sdk-android.jar"/>
 	<classpathentry kind="lib" path="libs/umeng_ad_android_sdk_v1.4.2.jar"/>
 	<classpathentry kind="lib" path="libs/mobplate-android-sdk-1.02.jar"/>
 	<classpathentry kind="lib" path="libs/gssdk_1.6.1.jar"/>
 	<classpathentry kind="lib" path="libs/SOMAAndroidSDK2.5.4.jar"/>
-	<classpathentry kind="lib" path="libs/youmi-android_v3.05.jar"/>
 	<classpathentry kind="lib" path="libs/LmmobSDK.jar"/>
 	<classpathentry kind="lib" path="libs/Tencent_MobWIN_BASIC_1.2.jar"/>
 	<classpathentry kind="lib" path="libs/Tencent_MobWIN_SDK_1.3.jar"/>
@@ -30,11 +28,12 @@
 	<classpathentry kind="lib" path="libs/WQAndroidSDK_2.0.2.jar"/>
 	<classpathentry kind="lib" path="libs/casee-ad-sdk-3.0.jar"/>
 	<classpathentry kind="lib" path="libs/mobisageSDK.jar"/>
-	<classpathentry kind="lib" path="libs/domob_android_sdk-2.2.0.jar"/>
 	<classpathentry kind="lib" path="libs/AppMediaAdAndroidSdk-1.1.0.jar"/>
 	<classpathentry kind="lib" path="libs/adOn-3.2.4.jar"/>
 	<classpathentry kind="lib" path="libs/momark_android_sdk2012_v1.1.0.jar"/>
 	<classpathentry kind="lib" path="libs/GoogleAdMobAdsSdk-6.0.0.jar"/>
+	<classpathentry kind="lib" path="libs/domob_android_sdk-3.0.1.jar"/>
+	<classpathentry kind="lib" path="libs/youmi-android.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="output" path="bin/classes"/>

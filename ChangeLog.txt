@@ -1,10 +1,16 @@
 ﻿版本特性：
 
+AdView Android sdk 1.7.0 2012-05-25
+1.更新有米广告平台至v3.07;
+2.更新多盟广告平台至v3.0.1;
+3.易传媒平台在AndroidManifest.xml文件中更新了一下Activity的属性声明，添加一个透明属性；
+4.针对开源项目，支持一个自定义平台，开发者可以根据自己的需要添加一个广告平台，详细情况参考"AdViewSDK_Android 安装指南.pdf"的"8 添加自定义广告平台";
+
+
 AdView Android sdk 1.6.9 2012-05-11
 1.更新Admob广告平台至v6.0.0;
 2.增加了对东信网络Momark广告平台的支持，要在AndroidManifest.xml文件中声明com.donson.momark.activity.AdActivity，需要权限android.permission.GET_TASKS；
 3.优化了vpon平台广告展示统计;
-
 
 AdView Android sdk 1.6.8 2012-04-27
 1.更新易传媒广告平台至v2.5.1;
