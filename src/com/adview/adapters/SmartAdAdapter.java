@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.adview.AdViewLayout;
 import com.adview.AdViewTargeting;
-//import com.adview.AdViewLayout.ViewAdRunnable;
+import com.adview.AdViewLayout.ViewAdRunnable;
 import com.adview.AdViewTargeting.RunMode;
 import com.adview.obj.Extra;
 import com.adview.obj.Ration;
@@ -15,7 +15,7 @@ import com.adview.util.AdViewUtil;
 import com.madhouse.android.ads.AdListener;
 import com.madhouse.android.ads.AdManager;
 import com.madhouse.android.ads.AdView;
-import android.widget.RelativeLayout;
+//import android.widget.RelativeLayout;
 
 
 public class SmartAdAdapter extends AdViewAdapter implements AdListener{
@@ -56,8 +56,8 @@ public class SmartAdAdapter extends AdViewAdapter implements AdListener{
 		}
 		ad.setListener(this);
 		
-		adViewLayout.removeAllViews();
-		adViewLayout.addView(ad, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+		//adViewLayout.removeAllViews();
+		//adViewLayout.addView(ad, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class SmartAdAdapter extends AdViewAdapter implements AdListener{
 				}
 
 				adViewLayout.adViewManager.resetRollover();
-				//adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, arg0));
+				adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, arg0));
 				adViewLayout.reportImpression();
 				adViewLayout.rotateThreadedDelayed();
 				arg0.setListener(null);

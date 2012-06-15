@@ -517,6 +517,8 @@ public class AdViewManager {
 			    	ration.logo=jsonRation.getString("logo");
 			    	break;
 			    case AdViewUtil.NETWORK_TYPE_BAIDU:
+				ration.key = jsonRation.getString("key");
+			    	ration.key2 = jsonRation.getString("key2");	
 			    	ration.key3=jsonRation.getString("key3");
 			    default:
 				    ration.key = jsonRation.getString("key");

@@ -36,19 +36,16 @@
 	<activity android:name="cn.appmedia.ad.AdActivity"></activity>
 		
 	<!-- AdView SDK for Baidu --> 
-	<activity android:name="com.baidu.AppActivity" 
+	<activity android:name="com.baidu.mobads.AppActivity" 
 		android:configChanges="keyboard|keyboardHidden|orientation" />
-		<!-- get APP ID from http://munion.baidu.com/ -->  
-		<meta-data android:name="BaiduMobAd_APP_ID" android:value="69f2193a" />
-		<!-- get APP SEC from http://munion.baidu.com/ --> 
-		<meta-data android:name="BaiduMobAd_APP_SEC" android:value="69f2193a_13b50d6f" />
+		<meta-data android:name="BaiduMobAd_DEBUG_TOKEN" android:value="adview" />    
 
 	<!-- AdView SDK for Domob --> 
 	<activity android:name="cn.domob.android.ads.DomobActivity"
 		android:theme =  "@android:style/Theme.Translucent" />
 
 	<!-- AdView SDK for LmMob --> 
-	<activity android:name="com.lmmob.ad.sdk.LmMobAdWebView" 
+	<activity android:name="com.lmmob.ad.sdk.LmMobAdWebView"
 		android:configChanges="keyboardHidden|orientation" />
 	<activity android:name="com.lmmob.ad.sdk.LmMobFullImageActivity"
 		android:configChanges="keyboardHidden|orientation" />

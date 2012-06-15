@@ -10,7 +10,7 @@ import com.tencent.mobwin.AdView;
 
 import com.adview.AdViewLayout;
 import com.adview.AdViewTargeting;
-import com.adview.AdViewLayout.ViewAdRunnable;
+//import com.adview.AdViewLayout.ViewAdRunnable;
 import com.adview.AdViewTargeting.RunMode;
 import com.adview.obj.Extra;
 import com.adview.obj.Ration;
@@ -47,6 +47,8 @@ public class MobWinAdapter extends AdViewAdapter implements AdListener{
 	   adView = new AdView(activity, ration.key, "adview", "ben1574leo");
 	   adView.setAdListener(this);	
 	   adView.setBackgroundColor(bgColor);
+
+	   adViewLayout.AddSubView(adView);
 	}
 
 	@Override
@@ -81,13 +83,14 @@ public class MobWinAdapter extends AdViewAdapter implements AdListener{
 			  return;
 		  }
 
+		adViewLayout.reportImpression();	
 		  adViewLayout.adViewManager.resetRollover();
-		  adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
+		  //adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
 		  adViewLayout.rotateThreadedDelayed();
 		
 	}
 
-	@Override
+	//@Override
 	public void onAdClick() {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.d(AdViewUtil.ADVIEW, "onAdClick");

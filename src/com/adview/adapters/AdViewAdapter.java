@@ -153,7 +153,7 @@ public abstract class AdViewAdapter {
 						return unknownAdNetwork(adViewLayout, ration);
 					}
 				case AdViewUtil.NETWORK_TYPE_BAIDU:
-					if(Class.forName("com.baidu.AdView") != null) {
+					if(Class.forName("com.baidu.mobads.AdView") != null) {
 						return getNetworkAdapter("com.adview.adapters.AdBaiduAdapter", adViewLayout, ration);
 					}
 					else {

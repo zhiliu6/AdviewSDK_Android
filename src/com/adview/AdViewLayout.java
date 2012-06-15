@@ -74,7 +74,7 @@ public class AdViewLayout extends RelativeLayout {
 
 	public RelativeLayout umengView=null;
 	
-	public RelativeLayout baiduView=null;
+	//public RelativeLayout baiduView=null;
 	public WeakReference<RelativeLayout> superViewReference;
 	
 	public Ration activeRation;
@@ -352,8 +352,10 @@ public class AdViewLayout extends RelativeLayout {
 		RelativeLayout.LayoutParams layoutParams;
 		if (nextRation.type == AdViewUtil.NETWORK_TYPE_ADWO || nextRation.type == AdViewUtil.NETWORK_TYPE_MOBWIN)
 			layoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		else
+		else if (nextRation.type == AdViewUtil.NETWORK_TYPE_ADVIEWAD || nextRation.type == AdViewUtil.NETWORK_TYPE_CASEE)
 			layoutParams = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		else
+			layoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		superView.addView(subView, layoutParams);
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
@@ -384,7 +386,7 @@ public class AdViewLayout extends RelativeLayout {
 		}
 		superView.removeAllViews();
 		RelativeLayout.LayoutParams layoutParams;
-		layoutParams = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		layoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		superView.addView(subView, layoutParams);
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
@@ -398,6 +400,24 @@ public class AdViewLayout extends RelativeLayout {
 		//	Log.d(AdViewUtil.ADVIEW, "reportImpression");
 		this.activeRation = nextRation;
 		countImpression();
+	}
+	
+	public void reportBaiduImpression() {
+		//if(AdViewTargeting.getRunMode()==RunMode.TEST)
+		//	Log.d(AdViewUtil.ADVIEW, "reportBaiduImpression");
+
+			
+		String url = String.format(AdViewUtil.urlImpression, adViewManager.keyAdView, activeRation.nid, AdViewUtil.NETWORK_TYPE_BAIDU, 0, "hello", AdViewUtil.VERSION, adViewManager.mSimulator);
+		scheduler.schedule(new PingUrlRunnable(url), 0, TimeUnit.SECONDS);
+		if(adViewInterface!=null)
+			adViewInterface.onDisplayAd();
+	}
+	
+	public void reportClick() {
+		//if(AdViewTargeting.getRunMode()==RunMode.TEST)
+		//	Log.d(AdViewUtil.ADVIEW, "reportClick");
+		//this.activeRation = nextRation;
+		countClick();
 	}
 	
 	public void rollover() {
@@ -578,6 +598,10 @@ public class AdViewLayout extends RelativeLayout {
 			if(AdViewTargeting.getRunMode()==RunMode.TEST)
 				Log.d(AdViewUtil.ADVIEW, "Intercepted ACTION_DOWN event");
 		    if(activeRation != null) {
+
+			if (activeRation.type == AdViewUtil.NETWORK_TYPE_BAIDU)
+				return false;
+			
 			countClick();
 			
 			

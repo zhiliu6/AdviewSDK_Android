@@ -4,6 +4,8 @@ import android.app.Activity;
 //import android.graphics.Color;
 import android.util.Log;
 
+import java.util.Map;
+import java.util.HashMap;
 
 import com.suizong.mobplate.ads.AdRequest;
 import com.suizong.mobplate.ads.AdSize;
@@ -53,6 +55,9 @@ public class SuizongAdapter extends AdViewAdapter implements AdListener{
 		
 	  	 AdRequest adRequest = new AdRequest();
 		  adRequest.setRefreshTime(-1L);
+		  Map<String, String> maps = new HashMap<String, String>();
+		  maps.put("sdk", "adview_1.7.1");
+		  adRequest.setExtras(maps);
 		boolean testmode;
 	    if(AdViewTargeting.getRunMode()==RunMode.TEST)
 	    	testmode = true;

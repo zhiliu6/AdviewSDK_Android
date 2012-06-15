@@ -3,103 +3,129 @@ package com.adview.adapters;
 import android.app.Activity;
 import android.util.Log;
 
+import android.view.ViewGroup;
 
 import com.adview.AdViewLayout;
 import com.adview.AdViewTargeting;
-import com.adview.AdViewLayout.ViewAdRunnable;
+//import com.adview.AdViewLayout.ViewAdRunnable;
 import com.adview.AdViewTargeting.RunMode;
 import com.adview.obj.Ration;
 import com.adview.util.AdViewUtil;
-import com.baidu.AdType;
-import com.baidu.AdView;
-import com.baidu.AdViewListener;
-import com.baidu.FailReason;
+
+import com.baidu.mobads.AdService;
+import com.baidu.mobads.AdType;
+import com.baidu.mobads.AdView;
+import com.baidu.mobads.AdViewListener;
+import com.adview.obj.Extra;
+import android.graphics.Color;
 
 public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener  {
 	
 	private AdView adView;
+	private AdService adService;
+	
 	public AdBaiduAdapter(AdViewLayout adViewLayout, Ration ration) {
 		super(adViewLayout, ration);
 		// TODO Auto-generated constructor stub
+
+		adView=null;
+		adService=null;
+
+		//AdView.setAppSid("debug");
+		//AdView.setAppSec("debug");	
+		
+		AdView.setAppSid(ration.key);
+		AdView.setAppSec(ration.key2);		
 	}
 
 	@Override
 	public void handle() {
-		// TODO Auto-generated method stub
-	//	try{
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.d(AdViewUtil.ADVIEW, "Into Baidu");
+		
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 			return;
 	 	}
 	 	Activity activity = adViewLayout.activityReference.get();
-		  if(activity == null) {
-			  return;
-		  }
-		  if(adViewLayout.baiduView==null){
-			  if(AdViewTargeting.getRunMode()==RunMode.TEST)
-				  Log.d(AdViewUtil.ADVIEW, "Baidu first into");
-			  if((ration.key3).compareTo("1")==0)
-				  adViewLayout.baiduView = new AdView(adViewLayout.getContext(),AdType.IMAGE );
-			  else if((ration.key3).compareTo("2")==0)
-				  adViewLayout.baiduView = new AdView(adViewLayout.getContext(),AdType.TEXT );
-			  else{}
-			  adView=(AdView)(adViewLayout.baiduView);
-			  adView.setListener(this);
-			  adViewLayout.adViewManager.resetRollover();
-			  adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
-		  }
-		
-		  else
-	  	{
-		  if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "Baidu no first into");
-	  	  adView=(AdView)(adViewLayout.baiduView);
-		  adViewLayout.adViewManager.resetRollover();
-		  adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
-		  adViewLayout.rotateThreadedDelayed();
-		  }
+		if(activity == null) {
+			return;
+		}
+		adViewLayout.removeAllViews();
+		adViewLayout.activeRation = adViewLayout.nextRation;
+
+		if((ration.key3).compareTo("1")==0)
+			adService = new AdService(activity, AdType.IMAGE, adViewLayout, new ViewGroup.LayoutParams(-1, -2), this);
+		else
+			adService = new AdService(activity, AdType.TEXT, adViewLayout, new ViewGroup.LayoutParams(-1, -2), this);
 	}
 
-	@Override
+	public void onAdReady() {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+			Log.w(AdViewUtil.ADVIEW, "onAdReady");
+		
+		try {
+			adView = adService.requestAdView();
+			AdViewLayout adViewLayout = adViewLayoutReference.get();
+			if(adViewLayout == null) {
+				return;
+		 	}
+			
+			Extra extra = adViewLayout.extra;
+		       int bgColor = Color.rgb(extra.bgRed, extra.bgGreen, extra.bgBlue);
+		       int fgColor = Color.rgb(extra.fgRed, extra.fgGreen, extra.fgBlue); 
+			adView.setBackgroundColor(bgColor);
+      			adView.setTextColor(fgColor);
+	  
+		} catch (Exception e) {
+			Log.w(AdViewUtil.ADVIEW, e.getMessage());
+		}
+	}
+
+	public void onAdShow() {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+			Log.w(AdViewUtil.ADVIEW, "onAdShow");
+
+		AdViewLayout adViewLayout = adViewLayoutReference.get();
+		if(adViewLayout == null) {
+			return;
+		}
+		adViewLayout.reportBaiduImpression();
+	}
+
+	public void onAdClick() { 
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+			Log.w(AdViewUtil.ADVIEW, "onAdClick");
+
+		AdViewLayout adViewLayout = adViewLayoutReference.get();
+		if(adViewLayout == null) {
+			return;
+		}
+		adViewLayout.reportClick();
+	}
+
+	public void onAdFailed(String reason) {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+			Log.w(AdViewUtil.ADVIEW, "AdViewListener.onAdFailed, reason="+reason);	
+
+		AdViewLayout adViewLayout = adViewLayoutReference.get();
+		if(adViewLayout == null) {
+			return;
+		}
+		adViewLayout.adViewManager.resetRollover_pri();
+		adViewLayout.rotateThreadedPri();
+	}
+
 	public void onAdSwitch() {
-		// TODO Auto-generated method stub
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "Baidu switch");
-		
+			Log.w(AdViewUtil.ADVIEW, "onAdSwitch");
+
+		AdViewLayout adViewLayout = adViewLayoutReference.get();
+		if(adViewLayout == null) {
+			return;
+		}
+		adViewLayout.adViewManager.resetRollover();
+		adViewLayout.rotateThreadedDelayed();
 	}
-
-	@Override
-	public void onReceiveFail(FailReason arg0) {
-		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "Baidu failure");
-	    
-		  adView.setListener(null);
-
-		  AdViewLayout adViewLayout = adViewLayoutReference.get();
-		  if(adViewLayout == null) {
-			 return;
-		  }
-		 adViewLayout.adViewManager.resetRollover_pri();
-		  adViewLayout.rotateThreadedPri();
 		
-	}
-
-	@Override
-	public void onReceiveSuccess() {
-		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "Baidu success");
-
-		  AdViewLayout adViewLayout = adViewLayoutReference.get();
-		  if(adViewLayout == null) {
-			  return;
-		  }
-
-		  adViewLayout.rotateThreadedDelayed();
-		
-	}
-
 }

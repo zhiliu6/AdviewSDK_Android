@@ -114,4 +114,10 @@ public class MillennialAdapter extends AdViewAdapter implements MMAdListener {
 		// TODO Auto-generated method stub
 		
 	}	
+
+	public void MMAdCachingCompleted(MMAdView adview, boolean success)
+	{
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+			Log.i(AdViewUtil.ADVIEW, "Millennial Ad caching completed successfully: " + success);
+	}	
 }
