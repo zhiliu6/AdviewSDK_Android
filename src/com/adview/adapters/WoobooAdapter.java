@@ -32,11 +32,11 @@ public class WoobooAdapter extends AdViewAdapter implements AdListener {
 	    int fgColor = Color.rgb(extra.fgRed, extra.fgGreen, extra.fgBlue);
 	    WoobooAdView adView=null;
 	    if(AdViewTargeting.getRunMode()==RunMode.TEST)
-	    	adView=new WoobooAdView(adViewLayout.getContext(), ration.key,bgColor, fgColor,true,120,null);
+	    	adView=new WoobooAdView(adViewLayout.getContext(), ration.key,bgColor, fgColor,120);
 	    else if(AdViewTargeting.getRunMode()==RunMode.NORMAL)
-	    	adView=new WoobooAdView(adViewLayout.getContext(), ration.key,bgColor, fgColor,false,120,null);
+	    	adView=new WoobooAdView(adViewLayout.getContext(), ration.key,bgColor, fgColor,120);
 	    else{
-	    	adView=new WoobooAdView(adViewLayout.getContext(), ration.key,bgColor, fgColor,false,120,null);
+	    	adView=new WoobooAdView(adViewLayout.getContext(), ration.key,bgColor, fgColor,120);
 	    }
 	 
 	    adView.setHorizontalScrollBarEnabled(false);

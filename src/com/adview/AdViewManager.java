@@ -32,6 +32,11 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.text.TextUtils;
+import android.view.WindowManager;
+
 public class AdViewManager {
 	public String keyAdView;
 	
@@ -58,6 +63,10 @@ public class AdViewManager {
 	public boolean bLocationForeign=false;
 	public String mLocation="";
 	
+	public int width;
+	public int height;
+	public String mDeviceid="";
+
 	public AdViewManager(WeakReference<Context> contextReference, String keyAdView) {
 		Log.i("Android", "Creating weivda reganam...");
 		this.contextReference = contextReference;
@@ -73,6 +82,18 @@ public class AdViewManager {
 		
 		}
 
+		mDeviceid = getDeviceID((Context)contextReference.get());
+		WindowManager WM = (WindowManager)((Context)contextReference.get())
+			.getSystemService("window");
+		width = WM.getDefaultDisplay().getWidth();
+		height = WM.getDefaultDisplay().getHeight();
+		if (width>height)
+		{
+			int temp=width;
+			width=height;
+			height=temp;
+		}
+		
 		mSimulator = isSimulator();
 
 		bLocationForeign = isLocateForeign();
@@ -679,4 +700,58 @@ public class AdViewManager {
 		return ret;
 	}	
 	
+	public static String getIDByMAC(Context context)
+	{
+		String str = null;
+		try {
+			WifiManager localWifiManager = (WifiManager)context
+				.getSystemService("wifi");
+			WifiInfo localWifiInfo = localWifiManager.getConnectionInfo();
+			str = localWifiInfo.getMacAddress();
+		} catch (Exception localException) {
+			Log.d(AdViewUtil.ADVIEW, 
+				"Could not read MAC, forget to include ACCESS_WIFI_STATE permission?", 
+				localException);
+		}
+		return str;
+	}
+
+	public static String getDeviceID(Context context)
+	{
+		TelephonyManager tm = (TelephonyManager)context
+			.getSystemService("phone");
+		StringBuffer tmDevice = new StringBuffer();
+		try
+		{
+			String imei = tm.getDeviceId();
+			if (imei == null) {
+				tmDevice.append("000000000000000");
+			}
+			else {
+				tmDevice.append(imei);
+			}
+		
+			while (tmDevice.length() < 15) {
+				tmDevice.append("0");
+			}
+
+			tmDevice.append(":");
+			String macAdd = getIDByMAC(context);
+			if (!TextUtils.isEmpty(macAdd))
+				macAdd = macAdd.replace(":", "");
+			else {
+				macAdd = "000000000000";
+			}
+			tmDevice.append(macAdd);
+			tmDevice.append(":");
+			while (tmDevice.length() < 32)
+				tmDevice.append("0");
+		}
+		catch (Exception localException) {
+			localException.printStackTrace();
+			Log.d(AdViewUtil.ADVIEW, "Failed to take mac as IMEI");
+		}
+		return tmDevice.toString();
+	}
+
 }

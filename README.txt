@@ -13,7 +13,9 @@
 
 6.admob升级到4.3.1版本以后，需要android 3.2以上才能编译通过；AndroidManifest.xml中需要配置android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>, sample中这部分注释掉了，需要支持的时候打开; android:configChanges="orientation|keyboard|keyboardHidden"是为了在低版本编译用的，到时去掉；
 
-7.开发者可以设置渠道，在Manifest文件中<meta-data android:name="AdView_CHANNEL" android:value="GFAN"></meta-data> (AdViewTargeting.setChannel接口已经作废); 目前支持的渠道包括下面列出的，移动广告观察(http://t.adview.cn/)中有各个市场的链接：
+7.如果你是一个新手，对广告平台不怎么了解，也不知道选择哪家广告平台，或者不知道哪家广告平台收入稳定，没关系，Adview建议你可以先使用百度，亿动智道，Inmobi几家平台看看效果。
+
+8.开发者可以设置渠道，在Manifest文件中<meta-data android:name="AdView_CHANNEL" android:value="GFAN"></meta-data> (AdViewTargeting.setChannel接口已经作废); 目前支持的渠道包括下面列出的，移动广告观察(http://t.adview.cn/)中有各个市场的链接：
 EOE(优亿市场)
 GOOGLEMARKET(谷歌电子市场)
 APPCHINA(应用汇)
@@ -40,39 +42,38 @@ COOLAPK(酷安网)
 ANFONE(安丰)
 APKOK(乐致网)
 
-如果不配置，或配置其他的值， 一律作为"OTHER"处理；
+如果不配置，或配置其他的值，一律作为"OTHER"处理；
 
 
 
-当前AdView更新版本:1.7.2
+当前AdView更新版本:1.7.6
 目录结构介绍：
 libs：包括AdView的SDK和各个广告公司的SDK,其中：
 	库名					广告平台				版本
-	AdViewSDK_Android.jar:			AdView的SDK				1.7.2
-	adchina_android_sdk.jar:		易传媒广告公司的SDK			2.5.1
-	adlib_android.jar:			哇棒广告公司的SDK			2.2	
-	adOn-3.2.4.jar:				Vpon广告公司的SDK			3.2.4
-	adtouch-embed-sdk-1.1.0.jar: 		AdTouch公司的SDK			1.1.0
-	aduu-sdk.jar: 				优友传媒的SDK				3.0.3
+	AdViewSDK_Android.jar:			AdView的SDK				1.7.6
+	adchina_android_sdk.jar:		易传媒广告公司的SDK			2.5.2
+	adlib_android.jar:			哇棒广告公司的SDK			2.3.0	
+	adOn-3.2.5.jar:				Vpon广告公司的SDK			3.2.5
+	adtouch-embed-sdk-1.1.0.jar: 		AdTouch公司的SDK				1.1.0
+	aduu-sdk.jar: 				优友传媒的SDK				3.1.0
 	adwosdk2.5.1.jar:  			AdWo广告公司的SDK			2.5.1	
 	ad-fractalist-sdk-android.jar:		飞云广告公司的SDK			2.0
-	airAD_basic_sdk.jar: 			AirAD广告公司的SDK			1.2.7
-	android_agg_api.jar: 			百度移动联盟的sdk			2.0
+	airAD_sdk.jar: 				AirAD广告公司的SDK			1.3.2
+	android_agg_api.jar: 			百度移动联盟的sdk			2.1
 	AppMediaAdAndroidSdk-1.1.0.jar: 	AppMedia广告公司的sdk			1.1.0
 	casee-ad-sdk-3.0.jar:			架势无线广告公司的SDK			3.0
-	domob_android_sdk-3.0.2.jar:		多盟广告公司的SDK			3.0.2
-	GoogleAdMobAdsSdk-6.0.1.jar:		AdMOB广告公司的SDK			6.0.1	
+	domob_android_sdk.jar:			多盟广告公司的SDK			3.0.3
+	GoogleAdMobAdsSdk-6.1.0.jar:		AdMOB广告公司的SDK			6.1.0	
 	gssdk_1.6.1.jar:			GreyStripe广告公司的SDK			1.6.1
-	InMobiAndroidSDK.jar			InMobi广告公司的SDK			3.0.1
+	InMobiAndroidSDK.jar			InMobi广告公司的SDK			3.5.0
 	IZPView.jar:				易赞普广告公司的SDK			1.0.3
 	l_android_adsdk.jar:			百分通联的SDK				2.1.0.0
 	LMMOB_SDK.jar:				力美广告公司的SDK			2.0
 	mdotm-sdk-android.jar:			MdotM广告公司的SDK			3.0.0
-	MMAdView.jar:				MillennialMedia 广告公司的SDK		4.5.1
+	MMAdView.jar:				MillennialMedia 广告公司的SDK		4.6.0
 	mobisageSDK.jar:			艾德斯奇广告公司的SDK			2.3.0
-	mobplate-android-sdk-1.02.jar:		随踪广告公司的SDK			1.21
 	momark_android_sdk2012_v1.2.0.jar:	Momark广告公司的SDK			1.2.0
-	smartmad-sdk-android.jar:		亿动智道广告公司的SDK			2.0.1
+	smartmad-sdk-android.jar:		亿动智道广告公司的SDK			2.0.2
 	SOMAAndroidSDK2.5.4.jar:		SOMA广告公司的SDK			2.5.4
 
 	Tencent_MobWIN_BASIC_1.4.jar:		腾讯广告公司的SDK			1.4
@@ -81,7 +82,6 @@ libs：包括AdView的SDK和各个广告公司的SDK,其中：
 	tinmoo-android-sdk_v3.1.0.jar:		天幕(Tinmoo)广告公司的sdk		2.0.2
 	umeng_ad_android_sdk_v1.4.2.jar:	友盟广告公司的SDK			1.4.2
 	WiAd.jar:				微云广告公司的SDK			1.2.3	
-	winAd-android-sdk.jar:			赢告广告公司的SDK			2.0
 	WQAndroidSDK_2.0.2.jar: 		惟千广告公司sdk				2.0.2
 	youmi-android.jar:			有米广告公司的SDK			3.07
 	zestadz_sdk_androidv1.2.jar:		ZestADZ广告公司的SDK			1.2

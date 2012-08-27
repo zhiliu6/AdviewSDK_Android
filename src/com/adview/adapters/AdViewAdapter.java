@@ -18,7 +18,7 @@ import com.adview.util.AdViewUtil;
 public abstract class AdViewAdapter {
 	protected final WeakReference<AdViewLayout> adViewLayoutReference;
 	protected Ration ration;
-	
+	static AdViewAdapter adapter;
 	
 	public AdViewAdapter(AdViewLayout adViewLayout, Ration ration) {
 		this.adViewLayoutReference = new WeakReference<AdViewLayout>(adViewLayout);
@@ -251,8 +251,9 @@ public abstract class AdViewAdapter {
 						return unknownAdNetwork(adViewLayout, ration);
 					}
 				case AdViewUtil.NETWORK_TYPE_SUIZONG:
-					if(Class.forName("com.suizong.mobplate.ads.AdView") != null) {
-						return getNetworkAdapter("com.adview.adapters.SuizongAdapter", adViewLayout, ration);
+					//if(Class.forName("com.suizong.mobplate.ads.AdView") != null) {
+					if(Class.forName("com.adview.adapters.SuizongInterfaceAdapter") != null) {	
+						return getNetworkAdapter("com.adview.adapters.SuizongInterfaceAdapter", adViewLayout, ration);
 					}
 					else {
 						return unknownAdNetwork(adViewLayout, ration);
@@ -325,7 +326,7 @@ public abstract class AdViewAdapter {
 	}
 	
 	public static void handle(AdViewLayout adViewLayout, Ration ration)  {
-      AdViewAdapter adapter = AdViewAdapter.getAdapter(adViewLayout, ration);
+      adapter = AdViewAdapter.getAdapter(adViewLayout, ration);
       if(adapter != null) {
     	  if(AdViewTargeting.getRunMode()==RunMode.TEST)
     		  Log.d(AdViewUtil.ADVIEW, "Valid adapter, calling handle()");
@@ -339,7 +340,18 @@ public abstract class AdViewAdapter {
       }
 	}
 	
-	public abstract void handle();
+	public static void onClickAd() throws Throwable {
+		if (adapter != null)
+			adapter.click();
+		else
+			throw new Exception("On Click failed");
+	}
 
+	public abstract void handle();
 	
+	public void click()
+	{
+		//Log.d(AdViewUtil.ADVIEW, "adapter, click");
+	}
+	//public abstract void finish();
   }

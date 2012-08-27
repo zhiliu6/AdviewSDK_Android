@@ -17,6 +17,9 @@ import com.inmobi.androidsdk.IMAdView;
 import com.inmobi.androidsdk.IMAdRequest.ErrorCode;
 import com.inmobi.androidsdk.impl.Constants;
 
+import java.util.Map;
+import java.util.HashMap;
+
 public class InmobiAdapter extends AdViewAdapter {
 	private IMAdView mIMAdView = null;
 	private IMAdRequest mAdRequest;
@@ -41,8 +44,7 @@ public class InmobiAdapter extends AdViewAdapter {
 		}
 		// set the test mode to true (Make sure you set the test mode to false
 		// when distributing to the users)
-		mIMAdView = new IMAdView(activity, IMAdView.INMOBI_AD_UNIT_320X50,
-		ration.key);
+		mIMAdView = new IMAdView(activity, IMAdView.INMOBI_AD_UNIT_320X50, ration.key);
 		mAdRequest = new IMAdRequest();
 	    if(AdViewTargeting.getRunMode()==RunMode.TEST)
 	    	mAdRequest.setTestMode(true);
@@ -51,11 +53,17 @@ public class InmobiAdapter extends AdViewAdapter {
 	    else{
 	    	mAdRequest.setTestMode(false);
 	    } 
+		Map<String,String> reqParams = new HashMap<String,String>();
+		reqParams.put("tp","c_adview");
+		mAdRequest.setRequestParams(reqParams);
+
+
+
 		mIMAdView.setIMAdRequest(mAdRequest);
 		mIMAdView.setIMAdListener(mIMAdListener);
 		adViewLayout.addView(mIMAdView);
 		mIMAdView.setLayoutParams(new RelativeLayout.LayoutParams(0, 0));			
-		//adViewLayout.adViewManager.resetRollover();
+		//adViewLayout.adViewManager.resetRollover(); 
 		//adViewLayout.rotateThreadedDelayed();
 
 	}
@@ -74,6 +82,13 @@ public class InmobiAdapter extends AdViewAdapter {
 					"InMobiAdActivity-> onDismissAdScreen, adView: " + adView);
 		}
 
+		@Override
+		public void onLeaveApplication(IMAdView adView) {
+			Log.i(Constants.LOGGING_TAG,
+					"InMobiAdActivity-> onLeaveApplication, adView: "
+							+ adView);
+		}
+		
 		@Override
 		public void onAdRequestFailed(IMAdView adView, ErrorCode errorCode) {
 			if(AdViewTargeting.getRunMode()==RunMode.TEST)
@@ -100,8 +115,11 @@ public class InmobiAdapter extends AdViewAdapter {
 			  AdViewLayout adViewLayout = adViewLayoutReference.get();
 			  if(adViewLayout == null) {
 				  return;
-			  }	
-			  mIMAdView.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));				
+			  }
+			  RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			  layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+			  mIMAdView.setLayoutParams(layoutParams);
+			  //mIMAdView.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));				
 			  adViewLayout.adViewManager.resetRollover();
 			  adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
 			  adViewLayout.rotateThreadedDelayed(); 

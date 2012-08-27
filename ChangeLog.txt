@@ -1,11 +1,34 @@
 ﻿版本特性：
 
+AdView Android sdk 1.7.6 2012-08-10
+1.更新亿动广告平台至v2.0.2;
+2.更新易传媒广告平台至v2.5.2;
+3.更新admob广告平台至v6.1.0;
+4.更新MillennialMedia广告平台至v4.6.0;(需要更新AndroidManifest.xml配置)
+5.更新Vpon广告平台至v3.2.5;
+6.对随踪广告的请求做了一些优化；
+
+
+
+AdView Android sdk 1.7.5 2012-07-27
+1.更新airad广告平台至v1.3.2;
+2.更新多盟广告平台至v3.0.3;
+3.更新InMobi广告平台至v3.5.0;
+
+AdView Android sdk 1.7.4 2012-07-17
+1.更新aduu广告平台至v3.1.0;
+2.更新Wooboo广告平台至v2.3.0;(需要更新AndroidManifest.xml配置)
+3.修复了Adview应用互推在Android 4.0上显示的问题;
+4.adview集成了随踪广告平台的实现，开发者不需要单独加载随踪的jar了;
+
+AdView Android sdk 1.7.3 2012-06-19
+1.更新百度广告平台至v2.1;
+
 AdView Android sdk 1.7.2 2012-06-15
 1.更新Momark广告平台至v1.2.0;
 2.更新多盟广告平台至v3.0.2;
 3.更新百度广告平台至v2.0;
 4.对亿动广告平台的展示做了优化;
-
 
 AdView Android sdk 1.7.1 2012-06-08
 1.更新Admob广告平台至v6.0.1;

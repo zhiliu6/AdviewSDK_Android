@@ -14,11 +14,32 @@ import com.vpon.adon.android.AdOnPlatform;
 import com.vpon.adon.android.AdView;
 
 public class VponAdapter extends AdViewAdapter implements AdListener{
+	private int adHeight;
+	private int adWidth;
 	
 	public VponAdapter(AdViewLayout adViewLayout, Ration ration) {
 		super(adViewLayout, ration);
 	}
 
+	private void calcAdSize(AdViewLayout adViewLayout) {
+		int width=320;
+		int height=48;
+		int screenWidth = adViewLayout.adViewManager.width;
+		if (screenWidth <= 480) {
+			width = 320;
+			height = 48;
+		} else if (screenWidth < 728) {
+			width = 480;
+			height = 72;
+		} else if (screenWidth >= 728) {
+			width = 720;
+			height = 108;
+		}
+
+		adHeight = AdViewUtil.convertToScreenPixels(height, adViewLayout.mDensity);
+		adWidth = AdViewUtil.convertToScreenPixels(width, adViewLayout.mDensity);
+	}
+	
 	@Override
 	public void handle() {
 		// TODO Auto-generated method stub
@@ -33,10 +54,14 @@ public class VponAdapter extends AdViewAdapter implements AdListener{
 		if (activity == null) {
 			return;
 		}
+		calcAdSize(adViewLayout);
 		try {
-			AdView adView = new AdView(activity);
+			AdView adView = new AdView(activity, adWidth, adHeight);
 			boolean autoRefreshAd = false;
-			adView.setLicenseKey(ration.key, AdOnPlatform.CN, autoRefreshAd, false);
+			if (adViewLayout.adViewManager.bLocationForeign == false)
+				adView.setLicenseKey(ration.key, AdOnPlatform.CN, autoRefreshAd);
+			else
+				adView.setLicenseKey(ration.key, AdOnPlatform.TW, autoRefreshAd);	
 			adView.setAdListener(this);
 			
 			

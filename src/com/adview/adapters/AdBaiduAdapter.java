@@ -31,11 +31,16 @@ public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener  {
 		adView=null;
 		adService=null;
 
-		//AdView.setAppSid("debug");
-		//AdView.setAppSec("debug");	
-		
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+		{
+			AdView.setAppSid("debug");
+			AdView.setAppSec("debug");	
+		}
+		else
+		{
 		AdView.setAppSid(ration.key);
 		AdView.setAppSec(ration.key2);		
+	}
 	}
 
 	@Override

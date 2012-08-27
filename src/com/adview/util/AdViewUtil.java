@@ -12,9 +12,9 @@ public class AdViewUtil {
 	// Don't change anything below this line
 	/***********************************************/ 
 	 
-	public static final int VERSION = 172;
+	public static final int VERSION = 176;
 
-	public static final String ADVIEW = "AdView SDK v1.7.2";
+	public static final String ADVIEW = "AdView SDK v1.7.6";
 	
 	// Could be an enum, but this gives us a slight performance improvement
 	//abroad
@@ -73,4 +73,14 @@ public class AdViewUtil {
         }
         return buf.toString();
     }
+
+	public static int convertToScreenPixels(int dipPixels, double density)
+	{
+		double pix=0;
+		
+	 	pix = density > 0.0D ? dipPixels * density : dipPixels;
+
+		return (int)pix;
+	}
+	
 }

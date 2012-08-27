@@ -41,9 +41,9 @@ public class AduuAdapter extends AdViewAdapter implements cn.aduu.adsdk.AdViewLi
 			return;
 		}
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			AdManager.init(ration.key, ration.key2, -9, 0, 2, 61, true);
+			AdManager.init(activity, ration.key, ration.key2, -9, 0, 2, 61, true);
 		else
-			AdManager.init(ration.key, ration.key2, -9, 0, 2, 61, false);
+			AdManager.init(activity, ration.key, ration.key2, -9, 0, 2, 61, false);
 		adView = new AdView((Activity)adViewLayout.getContext(), null);
 		//adView.setReceiveAdListener(this);
 		adView.setAdViewListener(this);

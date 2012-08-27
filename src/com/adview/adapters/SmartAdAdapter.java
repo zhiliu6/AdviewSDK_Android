@@ -56,7 +56,7 @@ public class SmartAdAdapter extends AdViewAdapter implements AdListener{
 		}
 		ad.setListener(this);
 		
-		//adViewLayout.removeAllViews();
+		adViewLayout.removeAllViews();
 		//adViewLayout.addView(ad, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 	}
 
@@ -80,7 +80,7 @@ public class SmartAdAdapter extends AdViewAdapter implements AdListener{
 
 				adViewLayout.adViewManager.resetRollover();
 				adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, arg0));
-				adViewLayout.reportImpression();
+				//adViewLayout.reportImpression();
 				adViewLayout.rotateThreadedDelayed();
 				arg0.setListener(null);
 			}

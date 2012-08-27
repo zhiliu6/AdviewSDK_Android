@@ -6,24 +6,30 @@ import android.util.Log;
 import com.adview.AdViewLayout;
 import com.adview.AdViewTargeting;
 
-import com.adview.AdViewLayout.ViewAdRunnable;
+//import com.adview.AdViewLayout.ViewAdRunnable;
 import com.adview.AdViewTargeting.RunMode;
 import com.adview.obj.Ration;
 import com.adview.util.AdViewUtil;
 
 
 import com.mt.airad.AirAD;
+import com.mt.airad.AirADListener;
 
-public class AirAdAdapter extends AdViewAdapter implements AirAD.AirADListener {
+//import android.widget.RelativeLayout;
+
+public class AirAdAdapter extends AdViewAdapter implements AirADListener {
 	
 	private AirAD airAD=null;
 	public AirAdAdapter(AdViewLayout adViewLayout, Ration ration) {
 		super(adViewLayout, ration);
 		// TODO Auto-generated constructor stub
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			AirAD.setGlobalParameter(ration.key, true);
+			AirAD.setAppID(AirAD.TEST_APP_ID);
 		else
-			AirAD.setGlobalParameter(ration.key, false);
+			AirAD.setAppID(ration.key);
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+			AirAD.setDebugMode(AirAD.DebugMode_ON);
+		AirAD.setGPSMode(AirAD.GPSMode_ON);
 	}
 
 	@Override
@@ -42,8 +48,15 @@ public class AirAdAdapter extends AdViewAdapter implements AirAD.AirADListener {
 		}
 		  
 		airAD=new AirAD(activity);
-		airAD.setAirADListener(this);
+
+		airAD.setBannerBGMode(AirAD.BANNER_BG_ON);
+		airAD.setRefreshMode(AirAD.REFRESH_MODE_MANUAL);
+		//airAD.setIntervalTime(20);
 		
+		airAD.setAirADListener(this);
+
+		adViewLayout.AddSubView(airAD);
+		airAD.refreshAD();
 	}
 
 	@Override
@@ -60,19 +73,20 @@ public class AirAdAdapter extends AdViewAdapter implements AirAD.AirADListener {
 		}
 
 		adViewLayout.adViewManager.resetRollover();
-		adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, airAD));
+		//adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, airAD));
 		adViewLayout.rotateThreadedDelayed();
 		
 	}
 
 	@Override
-	public void onAdReceivedFailed() {
+	public void onAdReceivedFailed(int errorCode) {
 		// TODO Auto-generated method stub
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "AirAD failure");
+			Log.d(AdViewUtil.ADVIEW, "AirAD failure, errorCode="+errorCode);
 
 		airAD.setAirADListener(null);
-
+		AirAD.onDestroy();
+		
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 			return;
@@ -82,48 +96,29 @@ public class AirAdAdapter extends AdViewAdapter implements AirAD.AirADListener {
 		
 	}
 
-	public void onAdBannerClicked() 
-	{
-	}
-	
-	public void onAirADFailed()
-	{
-	}
+            @Override
+            public void onAdContentShow() {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+			Log.d(AdViewUtil.ADVIEW, "onAdContentShow");
+            }
 
-	public void onAdContentWillShow()
-	{
-	}
+            @Override
+            public void onAdContentLoadFinished() {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+			Log.d(AdViewUtil.ADVIEW, "onAdContentLoadFinished");
 
-	public void onAdContentWillDismiss()
-	{
-	}
+            }
 
-	public void onAdContentLoadFinished()
-	{
-	}
+            @Override
+            public void onAdContentClose() {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+			Log.d(AdViewUtil.ADVIEW, "onAdContentClose");
+            }
 
-	public void onAdContentDidShow()
-	{
-	}
+            @Override
+            public void onAdBannerShown() {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+			Log.d(AdViewUtil.ADVIEW, "onAdBannerShown");
 
-	public void onAdContentDidDismiss()
-	{
-	}
-
-	public void onAdBannerWillShow()
-	{
-	}
-
-	public void onAdBannerWillDismiss()
-	{
-	}
-
-	public void onAdBannerDidShow()
-	{
-	}
-
-	public void onAdBannerDidDismiss()
-	{
-	}
-	
+            }
 }

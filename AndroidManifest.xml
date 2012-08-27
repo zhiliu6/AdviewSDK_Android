@@ -56,12 +56,10 @@
 		android:configChanges="keyboard|keyboardHidden|orientation" />
    			
     <!-- AdView SDK for millennialmedia -->
-    <activity android:name="com.millennialmedia.android.MMAdViewOverlayActivity" 
-    		android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-		android:configChanges="orientation|keyboard|keyboardHidden" />
+    <activity android:name="com.millennialmedia.android.MMActivity" 
+    		android:configChanges="keyboardHidden|orientation|keyboard" android:theme="@android:style/Theme.Translucent.NoTitleBar">		</activity> 
     	<activity android:name="com.millennialmedia.android.VideoPlayer"  
-    		android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-		android:configChanges="keyboardHidden|orientation|keyboard" />
+    		android:configChanges="keyboardHidden|orientation|keyboard" > </activity>
 
 	<!-- AdView SDK for Mobisage -->
         <activity android:name="com.mobisage.android.MobiSageActivity"
@@ -71,10 +69,6 @@
         <service android:name="com.mobisage.android.MobiSageApkService"
                  android:enabled="true"></service>
 		
-    <!-- AdView SDK for Suizong -->
-	<activity android:name="com.suizong.mobplate.ads.AdActivity"
-		android:configChanges="keyboard|keyboardHidden|orientation" />
-	
     <!-- AdView SDK for tencent MobinWin -->
 	<activity android:name="com.tencent.mobwin.MobinWINBrowserActivity" />
 	
@@ -89,11 +83,17 @@
     	<!-- AdView SDK for Wooboo -->
     	<meta-data android:value="1" android:name="Market_ID"/>
 	<activity android:name="com.wooboo.adlib_android.AdActivity" 
-		android:configChanges="orientation|keyboardHidden" 
-		android:launchMode="singleTask" /> 
+            android:configChanges="orientation|keyboardHidden"/>
     	<activity android:name="com.wooboo.adlib_android.FullActivity" 
 		android:configChanges="orientation|keyboardHidden" 
 		android:launchMode="singleTask" />
+        <service
+            android:name="com.wooboo.download.WoobooService" >
+            <intent-filter>
+                <action android:name="com.wooboo.WoobooDownloadService" >
+                </action>
+            </intent-filter>
+        </service>
 	
     	<!-- AdView SDK for Youmi --> 
     	<activity android:name="net.youmi.android.AdActivity"

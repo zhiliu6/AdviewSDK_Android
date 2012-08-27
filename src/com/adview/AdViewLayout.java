@@ -80,6 +80,8 @@ public class AdViewLayout extends RelativeLayout {
 	public Ration activeRation;
 	public Ration nextRation;
 	
+	public double mDensity;
+	
 	public AdViewInterface adViewInterface;  
 	
 	public AdViewManager adViewManager;
@@ -530,6 +532,7 @@ public class AdViewLayout extends RelativeLayout {
 		if(dm==null)
 			return;
 		activityReference.get().getWindowManager().getDefaultDisplay().getMetrics(dm);
+mDensity = dm.density;
 /*		double density = dm.density;
 		int screenWidth = (int)(density*(dm.widthPixels + 0.5f));
 		int screenHeight = (int)(density*(dm.heightPixels + 0.5f));
@@ -601,6 +604,17 @@ public class AdViewLayout extends RelativeLayout {
 
 			if (activeRation.type == AdViewUtil.NETWORK_TYPE_BAIDU)
 				return false;
+			
+			Log.d(AdViewUtil.ADVIEW, "Intercepted ACTION_DOWN event 2, activeRation.type="+activeRation.type);
+			if (activeRation.type == AdViewUtil.NETWORK_TYPE_SUIZONG)
+			{
+				try {
+					AdViewAdapter.onClickAd();
+				} catch (Throwable e) {
+				Log.e(AdViewUtil.ADVIEW, "onClick", e);
+			}
+				//return true;
+			}
 			
 			countClick();
 			
