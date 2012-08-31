@@ -13,7 +13,7 @@ import com.adview.obj.Ration;
 import com.adview.util.AdViewUtil;
 
 import com.baidu.mobads.AdService;
-import com.baidu.mobads.AdType;
+//import com.baidu.mobads.AdType;
 import com.baidu.mobads.AdView;
 import com.baidu.mobads.AdViewListener;
 import com.adview.obj.Extra;
@@ -21,15 +21,15 @@ import android.graphics.Color;
 
 public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener  {
 	
-	private AdView adView;
-	private AdService adService;
+	//private AdView adView;
+	//private AdService adService;
 	
 	public AdBaiduAdapter(AdViewLayout adViewLayout, Ration ration) {
 		super(adViewLayout, ration);
 		// TODO Auto-generated constructor stub
 
-		adView=null;
-		adService=null;
+		//adView=null;
+		//adService=null;
 
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 		{
@@ -38,9 +38,9 @@ public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener  {
 		}
 		else
 		{
-		AdView.setAppSid(ration.key);
-		AdView.setAppSec(ration.key2);		
-	}
+			AdView.setAppSid(ration.key);
+			AdView.setAppSec(ration.key2);	
+		}
 	}
 
 	@Override
@@ -59,18 +59,19 @@ public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener  {
 		adViewLayout.removeAllViews();
 		adViewLayout.activeRation = adViewLayout.nextRation;
 
-		if((ration.key3).compareTo("1")==0)
-			adService = new AdService(activity, AdType.IMAGE, adViewLayout, new ViewGroup.LayoutParams(-1, -2), this);
-		else
-			adService = new AdService(activity, AdType.TEXT, adViewLayout, new ViewGroup.LayoutParams(-1, -2), this);
+		//if((ration.key3).compareTo("1")==0)
+		//	new AdService(activity,adViewLayout, new ViewGroup.LayoutParams(-1, -2), this);
+		//else
+			new AdService(activity, adViewLayout, new ViewGroup.LayoutParams(-1, -2), this);
 	}
 
-	public void onAdReady() {
+	public void onAdReady(AdView adView2) {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.w(AdViewUtil.ADVIEW, "onAdReady");
 		
 		try {
-			adView = adService.requestAdView();
+			//adView = adService.requestAdView();
+			//adView = adView2;
 			AdViewLayout adViewLayout = adViewLayoutReference.get();
 			if(adViewLayout == null) {
 				return;
@@ -79,8 +80,8 @@ public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener  {
 			Extra extra = adViewLayout.extra;
 		       int bgColor = Color.rgb(extra.bgRed, extra.bgGreen, extra.bgBlue);
 		       int fgColor = Color.rgb(extra.fgRed, extra.fgGreen, extra.fgBlue); 
-			adView.setBackgroundColor(bgColor);
-      			adView.setTextColor(fgColor);
+			adView2.setBackgroundColor(bgColor);
+      			adView2.setTextColor(fgColor);
 	  
 		} catch (Exception e) {
 			Log.w(AdViewUtil.ADVIEW, e.getMessage());
@@ -132,5 +133,14 @@ public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener  {
 		adViewLayout.adViewManager.resetRollover();
 		adViewLayout.rotateThreadedDelayed();
 	}
-		
+
+	@Override
+	public void onVideoFinish() {
+
+	}
+
+	@Override
+	public void onVideoStart() {
+
+	}
 }

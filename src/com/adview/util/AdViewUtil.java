@@ -12,9 +12,9 @@ public class AdViewUtil {
 	// Don't change anything below this line
 	/***********************************************/ 
 	 
-	public static final int VERSION = 176;
+	public static final int VERSION = 177;
 
-	public static final String ADVIEW = "AdView SDK v1.7.6";
+	public static final String ADVIEW = "AdView SDK v1.7.7";
 	
 	// Could be an enum, but this gives us a slight performance improvement
 	//abroad

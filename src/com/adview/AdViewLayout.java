@@ -403,13 +403,13 @@ public class AdViewLayout extends RelativeLayout {
 		this.activeRation = nextRation;
 		countImpression();
 	}
-	
+
 	public void reportBaiduImpression() {
 		//if(AdViewTargeting.getRunMode()==RunMode.TEST)
 		//	Log.d(AdViewUtil.ADVIEW, "reportBaiduImpression");
 
 			
-		String url = String.format(AdViewUtil.urlImpression, adViewManager.keyAdView, activeRation.nid, AdViewUtil.NETWORK_TYPE_BAIDU, 0, "hello", AdViewUtil.VERSION, adViewManager.mSimulator);
+		String url = String.format(AdViewUtil.urlImpression, adViewManager.keyAdView, activeRation.nid, AdViewUtil.NETWORK_TYPE_BAIDU, 0, "hello", AdViewUtil.VERSION, adViewManager.mSimulator, keyDev);
 		scheduler.schedule(new PingUrlRunnable(url), 0, TimeUnit.SECONDS);
 		if(adViewInterface!=null)
 			adViewInterface.onDisplayAd();
@@ -430,7 +430,7 @@ public class AdViewLayout extends RelativeLayout {
 	private void countImpression() {	
 		if(activeRation != null) {
 			
-			String url = String.format(AdViewUtil.urlImpression, adViewManager.keyAdView, activeRation.nid, activeRation.type, 0, "hello", AdViewUtil.VERSION, adViewManager.mSimulator);
+			String url = String.format(AdViewUtil.urlImpression, adViewManager.keyAdView, activeRation.nid, activeRation.type, 0, "hello", AdViewUtil.VERSION, adViewManager.mSimulator, keyDev);
 			scheduler.schedule(new PingUrlRunnable(url), 0, TimeUnit.SECONDS);
 			if(adViewInterface!=null)
 				adViewInterface.onDisplayAd();
@@ -440,7 +440,7 @@ public class AdViewLayout extends RelativeLayout {
 	private void countClick() {
 		if(activeRation != null) {
 			
-			String url = String.format(AdViewUtil.urlClick, adViewManager.keyAdView, activeRation.nid, activeRation.type, 0, "hello", AdViewUtil.VERSION, adViewManager.mSimulator);
+			String url = String.format(AdViewUtil.urlClick, adViewManager.keyAdView, activeRation.nid, activeRation.type, 0, "hello", AdViewUtil.VERSION, adViewManager.mSimulator, keyDev);
 			scheduler.schedule(new PingUrlRunnable(url), 0, TimeUnit.SECONDS);
 			if(adViewInterface!=null)
 			adViewInterface.onClickAd();

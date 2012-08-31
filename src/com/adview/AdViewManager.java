@@ -467,8 +467,8 @@ public class AdViewManager {
 	        extra.locationOn = json.getInt("loacation_on");
 	        extra.transition = json.getInt("transition");
 	        extra.report=json.getString("report");
-	        AdViewUtil.urlImpression="http://"+extra.report+"/agent/agent2.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d";
-	        AdViewUtil.urlClick="http://"+extra.report+"/agent/agent3.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d";
+	        AdViewUtil.urlImpression="http://"+extra.report+"/agent/agent2.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d&keydev=%s";
+	        AdViewUtil.urlClick="http://"+extra.report+"/agent/agent3.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d&keydev=%s";
 		 AdViewUtil.appReport="http://"+extra.report+"/agent/appReport.php?keyAdView=%s&keyDev=%s&typeDev=%s&osVer=%s&resolution=%s&servicePro=%s&netType=%s&channel=%s&platform=%s";
 		 
 	        JSONObject backgroundColor = json.getJSONObject("background_color_rgb");
@@ -525,7 +525,7 @@ public class AdViewManager {
 			    case AdViewUtil.NETWORK_TYPE_SMAATO:
 			    case AdViewUtil.NETWORK_TYPE_UMENG:	
 			    case AdViewUtil.NETWORK_TYPE_ADUU:
-			    case AdViewUtil.NETWORK_TYPE_MOMARK:		
+			    case AdViewUtil.NETWORK_TYPE_MOMARK:
 			    case AdViewUtil.NETWORK_TYPE_CUSTOMIZE:		
 			    	ration.key = jsonRation.getString("key");
 			    	ration.key2 = jsonRation.getString("key2");
@@ -540,15 +540,15 @@ public class AdViewManager {
 			    case AdViewUtil.NETWORK_TYPE_BAIDU:
 				ration.key = jsonRation.getString("key");
 			    	ration.key2 = jsonRation.getString("key2");	
-			    	ration.key3=jsonRation.getString("key3");
+			    	//ration.key3=jsonRation.getString("key3");
 			    default:
 				    ration.key = jsonRation.getString("key");
 				    break;
 			    }
 				
-			    		rationsList.add(ration);
-			    		totalweight += ration.weight;
-			    	}
+	    		rationsList.add(ration);
+	    		totalweight += ration.weight;
+	    	}
     	}
     	catch (JSONException e) {
     	

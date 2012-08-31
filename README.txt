@@ -46,11 +46,11 @@ APKOK(乐致网)
 
 
 
-当前AdView更新版本:1.7.6
+当前AdView更新版本:1.7.7
 目录结构介绍：
 libs：包括AdView的SDK和各个广告公司的SDK,其中：
 	库名					广告平台				版本
-	AdViewSDK_Android.jar:			AdView的SDK				1.7.6
+	AdViewSDK_Android.jar:			AdView的SDK				1.7.7
 	adchina_android_sdk.jar:		易传媒广告公司的SDK			2.5.2
 	adlib_android.jar:			哇棒广告公司的SDK			2.3.0	
 	adOn-3.2.5.jar:				Vpon广告公司的SDK			3.2.5
@@ -80,7 +80,7 @@ libs：包括AdView的SDK和各个广告公司的SDK,其中：
 	Tencent_MobWIN_SDK_1.4.jar:		腾讯广告公司的SDK			1.4
 
 	tinmoo-android-sdk_v3.1.0.jar:		天幕(Tinmoo)广告公司的sdk		2.0.2
-	umeng_ad_android_sdk_v1.4.2.jar:	友盟广告公司的SDK			1.4.2
+	umeng_ad_android_sdk_v1.4.4.jar:	友盟广告公司的SDK			1.4.4
 	WiAd.jar:				微云广告公司的SDK			1.2.3	
 	WQAndroidSDK_2.0.2.jar: 		惟千广告公司sdk				2.0.2
 	youmi-android.jar:			有米广告公司的SDK			3.07

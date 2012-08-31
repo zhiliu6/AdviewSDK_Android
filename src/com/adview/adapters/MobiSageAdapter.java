@@ -45,7 +45,7 @@ public class MobiSageAdapter extends AdViewAdapter implements IMobiSageAdViewLis
 		adv.setMobiSageAdViewListener(this);
 		//adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adv));
 		adViewLayout.removeAllViews();
-		adViewLayout.addView(adv, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+		adViewLayout.addView(adv, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 		adViewLayout.rotateThreadedDelayed();
 	}
 
