@@ -25,7 +25,7 @@ public class VponAdapter extends AdViewAdapter implements AdListener{
 		int width=320;
 		int height=48;
 		int screenWidth = adViewLayout.adViewManager.width;
-		if (screenWidth <= 480) {
+		if (screenWidth < 480) {
 			width = 320;
 			height = 48;
 		} else if (screenWidth < 728) {
@@ -36,8 +36,8 @@ public class VponAdapter extends AdViewAdapter implements AdListener{
 			height = 108;
 		}
 
-		adHeight = AdViewUtil.convertToScreenPixels(height, adViewLayout.mDensity);
-		adWidth = AdViewUtil.convertToScreenPixels(width, adViewLayout.mDensity);
+		adHeight = height;//AdViewUtil.convertToScreenPixels(height, adViewLayout.mDensity);
+		adWidth = width;//AdViewUtil.convertToScreenPixels(width, adViewLayout.mDensity);
 	}
 	
 	@Override
