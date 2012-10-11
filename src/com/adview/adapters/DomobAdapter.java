@@ -5,10 +5,10 @@ import android.app.Activity;
 import android.util.Log;
 
 
-import cn.domob.android.ads.DomobAdListener;
+//import cn.domob.android.ads.DomobAdListener;
 //import cn.domob.android.ads.DomobAdManager;
 import cn.domob.android.ads.DomobAdView;
-
+import cn.domob.android.ads.DomobAdEventListener;
 
 import com.adview.AdViewLayout;
 import com.adview.AdViewTargeting;
@@ -19,7 +19,7 @@ import com.adview.obj.Ration;
 import com.adview.util.AdViewUtil;
 
 
-public class DomobAdapter extends AdViewAdapter implements DomobAdListener{
+public class DomobAdapter extends AdViewAdapter implements DomobAdEventListener{
 
 	public DomobAdapter(AdViewLayout adViewLayout, Ration ration) {
 		super(adViewLayout, ration);
@@ -54,7 +54,7 @@ public class DomobAdapter extends AdViewAdapter implements DomobAdListener{
 	    else{
 	    	DomobAdManager.setIsTestMode(false);
 	    }*/
-	    ad.setOnAdListener(this);
+	    ad.setAdEventListener(this);
 	    //ad.setBackgroundColor(bgColor);
 	    //ad.setPrimaryTextColor(fgColor);
 	
@@ -65,13 +65,13 @@ public class DomobAdapter extends AdViewAdapter implements DomobAdListener{
 	}
 
 	@Override
-	public void onFailedToReceiveFreshAd(DomobAdView arg0) {
+	public void onDomobAdFailed(DomobAdView adView) {
 		// TODO Auto-generated method stub
 		
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			  Log.d(AdViewUtil.ADVIEW, "Domob failure");
 	    
-		  arg0.setOnAdListener(null);
+		  adView.setAdEventListener(null);
 
 		  AdViewLayout adViewLayout = adViewLayoutReference.get();
 		  if(adViewLayout == null) {
@@ -83,13 +83,13 @@ public class DomobAdapter extends AdViewAdapter implements DomobAdListener{
 	}
 
 	@Override
-	public void onReceivedFreshAd(DomobAdView arg0) {
+	public void onDomobAdReturned(DomobAdView adView) {
 		// TODO Auto-generated method stub
 	
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			  Log.d(AdViewUtil.ADVIEW, "Domob success");
 
-		arg0.setOnAdListener(null);
+		adView.setAdEventListener(null);
 		
 		  AdViewLayout adViewLayout = adViewLayoutReference.get();
 		  if(adViewLayout == null) {
@@ -97,25 +97,23 @@ public class DomobAdapter extends AdViewAdapter implements DomobAdListener{
 		  }
 
 		  adViewLayout.adViewManager.resetRollover();
-		  adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, arg0));
+		  adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
 		  adViewLayout.rotateThreadedDelayed();
 		
 	}
 
 	@Override
-	public void onLandingPageClose() {
+	public void onDomobAdOverlayPresented(DomobAdView adView) {
 		// TODO Auto-generated method stub
-		
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+			Log.i(AdViewUtil.ADVIEW, "overlayPresented");
 	}
 
 	@Override
-	public void onLandingPageOpening() {
+	public void onDomobAdOverlayDismissed(DomobAdView adView) {
 		// TODO Auto-generated method stub
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+			Log.i(AdViewUtil.ADVIEW, "Overrided be dismissed");
 		
 	}
-
-	
-		
-	
-
 }

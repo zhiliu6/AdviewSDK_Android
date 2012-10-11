@@ -202,8 +202,8 @@ public abstract class AdViewAdapter {
 						return unknownAdNetwork(adViewLayout, ration);
 					}		
 				case AdViewUtil.NETWORK_TYPE_INMOBI:
-					if(Class.forName("com.inmobi.androidsdk.IMAdView") != null) {
-						return getNetworkAdapter("com.adview.adapters.InmobiAdapter", adViewLayout, ration);
+					if(Class.forName("com.adview.adapters.InmobiInterfaceAdapter") != null) {
+						return getNetworkAdapter("com.adview.adapters.InmobiInterfaceAdapter", adViewLayout, ration);
 					}
 					else {
 						return unknownAdNetwork(adViewLayout, ration);
@@ -237,7 +237,7 @@ public abstract class AdViewAdapter {
 						return unknownAdNetwork(adViewLayout, ration);
 					}
 				case AdViewUtil.NETWORK_TYPE_LMMOB:
-					if(Class.forName("com.lmmob.ad.sdk.LmMobAdView") != null) {
+					if(Class.forName("cn.immob.sdk.ImmobView") != null) {
 						return getNetworkAdapter("com.adview.adapters.LmMobAdapter", adViewLayout, ration);
 					}
 					else {
@@ -274,7 +274,7 @@ public abstract class AdViewAdapter {
 					}
 				case AdViewUtil.NETWORK_TYPE_CUSTOMIZE:
 					//here, developer may add self-code
-					return null;
+					return getNetworkAdapter("com.adview.adapters.EventAdapter", adViewLayout, ration);
 					
 				default:
 					return unknownAdNetwork(adViewLayout, ration);

@@ -3,18 +3,18 @@
 package com.adview.util;
 
 public class AdViewUtil {
-	public static final String urlConfig = "http://www.adview.cn/agent/agent1_android.php?appid=%s&appver=%d&client=0&simulator=%d&location=%s";
-	public static  String urlImpression = "http://www.adview.cn/agent/agent2.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d";
+	public static final String urlConfig = "http://config.adview.cn/agent/agent1_android.php?appid=%s&appver=%d&client=0&simulator=%d&location=%s";
+	public static  String urlImpression = "http://www.adview.cn/agent/agent2.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d&keydev=%s";
 	
-	public static  String urlClick = "http://www.adview.cn/agent/agent3.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d";
+	public static  String urlClick = "http://www.adview.cn/agent/agent3.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d&keydev=%s";
 	public static  String appReport = "http://www.adview.cn/agent/appReport.php?keyAdView=%s&keyDev=%s&typeDev=%s&osVer=%s&resolution=%s&servicePro=%s&netType=%s&channel=%s&platform=%s";
 		
 	// Don't change anything below this line
 	/***********************************************/ 
 	 
-	public static final int VERSION = 177;
+	public static final int VERSION = 179;
 
-	public static final String ADVIEW = "AdView SDK v1.7.7";
+	public static final String ADVIEW = "AdView SDK v1.7.9";
 	
 	// Could be an enum, but this gives us a slight performance improvement
 	//abroad

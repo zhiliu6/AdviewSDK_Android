@@ -15,7 +15,9 @@
 
 7.如果你是一个新手，对广告平台不怎么了解，也不知道选择哪家广告平台，或者不知道哪家广告平台收入稳定，没关系，Adview建议你可以先使用百度，亿动智道，Inmobi几家平台看看效果。
 
-8.开发者可以设置渠道，在Manifest文件中<meta-data android:name="AdView_CHANNEL" android:value="GFAN"></meta-data> (AdViewTargeting.setChannel接口已经作废); 目前支持的渠道包括下面列出的，移动广告观察(http://t.adview.cn/)中有各个市场的链接：
+8.在sample的Manifest文件中把GreyStripe广告的声明给注释掉了，需要的开发者自己打开；
+
+9.开发者可以设置渠道，在Manifest文件中<meta-data android:name="AdView_CHANNEL" android:value="GFAN"></meta-data> (AdViewTargeting.setChannel接口已经作废); 目前支持的渠道包括下面列出的，移动广告观察(http://t.adview.cn/)中有各个市场的链接：
 EOE(优亿市场)
 GOOGLEMARKET(谷歌电子市场)
 APPCHINA(应用汇)
@@ -46,11 +48,11 @@ APKOK(乐致网)
 
 
 
-当前AdView更新版本:1.7.7
+当前AdView更新版本:1.7.9
 目录结构介绍：
 libs：包括AdView的SDK和各个广告公司的SDK,其中：
 	库名					广告平台				版本
-	AdViewSDK_Android.jar:			AdView的SDK				1.7.7
+	AdViewSDK_Android.jar:			AdView的SDK				1.7.9
 	adchina_android_sdk.jar:		易传媒广告公司的SDK			2.5.2
 	adlib_android.jar:			哇棒广告公司的SDK			2.3.0	
 	adOn-3.2.5.jar:				Vpon广告公司的SDK			3.2.5
@@ -62,13 +64,12 @@ libs：包括AdView的SDK和各个广告公司的SDK,其中：
 	android_agg_api.jar: 			百度移动联盟的sdk			2.1
 	AppMediaAdAndroidSdk-1.1.0.jar: 	AppMedia广告公司的sdk			1.1.0
 	casee-ad-sdk-3.0.jar:			架势无线广告公司的SDK			3.0
-	domob_android_sdk.jar:			多盟广告公司的SDK			3.0.3
+	domob_android_sdk.jar:			多盟广告公司的SDK			3.1.0
 	GoogleAdMobAdsSdk-6.1.0.jar:		AdMOB广告公司的SDK			6.1.0	
 	gssdk_1.6.1.jar:			GreyStripe广告公司的SDK			1.6.1
-	InMobiAndroidSDK.jar			InMobi广告公司的SDK			3.5.0
 	IZPView.jar:				易赞普广告公司的SDK			1.0.3
 	l_android_adsdk.jar:			百分通联的SDK				2.1.0.0
-	LMMOB_SDK.jar:				力美广告公司的SDK			2.0
+	immobSDK.jar:				力美广告公司的SDK			2.2
 	mdotm-sdk-android.jar:			MdotM广告公司的SDK			3.0.0
 	MMAdView.jar:				MillennialMedia 广告公司的SDK		4.6.0
 	mobisageSDK.jar:			艾德斯奇广告公司的SDK			2.3.0
@@ -83,9 +84,10 @@ libs：包括AdView的SDK和各个广告公司的SDK,其中：
 	umeng_ad_android_sdk_v1.4.4.jar:	友盟广告公司的SDK			1.4.4
 	WiAd.jar:				微云广告公司的SDK			1.2.3	
 	WQAndroidSDK_2.0.2.jar: 		惟千广告公司sdk				2.0.2
-	youmi-android.jar:			有米广告公司的SDK			3.07
+	youmi-android.jar:			有米广告公司的SDK			3.08
 	zestadz_sdk_androidv1.2.jar:		ZestADZ广告公司的SDK			1.2
 	
+注：随踪和Inmobi不需要单独的jar，都集成在AdViewSDK_Android.jar里了；
 
 
 AdView SDK 安装指南

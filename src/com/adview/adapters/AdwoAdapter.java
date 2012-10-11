@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.adview.AdViewLayout;
 import com.adview.AdViewTargeting;
-import com.adview.AdViewLayout.ViewAdRunnable;
+//import com.adview.AdViewLayout.ViewAdRunnable;
 import com.adview.AdViewTargeting.RunMode;
 import com.adview.obj.Extra;
 import com.adview.obj.Ration;
@@ -47,9 +47,10 @@ public class AdwoAdapter extends AdViewAdapter implements AdListener{
 		}
 
 		adView.setListener(this);
+		adViewLayout.AddSubView(adView);
 		//*
 		//adViewLayout.adViewManager.resetRollover();
-		adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
+		//adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
 		//adViewLayout.rotateThreadedDelayed();
 		//*/
 		//adView.finalize();
@@ -110,6 +111,7 @@ public class AdwoAdapter extends AdViewAdapter implements AdListener{
 			  return;
 		  }
 
+		adViewLayout.reportImpression();		
 		  adViewLayout.adViewManager.resetRollover();
 		  //adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
 		  adViewLayout.rotateThreadedDelayed();

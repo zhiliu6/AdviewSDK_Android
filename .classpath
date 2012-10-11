@@ -10,13 +10,11 @@
 	<classpathentry kind="lib" path="libs/l_android_adsdk.jar"/>
 	<classpathentry kind="lib" path="libs/zestadz_sdk_androidv1.2.jar"/>
 	<classpathentry kind="lib" path="libs/mdotm-sdk-android.jar"/>
-	<classpathentry kind="lib" path="libs/InMobiAndroidSDK.jar"/>
 	<classpathentry kind="lib" path="libs/IZPView.jar"/>
 	<classpathentry kind="lib" path="libs/adwosdk2.5.1.jar"/>
 	<classpathentry kind="lib" path="libs/ad-fractalist-sdk-android.jar"/>
 	<classpathentry kind="lib" path="libs/gssdk_1.6.1.jar"/>
 	<classpathentry kind="lib" path="libs/SOMAAndroidSDK2.5.4.jar"/>
-	<classpathentry kind="lib" path="libs/LmmobSDK.jar"/>
 	<classpathentry kind="lib" path="libs/tinmoo-android-sdkv3.1.0.jar"/>
 	<classpathentry kind="lib" path="libs/aduu-sdk.jar"/>
 	<classpathentry kind="lib" path="libs/WQAndroidSDK_2.0.2.jar"/>
@@ -35,5 +33,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="lib" path="libs/umeng_ad_android_sdk_v1.4.4.jar"/>
+	<classpathentry kind="lib" path="libs/immobSDK.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

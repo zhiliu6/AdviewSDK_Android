@@ -605,8 +605,9 @@ mDensity = dm.density;
 			if (activeRation.type == AdViewUtil.NETWORK_TYPE_BAIDU)
 				return false;
 			
+			if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.d(AdViewUtil.ADVIEW, "Intercepted ACTION_DOWN event 2, activeRation.type="+activeRation.type);
-			if (activeRation.type == AdViewUtil.NETWORK_TYPE_SUIZONG)
+			if (activeRation.type == AdViewUtil.NETWORK_TYPE_SUIZONG || activeRation.type == AdViewUtil.NETWORK_TYPE_INMOBI)
 			{
 				try {
 					AdViewAdapter.onClickAd();

@@ -10,7 +10,7 @@ import android.util.Log;
 
 import com.adview.AdViewLayout;
 import com.adview.AdViewTargeting;
-import com.adview.AdViewLayout.ViewAdRunnable;
+//import com.adview.AdViewLayout.ViewAdRunnable;
 import com.adview.AdViewTargeting.RunMode;
 import com.adview.obj.Extra;
 import com.adview.obj.Ration;
@@ -60,11 +60,12 @@ public class YoumiAdapter extends AdViewAdapter implements AdViewListener{
 			  return;
 		  }
 	    AdView adView=new AdView(activity,bgColor, fgColor,255);  
-	    //adView.setAdViewListener(this);
-	   
-	    adViewLayout.adViewManager.resetRollover();
-	    adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
-	    adViewLayout.rotateThreadedDelayed();
+	    adView.setAdViewListener(this);
+
+	   adViewLayout.AddSubView(adView);
+	    //adViewLayout.adViewManager.resetRollover();
+	    //adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
+	    //adViewLayout.rotateThreadedDelayed();
 
 	}
 
@@ -79,8 +80,11 @@ public class YoumiAdapter extends AdViewAdapter implements AdViewListener{
 			  return;
 		  }
 
+		adView.setAdViewListener(null);
+
+		adViewLayout.reportImpression();
 		  adViewLayout.adViewManager.resetRollover();
-		  //adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
+		 // adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
 		  adViewLayout.rotateThreadedDelayed();
 	}
 

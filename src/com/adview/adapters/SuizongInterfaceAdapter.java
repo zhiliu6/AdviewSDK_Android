@@ -14,7 +14,7 @@ import com.adview.AdViewTargeting.RunMode;
 //import com.adview.obj.Extra;
 import com.adview.obj.Ration;
 import com.adview.util.AdViewUtil;
-///import com.adview.AdViewWebView;
+import com.adview.DownloadService;
 
 import com.adview.util.MD5;
 import com.adview.util.SHA1;
@@ -42,13 +42,19 @@ import android.text.TextUtils;
 
 //import android.webkit.WebSettings;
 import android.webkit.WebView;
-//import android.webkit.WebViewClient;
+import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
 import android.view.View;
 
-//import android.content.Context;
-//import android.content.Intent;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 //import android.os.Bundle;
+
+import android.app.AlertDialog;
+//import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
+//import android.content.DialogInterface.OnClickListener;
 
 
 class SuizongAD
@@ -125,6 +131,7 @@ public class SuizongInterfaceAdapter extends AdViewAdapter{
 	private SuizongScreenManager suizongScreenManager;
 	static final String SuizongApiAddr = "http://api.suizong.com/mobile/";
 	public String mDeviceid="";
+	public Context mContext;
 	
 	public static int convertToScreenPixels(int dipPixels, double density)
 	{
@@ -148,6 +155,7 @@ public class SuizongInterfaceAdapter extends AdViewAdapter{
 		if(adViewLayout == null) {
 			return;
 	 	}
+		mContext = (Context)adViewLayout.activityReference.get();
 
 		suizongAD = new SuizongAD();
 		density = adViewLayout.mDensity;
@@ -556,9 +564,9 @@ public class SuizongInterfaceAdapter extends AdViewAdapter{
 
 		bannerView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
 
-		//bannerView.setWebViewClient(new webViewClient());
+		bannerView.setWebViewClient(new webViewClient());
 		adViewLayout.removeAllViews();
-		adViewLayout.activeRation = adViewLayout.nextRation;
+		adViewLayout.reportImpression();
 		 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
 			 (int)this.adWidth, (int)this.adHeight);
 		 layoutParams.addRule(13, -1);
@@ -568,35 +576,65 @@ public class SuizongInterfaceAdapter extends AdViewAdapter{
 		adViewLayout.rotateThreadedDelayed();
 	}
 
-/*
 public class webViewClient extends WebViewClient
 {
+String url2="";
 private webViewClient()
 {
 }
  
 public boolean shouldOverrideUrlLoading(WebView view, String url)
 {
+	url2 = url;
 	AdViewLayout adViewLayout = (AdViewLayout)SuizongInterfaceAdapter.this.adViewLayoutReference.get();
 	if (adViewLayout == null) {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.d(AdViewUtil.ADVIEW, "adViewLayout is null");
 	} else {
-		Context context = (Context)adViewLayout.activityReference.get();
 		Log.d(AdViewUtil.ADVIEW, "shouldOverrideUrlLoading url="+url);
+		 if (url.toLowerCase().endsWith(".apk"))
 		{
-			//Intent intent = new Intent(context, AdViewWebView.class);
-			//Bundle bundle = new Bundle();
-			//bundle.putString("link", url);
-			//intent.putExtras(bundle);
-			//context.startActivity(intent);
+			String title = "下载提示";
+			String message = "确定要下载应用吗?";
+			String yesBtn = "确定";
+			String noBtn = "取消";
+
+	           	AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+			builder.setMessage(message)
+			.setTitle(title)
+			.setPositiveButton(yesBtn, 
+			new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int which)
+					{
+						Intent intent = new Intent(mContext, DownloadService.class);
+						//intent.putExtra("adview_title", "");
+						intent.putExtra("adview_url",url2);
+						mContext.startService(intent);					
+					}
+				}).setNegativeButton(noBtn, 
+			new DialogInterface.OnClickListener()
+				{
+					public void onClick(DialogInterface dialog, int id) {
+						dialog.cancel();
+					}
+				});
+			builder.create();
+			builder.show();
+
 		}
+		else
+	 	{
+			Intent i = new Intent(Intent.ACTION_VIEW);
+			i.setData(Uri.parse(url2));
+			mContext.startActivity(i);	 		
+	 	}
 	}
 
 	return true;
 	}
 }
-*/
+
 }
 
 class DisplaySuizongADRunnable implements Runnable
