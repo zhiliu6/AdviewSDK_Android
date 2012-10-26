@@ -46,6 +46,8 @@ public class AdwoAdapter extends AdViewAdapter implements AdListener{
 			adView=new AdwoAdView((Activity)adViewLayout.getContext(), ration.key,false,extra.cycleTime);
 		}
 
+		byte id=2;	
+		AdwoAdView.setAggChannelId(id);
 		adView.setListener(this);
 		adViewLayout.AddSubView(adView);
 		//*
@@ -56,7 +58,7 @@ public class AdwoAdapter extends AdViewAdapter implements AdListener{
 		//adView.finalize();
 	}
 
-	@Override
+	//@Override
 	public void onFailedToReceiveAd(AdwoAdView adView) {
 		// TODO Auto-generated method stub
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
@@ -90,7 +92,7 @@ public class AdwoAdapter extends AdViewAdapter implements AdListener{
 		 adViewLayout.rotateThreadedPri();
 	}
 	
-	@Override
+	//@Override
 	public void onFailedToReceiveRefreshedAd(AdwoAdView paramAdView) {
 		// TODO Auto-generated method stub
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)

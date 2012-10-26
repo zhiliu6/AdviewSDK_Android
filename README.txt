@@ -17,7 +17,11 @@
 
 8.在sample的Manifest文件中把GreyStripe广告的声明给注释掉了，需要的开发者自己打开；
 
-9.开发者可以设置渠道，在Manifest文件中<meta-data android:name="AdView_CHANNEL" android:value="GFAN"></meta-data> (AdViewTargeting.setChannel接口已经作废); 目前支持的渠道包括下面列出的，移动广告观察(http://t.adview.cn/)中有各个市场的链接：
+9.微云平台，包括WiAd.jar,WiCommon.jar, 需要把wiyun_res目录下的资源文件也放到项目中；
+
+10.从1.8.0以后，必须在AndroidManifest.xml文件中声明com.adview.DownloadService，互推和内嵌广告下载的时候要用；
+
+11.开发者可以设置渠道，在Manifest文件中<meta-data android:name="AdView_CHANNEL" android:value="GFAN"></meta-data> (AdViewTargeting.setChannel接口已经作废); 目前支持的渠道包括下面列出的，移动广告观察(http://t.adview.cn/)中有各个市场的链接：
 EOE(优亿市场)
 GOOGLEMARKET(谷歌电子市场)
 APPCHINA(应用汇)
@@ -48,24 +52,23 @@ APKOK(乐致网)
 
 
 
-当前AdView更新版本:1.7.9
+当前AdView更新版本:1.8.0
 目录结构介绍：
 libs：包括AdView的SDK和各个广告公司的SDK,其中：
 	库名					广告平台				版本
-	AdViewSDK_Android.jar:			AdView的SDK				1.7.9
-	adchina_android_sdk.jar:		易传媒广告公司的SDK			2.5.2
+	AdViewSDK_Android.jar:			AdView的SDK				1.8.0
+	adchina_android_sdk.jar:		易传媒广告公司的SDK			2.6.1
 	adlib_android.jar:			哇棒广告公司的SDK			2.3.0	
 	adOn-3.2.5.jar:				Vpon广告公司的SDK			3.2.5
 	adtouch-embed-sdk-1.1.0.jar: 		AdTouch公司的SDK				1.1.0
-	aduu-sdk.jar: 				优友传媒的SDK				3.1.0
-	adwosdk2.5.1.jar:  			AdWo广告公司的SDK			2.5.1	
+	Adwo_Android_SDK3.0.jar:  		AdWo广告公司的SDK			3.0	
 	ad-fractalist-sdk-android.jar:		飞云广告公司的SDK			2.0
 	airAD_sdk.jar: 				AirAD广告公司的SDK			1.3.2
 	android_agg_api.jar: 			百度移动联盟的sdk			2.1
 	AppMediaAdAndroidSdk-1.1.0.jar: 	AppMedia广告公司的sdk			1.1.0
 	casee-ad-sdk-3.0.jar:			架势无线广告公司的SDK			3.0
 	domob_android_sdk.jar:			多盟广告公司的SDK			3.1.0
-	GoogleAdMobAdsSdk-6.1.0.jar:		AdMOB广告公司的SDK			6.1.0	
+	GoogleAdMobAdsSdk-6.2.1.jar:		AdMOB广告公司的SDK			6.2.1	
 	gssdk_1.6.1.jar:			GreyStripe广告公司的SDK			1.6.1
 	IZPView.jar:				易赞普广告公司的SDK			1.0.3
 	l_android_adsdk.jar:			百分通联的SDK				2.1.0.0
@@ -82,12 +85,15 @@ libs：包括AdView的SDK和各个广告公司的SDK,其中：
 
 	tinmoo-android-sdk_v3.1.0.jar:		天幕(Tinmoo)广告公司的sdk		2.0.2
 	umeng_ad_android_sdk_v1.4.4.jar:	友盟广告公司的SDK			1.4.4
-	WiAd.jar:				微云广告公司的SDK			1.2.3	
+
+	WiAd.jar:				微云广告公司的SDK			4.0.0
+	WiCommon.jar:				微云广告公司的SDK			4.0.0
+	
 	WQAndroidSDK_2.0.2.jar: 		惟千广告公司sdk				2.0.2
 	youmi-android.jar:			有米广告公司的SDK			3.08
 	zestadz_sdk_androidv1.2.jar:		ZestADZ广告公司的SDK			1.2
 	
-注：随踪和Inmobi不需要单独的jar，都集成在AdViewSDK_Android.jar里了；
+注：随踪,优友传媒(aduu)和Inmobi不需要单独的jar，都集成在AdViewSDK_Android.jar里了；
 
 
 AdView SDK 安装指南

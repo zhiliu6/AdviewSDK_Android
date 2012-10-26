@@ -44,9 +44,10 @@ public class MobiSageAdapter extends AdViewAdapter implements IMobiSageAdViewLis
 		adv.setAnimeType(MobiSageAnimeType.Anime_LeftToRight);
 		adv.setMobiSageAdViewListener(this);
 		//adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adv));
+		adViewLayout.activeRation = adViewLayout.nextRation;
 		adViewLayout.removeAllViews();
 		adViewLayout.addView(adv, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-		adViewLayout.rotateThreadedDelayed();
+		//adViewLayout.rotateThreadedDelayed();
 	}
 
 	public void onMobiSageAdViewShow(Object adView) {
@@ -57,6 +58,12 @@ public class MobiSageAdapter extends AdViewAdapter implements IMobiSageAdViewLis
 		if(adViewLayout == null) {
 			return;
 		}
+
+		adv.setMobiSageAdViewListener(null);
+		
+		adViewLayout.adViewManager.resetRollover();
+		adViewLayout.rotateThreadedDelayed();
+		  
 		adViewLayout.reportImpression();
         }
 
@@ -70,4 +77,18 @@ public class MobiSageAdapter extends AdViewAdapter implements IMobiSageAdViewLis
 			Log.d(AdViewUtil.ADVIEW, "onMobiSageAdViewHide");
        }
 
+	public void onMobiSageAdViewError(Object adView) {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)		
+			Log.d(AdViewUtil.ADVIEW, "onMobiSageAdViewError");
+
+		adv.setMobiSageAdViewListener(null);
+		
+		AdViewLayout adViewLayout = adViewLayoutReference.get();
+		if(adViewLayout == null) {
+			return;
+		}
+
+		adViewLayout.adViewManager.resetRollover_pri();
+		adViewLayout.rotateThreadedPri();	
+       }	
 }

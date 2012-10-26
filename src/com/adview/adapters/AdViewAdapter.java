@@ -259,8 +259,8 @@ public abstract class AdViewAdapter {
 						return unknownAdNetwork(adViewLayout, ration);
 					}
 				case AdViewUtil.NETWORK_TYPE_ADUU:
-					if(Class.forName("cn.aduu.adsdk.AdView") != null) {
-						return getNetworkAdapter("com.adview.adapters.AduuAdapter", adViewLayout, ration);
+					if(Class.forName("com.adview.adapters.AduuInterfaceAdapter") != null) {
+						return getNetworkAdapter("com.adview.adapters.AduuInterfaceAdapter", adViewLayout, ration);
 					}
 					else {
 						return unknownAdNetwork(adViewLayout, ration);

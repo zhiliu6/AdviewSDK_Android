@@ -67,6 +67,12 @@ public class AdChinaAdapter extends AdViewAdapter implements AdListener{
 		adViewLayout.rotateThreadedDelayed();
 	}
 
+	public void onClickBanner (AdView view)
+	{
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+			  Log.d(AdViewUtil.ADVIEW, "onClickBanner");	
+	}
+	
 	public void onReceiveVideoAd(){
 		
 	}

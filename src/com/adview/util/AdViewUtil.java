@@ -2,6 +2,18 @@
 
 package com.adview.util;
 
+
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.telephony.TelephonyManager;
+import android.util.Log;
+import android.view.WindowManager;
+
+
 public class AdViewUtil {
 	public static final String urlConfig = "http://config.adview.cn/agent/agent1_android.php?appid=%s&appver=%d&client=0&simulator=%d&location=%s";
 	public static  String urlImpression = "http://www.adview.cn/agent/agent2.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d&keydev=%s";
@@ -12,9 +24,9 @@ public class AdViewUtil {
 	// Don't change anything below this line
 	/***********************************************/ 
 	 
-	public static final int VERSION = 179;
+	public static final int VERSION = 180;
 
-	public static final String ADVIEW = "AdView SDK v1.7.9";
+	public static final String ADVIEW = "AdView SDK v1.8.0";
 	
 	// Could be an enum, but this gives us a slight performance improvement
 	//abroad
@@ -58,6 +70,8 @@ public class AdViewUtil {
 	
 	public static final int NETWORK_TYPE_CUSTOMIZE=999;
 	
+	private static int[] widthAndHeight;
+	
 	public static String convertToHex(byte[] data) {
         StringBuffer buf = new StringBuffer();
         for (int i = 0; i < data.length; i++) {
@@ -83,4 +97,113 @@ public class AdViewUtil {
 		return (int)pix;
 	}
 	
+	public static boolean checkPermission(Context context, String paramString)
+	{
+		PackageManager localPackageManager = context.getPackageManager();
+		return localPackageManager.checkPermission(paramString, context.getPackageName()) == 0;
+	}
+
+	public static String getImsi(Context context)
+	{
+		TelephonyManager tm = (TelephonyManager)context.getSystemService("phone");
+		StringBuffer ImsiStr = new StringBuffer();
+		try
+		{
+			if (checkPermission(context, "android.permission.READ_PHONE_STATE")) {
+				ImsiStr.append(tm.getSubscriberId() == null ? "" : tm.getSubscriberId());
+			}
+			while (ImsiStr.length() < 15)
+				ImsiStr.append("0");
+		}
+		catch (Exception e) {
+			Log.i(AdViewUtil.ADVIEW, e.toString());
+			ImsiStr.append("000000000000000");
+		}
+		return ImsiStr.toString();
+	}
+
+	public static String getImei(Context context)
+	{
+		TelephonyManager tm = (TelephonyManager)context.getSystemService("phone");
+		StringBuffer tmDevice = new StringBuffer();
+		try
+		{
+			if (checkPermission(context, "android.permission.READ_PHONE_STATE")) {
+				tmDevice.append(tm.getDeviceId());
+			}
+			while (tmDevice.length() < 15)
+				tmDevice.append("0");
+		}
+		catch (Exception e) {
+			Log.i(AdViewUtil.ADVIEW, e.toString());
+		}
+		
+		return tmDevice.toString().replace("null", "0000");
+	}
+
+	public static String getIDByMAC(Context context)
+	{
+		String str = null;
+		try {
+			WifiManager localWifiManager = (WifiManager)context.getSystemService("wifi");
+			WifiInfo localWifiInfo = localWifiManager.getConnectionInfo();
+			str = localWifiInfo.getMacAddress();
+		} catch (Exception e) {
+			Log.i(AdViewUtil.ADVIEW, e.toString());
+		}
+		return str;
+	}
+
+	public static String getAduuNetworkType(Context context)
+	{
+		String networkType = "0";
+		ConnectivityManager connManager = (ConnectivityManager)context.getSystemService("connectivity");
+		NetworkInfo networkinfo = connManager.getActiveNetworkInfo();
+		
+		if (networkinfo != null) {
+			networkType = networkinfo.getTypeName();
+			if (networkType.equalsIgnoreCase("wifi")) {
+				networkType = "4";
+			} else {
+				String IMSI = getImsi(context);
+				if ((IMSI.startsWith("46000")) || (IMSI.startsWith("46002")))
+					networkType = "1";
+				else if (IMSI.startsWith("46001"))
+					networkType = "2";
+				else if (IMSI.startsWith("46003"))
+					networkType = "3";
+			}
+		}
+		else {
+			String IMSI = getImsi(context);
+			if ((IMSI.startsWith("46000")) || (IMSI.startsWith("46002")))
+			networkType = "1";
+			else if (IMSI.startsWith("46001"))
+			networkType = "2";
+			else if (IMSI.startsWith("46003")) {
+			networkType = "3";
+			}
+		}
+		return networkType;
+	}
+
+	public static int[] getWidthAndHeight(Context context)
+	{
+		//private static int[] widthAndHeight;
+		
+		if ((widthAndHeight != null) && (widthAndHeight.length > 1)) {
+			return widthAndHeight;
+		}
+
+		WindowManager WM = (WindowManager)context.getSystemService("window");
+		int width = WM.getDefaultDisplay().getWidth();
+		int height = WM.getDefaultDisplay().getHeight();
+		if (height > width)
+			widthAndHeight = new int[] { width, height };
+		else {
+			widthAndHeight = new int[] { height, width };
+		}
+		return widthAndHeight;
+	}
+
 }

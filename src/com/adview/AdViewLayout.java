@@ -602,7 +602,8 @@ mDensity = dm.density;
 				Log.d(AdViewUtil.ADVIEW, "Intercepted ACTION_DOWN event");
 		    if(activeRation != null) {
 
-			if (activeRation.type == AdViewUtil.NETWORK_TYPE_BAIDU)
+			if (activeRation.type == AdViewUtil.NETWORK_TYPE_BAIDU ||activeRation.type == AdViewUtil.NETWORK_TYPE_ADUU
+				 ||activeRation.type == AdViewUtil.NETWORK_TYPE_WIYUN)
 				return false;
 			
 			if(AdViewTargeting.getRunMode()==RunMode.TEST)

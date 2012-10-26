@@ -24,10 +24,7 @@
        	android:configChanges="orientation|keyboard|keyboardHidden"/>
 	<!--  android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/> -->
 	
-	<!-- AdView SDK for AdWo -->  
-	<activity android:name="com.adwo.adsdk.AdwoAdBrowserActivity" /> 
-
-        <!-- AdView SDK for AirAd -->       
+	<!-- AdView SDK for AirAd -->       
 	<activity android:name="com.mt.airad.MultiAD"
 		android:theme="@android:style/Theme.Translucent.NoTitleBar"
 		android:configChanges="orientation|keyboard|keyboardHidden"/>
@@ -115,14 +112,11 @@
 			<category android:name="android.intent.category.LAUNCHER" />
 		</intent-filter>
 	</activity>
-	<!--   AdView SDK for Aduu -->
-	<activity  android:name="cn.aduu.adsdk.AdSpotActivity" />    
-
-	<!--   AdView SDK for Momark -->
+		<!--   AdView SDK for Momark -->
 	<activity android:name="com.donson.momark.activity.AdActivity"
 		android:launchMode="singleTop" />
 		
-	<!--   AdView SDK for Suizong -->
+	<!--   Must declare it for Adivew SDK-->
 	<service android:name="com.adview.DownloadService" />
 		
 	<!--   Channel id for app markets -->
@@ -170,6 +164,8 @@
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.GET_TASKS" /><!--momark --> 
 
+<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /><!--wiyun --> 
+	
 	<!-- optional permissions -->		
 	<uses-permission android:name="android.permission.CALL_PHONE"/><!-- Casee, WqAd, InMobi, Greystripe, lsense, izp --> 
 	<!-- <uses-permission android:name="android.permission.SEND_SMS" /> --> <!-- izp --> 
