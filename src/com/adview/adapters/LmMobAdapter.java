@@ -50,6 +50,7 @@ public class LmMobAdapter extends AdViewAdapter implements LMAdListener{
 		 	adView = new ImmobView(activity, ration.key, ht);
 		adView.setAdListener(this);
 
+		adViewLayout.activeRation = adViewLayout.nextRation;
 		adViewLayout.removeAllViews();
 		RelativeLayout.LayoutParams layoutParams;
 		layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -77,6 +78,8 @@ public class LmMobAdapter extends AdViewAdapter implements LMAdListener{
 		adViewLayout.adViewManager.resetRollover();
 		//adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
 		adViewLayout.rotateThreadedDelayed();
+
+		adViewLayout.reportImpression();
 		
 	}
 

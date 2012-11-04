@@ -109,9 +109,8 @@ public class DownloadService extends Service
 		new Thread(new DownloadRunnable()).start();
 		super.onStart(intent, startId);
 	}
- 
-   public long downloadFile(String downloadUrl, File saveFile)
-    throws Exception
+// downloadUrlœ¬‘ÿ¡¥Ω”        saveFile  
+   public long downloadFile(String downloadUrl, File saveFile) throws Exception
   {
    int downloadCount = 0;
      int currentSize = 0;
@@ -172,8 +171,7 @@ public class DownloadService extends Service
      return totalSize;
    }
 
-class DownloadRunnable
-   implements Runnable
+class DownloadRunnable  implements Runnable
   {
    Message message = DownloadService.this.updateHandler.obtainMessage();
 
