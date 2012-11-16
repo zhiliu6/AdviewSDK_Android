@@ -86,12 +86,14 @@ public class DownloadService extends Service
 	public void onStart(Intent intent, int startId)
 	{
 		index += 1;
-
+		if (index>5)
+			index = 1;
+		
 		path = intent.getStringExtra("adview_url");
 
 		if ("mounted".equals(Environment.getExternalStorageState())) {
 			updateDir = new File(Environment.getExternalStorageDirectory(), "Adview/download/");
-			updateFile = new File(this.updateDir.getPath(), this.title + ".apk");
+			updateFile = new File(this.updateDir.getPath(), this.title + index + ".apk");
 		}
 
 		updateNotificationManager = ((NotificationManager)getSystemService("notification"));

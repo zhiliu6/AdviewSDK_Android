@@ -603,11 +603,11 @@ mDensity = dm.density;
 		    if(activeRation != null) {
 
 			if (activeRation.type == AdViewUtil.NETWORK_TYPE_BAIDU ||activeRation.type == AdViewUtil.NETWORK_TYPE_ADUU
-				 ||activeRation.type == AdViewUtil.NETWORK_TYPE_WIYUN)
+				 ||activeRation.type == AdViewUtil.NETWORK_TYPE_WIYUN ||activeRation.type == AdViewUtil.NETWORK_TYPE_DOMOB)
 				return false;
-			
+
 			if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Intercepted ACTION_DOWN event 2, activeRation.type="+activeRation.type);
+				Log.d(AdViewUtil.ADVIEW, "Intercepted ACTION_DOWN event 2, activeRation.type="+activeRation.type);
 			if (activeRation.type == AdViewUtil.NETWORK_TYPE_SUIZONG || activeRation.type == AdViewUtil.NETWORK_TYPE_INMOBI)
 			{
 				try {
