@@ -18,6 +18,9 @@ import com.baidu.mobads.AdView;
 import com.baidu.mobads.AdViewListener;
 import com.adview.obj.Extra;
 import android.graphics.Color;
+import android.content.Context;
+import org.json.JSONObject;
+
 
 public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener  {
 	
@@ -30,16 +33,17 @@ public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener  {
 
 		//adView=null;
 		//adService=null;
-
+		Context mContext = (Context)adViewLayout.activityReference.get();
+		
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 		{
-			AdView.setAppSid("debug");
-			AdView.setAppSec("debug");	
+			AdView.setAppSid(mContext, "debug");
+			AdView.setAppSec(mContext, "debug");	
 		}
 		else
 		{
-			AdView.setAppSid(ration.key);
-			AdView.setAppSec(ration.key2);	
+			AdView.setAppSid(mContext, ration.key);
+			AdView.setAppSec(mContext, ration.key2);	
 		}
 	}
 
@@ -79,16 +83,16 @@ public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener  {
 			
 			Extra extra = adViewLayout.extra;
 		       int bgColor = Color.rgb(extra.bgRed, extra.bgGreen, extra.bgBlue);
-		       int fgColor = Color.rgb(extra.fgRed, extra.fgGreen, extra.fgBlue); 
+		       //int fgColor = Color.rgb(extra.fgRed, extra.fgGreen, extra.fgBlue); 
 			adView2.setBackgroundColor(bgColor);
-      			adView2.setTextColor(fgColor);
+      			//adView2.setTextColor(fgColor);
 	  
 		} catch (Exception e) {
 			Log.w(AdViewUtil.ADVIEW, e.getMessage());
 		}
 	}
 
-	public void onAdShow() {
+	public void onAdShow(JSONObject paramJSONObject) {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.w(AdViewUtil.ADVIEW, "onAdShow");
 
@@ -99,7 +103,7 @@ public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener  {
 		adViewLayout.reportBaiduImpression();
 	}
 
-	public void onAdClick() { 
+	public void onAdClick(JSONObject paramJSONObject) { 
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.w(AdViewUtil.ADVIEW, "onAdClick");
 
