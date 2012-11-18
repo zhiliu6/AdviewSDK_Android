@@ -28,10 +28,10 @@ public class VponAdapter extends AdViewAdapter implements AdListener{
 		if (screenWidth < 480) {
 			width = 320;
 			height = 48;
-		} else if (screenWidth < 728) {
+		} else if (screenWidth < 720) {
 			width = 480;
 			height = 72;
-		} else if (screenWidth >= 728) {
+		} else if (screenWidth >= 720) {
 			width = 720;
 			height = 108;
 		}

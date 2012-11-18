@@ -6,7 +6,7 @@ import android.util.Log;
 
 
 //import cn.domob.android.ads.DomobAdListener;
-//import cn.domob.android.ads.DomobAdManager;
+import cn.domob.android.ads.DomobAdManager;
 import cn.domob.android.ads.DomobAdView;
 import cn.domob.android.ads.DomobAdEventListener;
 
@@ -64,14 +64,14 @@ public class DomobAdapter extends AdViewAdapter implements DomobAdEventListener{
 	   
 	}
 
-	@Override
-	public void onDomobAdFailed(DomobAdView adView) {
+	//@Override
+	public void onDomobAdFailed(DomobAdView adView, DomobAdManager.ErrorCode paramErrorCode) {
 		// TODO Auto-generated method stub
 		
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "Domob failure");
+			  Log.d(AdViewUtil.ADVIEW, "Domob failure, ErrorCode="+paramErrorCode);
 	    
-		  adView.setAdEventListener(null);
+		  //adView.setAdEventListener(null);
 
 		  AdViewLayout adViewLayout = adViewLayoutReference.get();
 		  if(adViewLayout == null) {
@@ -89,7 +89,7 @@ public class DomobAdapter extends AdViewAdapter implements DomobAdEventListener{
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			  Log.d(AdViewUtil.ADVIEW, "Domob success");
 
-		adView.setAdEventListener(null);
+		//adView.setAdEventListener(null);
 		
 		  AdViewLayout adViewLayout = adViewLayoutReference.get();
 		  if(adViewLayout == null) {
@@ -102,6 +102,27 @@ public class DomobAdapter extends AdViewAdapter implements DomobAdEventListener{
 		
 	}
 
+	public void onDomobAdClicked(DomobAdView adView) {
+		// TODO Auto-generated method stub
+		
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+			  Log.d(AdViewUtil.ADVIEW, "Domob onDomobAdClicked");
+
+		AdViewLayout adViewLayout = adViewLayoutReference.get();
+		if(adViewLayout == null) {
+			return;
+		}
+		adViewLayout.reportClick();		
+	}
+
+	public void onDomobLeaveApplication(DomobAdView adView) {
+		// TODO Auto-generated method stub
+		
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+			  Log.d(AdViewUtil.ADVIEW, "Domob onDomobLeaveApplication");
+		
+	}
+	
 	@Override
 	public void onDomobAdOverlayPresented(DomobAdView adView) {
 		// TODO Auto-generated method stub
