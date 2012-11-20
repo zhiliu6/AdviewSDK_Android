@@ -58,7 +58,7 @@ public class DomobAdapter extends AdViewAdapter implements DomobAdEventListener{
 	    //ad.setBackgroundColor(bgColor);
 	    //ad.setPrimaryTextColor(fgColor);
 	
-	   ad.requestRefreshAd() ;
+	   ad.requestAdForAggregationPlatform() ;
 	    //ad.setRequestInterval(0);
 		
 	   
