@@ -52,11 +52,11 @@ APKOK(乐致网)
 
 
 
-当前AdView更新版本:1.8.2
+当前AdView更新版本:1.8.3
 目录结构介绍：
 libs：包括AdView的SDK和各个广告公司的SDK,其中：
 	库名					广告平台				版本
-	AdViewSDK_Android.jar:			AdView的SDK				1.8.2
+	AdViewSDK_Android.jar:			AdView的SDK				1.8.3
 	adchina_android_sdk.jar:		易传媒广告公司的SDK			2.6.2
 	adlib_android.jar:			哇棒广告公司的SDK			2.3.0	
 	adOn-3.2.5.jar:				Vpon广告公司的SDK			3.2.5
