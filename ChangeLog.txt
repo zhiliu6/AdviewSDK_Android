@@ -1,5 +1,9 @@
 ﻿版本特性：
 
+AdView Android sdk 1.8.4 2012-11-28
+1.修改包名从 adview变为kyview；
+2.去掉架势的jar包，如果需要可以使用开源代码，做相应的修改
+
 AdView Android sdk 1.8.3 2012-11-20
 1.更新多盟广告的请求接口;
 
