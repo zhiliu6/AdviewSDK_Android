@@ -19,9 +19,10 @@
 
 9.微云平台，包括WiAd.jar,WiCommon.jar, 需要把wiyun_res目录下的资源文件也放到项目中；
 
-10.从1.8.0以后，必须在AndroidManifest.xml文件中声明com.adview.DownloadService，互推和内嵌广告下载的时候要用；
+10.从1.8.0以后，必须在AndroidManifest.xml文件中声明com.kyview.DownloadService，互推和内嵌广告下载的时候要用；
 
-11.开发者可以设置渠道，在Manifest文件中<meta-data android:name="AdView_CHANNEL" android:value="GFAN"></meta-data> (AdViewTargeting.setChannel接口已经作废); 目前支持的渠道包括下面列出的，移动广告观察(http://t.adview.cn/)中有各个市场的链接：
+11.在1.8。4以后我们包名做了修改。
+12.开发者可以设置渠道，在Manifest文件中<meta-data android:name="AdView_CHANNEL" android:value="GFAN"></meta-data> (AdViewTargeting.setChannel接口已经作废); 目前支持的渠道包括下面列出的，移动广告观察(http://t.adview.cn/)中有各个市场的链接：
 EOE(优亿市场)
 GOOGLEMARKET(谷歌电子市场)
 APPCHINA(应用汇)
