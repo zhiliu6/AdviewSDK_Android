@@ -25,8 +25,7 @@ public class Invoker extends Activity implements AdViewInterface {
           
         AdViewTargeting.setUpdateMode(UpdateMode.EVERYTIME);
         AdViewTargeting.setRunMode(RunMode.TEST);
-        AdViewLayout adViewLayout = new AdViewLayout(this, "SDK20112217380924nvvrv9w6cifnlq3");
-        //AdViewLayout adViewLayout = new AdViewLayout(this, "SDK201116280212248a0qiillp884xpg");		
+        AdViewLayout adViewLayout = new AdViewLayout(this, "SDK20111812070129bb9oj4n571faaka");		
         adViewLayout.setAdViewInterface(this);      
         layout.addView(adViewLayout);
         //RelativeLayout.LayoutParams adViewLayoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);

@@ -21,7 +21,7 @@
 
 10.从1.8.0以后，必须在AndroidManifest.xml文件中声明com.kyview.DownloadService，互推和内嵌广告下载的时候要用；
 
-11.在1.8。4以后我们包名做了修改。
+11.在1.8.4以后我们包名做了修改,删除架势的包（能被360检测到为恶意插件）。
 12.开发者可以设置渠道，在Manifest文件中<meta-data android:name="AdView_CHANNEL" android:value="GFAN"></meta-data> (AdViewTargeting.setChannel接口已经作废); 目前支持的渠道包括下面列出的，移动广告观察(http://t.adview.cn/)中有各个市场的链接：
 EOE(优亿市场)
 GOOGLEMARKET(谷歌电子市场)
@@ -53,11 +53,11 @@ APKOK(乐致网)
 
 
 
-当前AdView更新版本:1.8.3
+当前AdView更新版本:1.8.4
 目录结构介绍：
 libs：包括AdView的SDK和各个广告公司的SDK,其中：
 	库名					广告平台				版本
-	AdViewSDK_Android.jar:			AdView的SDK				1.8.3
+	AdViewSDK_Android.jar:			AdView的SDK				1.8.4
 	adchina_android_sdk.jar:		易传媒广告公司的SDK			2.6.2
 	adlib_android.jar:			哇棒广告公司的SDK			2.3.0	
 	adOn-3.2.5.jar:				Vpon广告公司的SDK			3.2.5
@@ -67,7 +67,6 @@ libs：包括AdView的SDK和各个广告公司的SDK,其中：
 	airAD_sdk.jar: 				AirAD广告公司的SDK			1.3.3
 	Baidu_MobAds_SDK_Agg_3.0.jar: 		百度移动联盟的sdk			3.0
 	AppMediaAdAndroidSdk-1.1.0.jar: 	AppMedia广告公司的sdk			1.1.0
-	casee-ad-sdk-3.0.jar:			架势无线广告公司的SDK			3.0
 	domob_android_sdk.jar:			多盟广告公司的SDK			3.1.4
 	GoogleAdMobAdsSdk-6.2.1.jar:		AdMOB广告公司的SDK			6.2.1	
 	gssdk_1.6.1.jar:			GreyStripe广告公司的SDK			1.6.1
