@@ -22,7 +22,7 @@
 10.从1.8.0以后，必须在AndroidManifest.xml文件中声明com.kyview.DownloadService，互推和内嵌广告下载的时候要用；
 
 11.在1.8.4以后我们包名做了修改,删除架势的包（能被360检测到为恶意插件）。
-12.开发者可以设置渠道，在Manifest文件中<meta-data android:name="AdView_CHANNEL" android:value="GFAN"></meta-data> (AdViewTargeting.setChannel接口已经作废); 目前支持的渠道包括下面列出的，移动广告观察(http://t.adview.cn/)中有各个市场的链接：
+12.开发者可以设置渠道，在Manifest文件中<meta-data android:name="AdView_CHANNEL" android:value="GFAN"></meta-data> (AdViewTargeting.setChannel接口已经作废); 目前支持的渠道包括下面列出的，移动广告观察(http://t.adview.cn)中有各个市场的链接：
 EOE(优亿市场)
 GOOGLEMARKET(谷歌电子市场)
 APPCHINA(应用汇)
