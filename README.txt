@@ -22,7 +22,7 @@ Baidu_MobAds_SDK_Agg_3.0.jar		百度						3.0
 AppMediaAdAndroidSdk-1.1.0.jar		AppMedia					1.1.0
 domob_android_sdk.jar			多盟						3.1.5
 GoogleAdMobAdsSdk-6.2.1.jar		AdMOB						6.2.1
-gssdk_2.0.2.jar				GreyStripe					2.0.2
+greystripe-android-sdk-2.0.2.jar	GreyStripe					2.0.2
 IZPView.jar				易赞普						1.0.3
 l_android_adsdk.jar			百分通联					2.1.0.0
 immobSDK.jar				力美						2.2
