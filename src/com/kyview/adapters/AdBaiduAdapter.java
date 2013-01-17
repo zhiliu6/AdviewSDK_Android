@@ -29,10 +29,7 @@ public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener  {
 	
 	public AdBaiduAdapter(AdViewLayout adViewLayout, Ration ration) {
 		super(adViewLayout, ration);
-		// TODO Auto-generated constructor stub
 
-		//adView=null;
-		//adService=null;
 		Context mContext = (Context)adViewLayout.activityReference.get();
 		
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)

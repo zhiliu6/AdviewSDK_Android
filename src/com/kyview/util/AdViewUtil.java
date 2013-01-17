@@ -12,10 +12,12 @@ import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.WindowManager;
+import android.util.DisplayMetrics;
+import android.app.Activity;
 
 
 public class AdViewUtil {
-	public static final String SERVER_HEADER="http://www.adview.cn/";//for official release
+	public static final String SERVER_HEADER="http://www.adview.cn/";
 	
 	
 	public static final String urlConfig = "http://config.adview.cn/agent/agent1_android.php?appid=%s&appver=%d&client=0&simulator=%d&location=%s";
@@ -27,9 +29,9 @@ public class AdViewUtil {
 	// Don't change anything below this line
 	/***********************************************/ 
 	 
-	public static final int VERSION = 184;
+	public static final int VERSION = 186;
 
-	public static final String ADVIEW = "AdView SDK v1.8.4";
+	public static final String ADVIEW = "AdView SDK v1.8.6";
 	
 	// Could be an enum, but this gives us a slight performance improvement
 	//abroad
@@ -73,7 +75,33 @@ public class AdViewUtil {
 
 	public static final int NETWORK_TYPE_CUSTOMIZE=999;
 	
+	public static final int NETWORK_TYPE_DoubleClick = 51;
+	public static final int NETWORK_TYPE_ADLANTIS = 52;
 	private static int[] widthAndHeight;
+	private static double mDensity = -1.0D;
+	
+	public static double getDensity(Activity activity)
+	{
+		if (mDensity == -1.0D) 
+		{
+			try
+			{
+				int sdkVersion = activity.getPackageManager().getApplicationInfo(activity.getPackageName(), 0).targetSdkVersion;
+				if (sdkVersion < 4) {
+					mDensity = 1.0D;
+				} else {
+					DisplayMetrics displayMetrics = new DisplayMetrics();
+					activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+					mDensity = displayMetrics.density;
+				}
+			} catch (Exception e) {
+				Log.i(AdViewUtil.ADVIEW, e.toString());
+				mDensity = 1.0D;
+			}
+		}
+		
+		return mDensity;
+	}
 	
 	public static String convertToHex(byte[] data) {
         StringBuffer buf = new StringBuffer();

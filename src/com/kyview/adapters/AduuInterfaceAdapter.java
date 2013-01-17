@@ -44,7 +44,8 @@ import java.security.NoSuchAlgorithmException;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-
+import com.kyview.AdviewWebView;
+import android.os.Bundle;
 
 class AduuAD
 {
@@ -206,7 +207,12 @@ public class AduuInterfaceAdapter extends AdViewAdapter{
 		int width=320;
 		int height=48;
 		
-		if (screenWidth <= 480) {
+		if (AdViewTargeting.getAdWidth() > 0)
+		{
+			width = AdViewTargeting.getAdWidth();
+			height = AdViewTargeting.getAdHeight();			
+		}
+		else if (screenWidth <= 480) {
 			width = 320;
 			height = 48;
 		} else if (screenWidth < 728) {
@@ -508,9 +514,14 @@ public boolean shouldOverrideUrlLoading(WebView view, String url)
 	
 	if (clicktype.equals("1")) 
 	{
-		Intent i = new Intent(Intent.ACTION_VIEW);
-		i.setData(Uri.parse(clickcontent));
-		mContext.startActivity(i);	
+		//Intent i = new Intent(Intent.ACTION_VIEW);
+		//i.setData(Uri.parse(clickcontent));
+		//mContext.startActivity(i);
+		Intent intent = new Intent(mContext, AdviewWebView.class);
+		Bundle bundle = new Bundle();
+		bundle.putString("adviewurl", clickcontent);
+		intent.putExtras(bundle);
+		mContext.startActivity(intent);			
 	}
 	else if (clicktype.equals("2")) 
 	{

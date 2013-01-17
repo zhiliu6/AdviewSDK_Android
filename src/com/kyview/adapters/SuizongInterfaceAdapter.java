@@ -1,17 +1,12 @@
 package com.kyview.adapters;
 
 import android.app.Activity;
-//import android.graphics.Color;
 import android.util.Log;
-
-//import java.util.Map;
 import java.util.HashMap;
 
 import com.kyview.AdViewLayout;
 import com.kyview.AdViewTargeting;
-//import com.kyview.AdViewLayout.ViewAdRunnable;
 import com.kyview.AdViewTargeting.RunMode;
-//import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
 import com.kyview.DownloadService;
@@ -25,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-//import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
@@ -33,14 +27,10 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.URL;
 import java.util.Enumeration;
-//import java.util.HashMap;
 import java.util.Iterator;
-//import java.util.Set;
-//import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import android.text.TextUtils;
 
-//import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
@@ -48,14 +38,11 @@ import android.view.View;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-//import android.os.Bundle;
 
 import android.app.AlertDialog;
-//import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
-//import android.content.DialogInterface.OnClickListener;
-
+import com.kyview.AdviewWebView;
+import android.os.Bundle;
 
 class SuizongAD
 {
@@ -168,8 +155,13 @@ public class SuizongInterfaceAdapter extends AdViewAdapter{
 	private void calcAdSize(int screenWidth) {
 		int width=320;
 		int height=48;
-		
-		if (screenWidth <= 480) {
+
+		if (AdViewTargeting.getAdWidth() > 0)
+		{
+			width = AdViewTargeting.getAdWidth();
+			height = AdViewTargeting.getAdHeight();			
+		}
+		else if (screenWidth <= 480) {
 			width = 320;
 			height = 48;
 		} else if (screenWidth < 728) {
@@ -625,9 +617,14 @@ public boolean shouldOverrideUrlLoading(WebView view, String url)
 		}
 		else
 	 	{
-			Intent i = new Intent(Intent.ACTION_VIEW);
-			i.setData(Uri.parse(url2));
-			mContext.startActivity(i);	 		
+			//Intent i = new Intent(Intent.ACTION_VIEW);
+			//i.setData(Uri.parse(url2));
+			//mContext.startActivity(i);
+			Intent intent = new Intent(mContext, AdviewWebView.class);
+			Bundle bundle = new Bundle();
+			bundle.putString("adviewurl", url2);
+			intent.putExtras(bundle);
+			mContext.startActivity(intent);	
 	 	}
 	}
 

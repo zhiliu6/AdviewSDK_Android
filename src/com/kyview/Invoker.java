@@ -9,11 +9,6 @@ import android.widget.LinearLayout;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.AdViewTargeting.UpdateMode;
 
-
-
-
-
-
 public class Invoker extends Activity implements AdViewInterface {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,6 +23,7 @@ public class Invoker extends Activity implements AdViewInterface {
         AdViewLayout adViewLayout = new AdViewLayout(this, "SDK20111812070129bb9oj4n571faaka");		
         adViewLayout.setAdViewInterface(this);      
         layout.addView(adViewLayout);
+        
         //RelativeLayout.LayoutParams adViewLayoutParams = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         //layout.addView(adViewLayout, adViewLayoutParams);
 		
@@ -38,13 +34,11 @@ public class Invoker extends Activity implements AdViewInterface {
 
 	@Override
 	public void onClickAd() {
-		// TODO Auto-generated method stub
-		
+			
 	}
 
 	@Override
 	public void onDisplayAd() {
-		// TODO Auto-generated method stub
-		
+	 		
 	}
 }

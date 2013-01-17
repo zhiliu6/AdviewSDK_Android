@@ -16,7 +16,7 @@ public class AdChinaAdapter extends AdViewAdapter implements AdListener{
 
 	public AdChinaAdapter(AdViewLayout adViewLayout, Ration ration) {
 		super(adViewLayout, ration);
-		// TODO Auto-generated constructor stub
+		 
 	}
 
 	@Override

@@ -510,6 +510,7 @@ public class AdViewLayout extends RelativeLayout {
 	}
 
 	
+	@SuppressWarnings("unused")
 	private void getAppInfo(Context context){
 		if(context==null){
 			return;

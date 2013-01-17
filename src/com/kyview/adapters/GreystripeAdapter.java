@@ -2,24 +2,32 @@ package com.kyview.adapters;
 
 import android.app.Activity;
 import android.util.Log;
+import android.view.View;
 
 import com.kyview.AdViewLayout;
 import com.kyview.AdViewTargeting;
-import com.kyview.AdViewLayout.ViewAdRunnable;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.greystripe.android.sdk.BannerListener;
-import com.greystripe.android.sdk.BannerView;
-import com.greystripe.android.sdk.GSSDK;
 
 
-public class GreystripeAdapter extends AdViewAdapter implements BannerListener
+import com.greystripe.sdk.GSAd;
+import com.greystripe.sdk.GSAdErrorCode;
+import com.greystripe.sdk.GSFullscreenAd;
+import com.greystripe.sdk.GSMobileBannerAdView;
+import com.greystripe.sdk.GSAdListener;
+
+
+
+public class GreystripeAdapter extends AdViewAdapter implements GSAdListener,GSAd 
 {
+
+	private GSFullscreenAd myFullscreenAd;
+
 
 	public GreystripeAdapter(AdViewLayout adViewLayout, Ration ration) {
 		super(adViewLayout, ration);
-		// TODO Auto-generated constructor stub
+	 
 	}
 
 	
@@ -38,14 +46,10 @@ public class GreystripeAdapter extends AdViewAdapter implements BannerListener
 			if(activity == null) {
 				return;
 			}
-		GSSDK.initialize(activity.getApplicationContext(), ration.key);	
-		BannerView banner=new BannerView(activity);
-		
-		banner.addListener(this);
-		
-		//adViewLayout.addView(banner, new LayoutParams(
-		//		LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-		banner.refresh();
+			  myFullscreenAd  = new  GSFullscreenAd(activity.getApplicationContext() ,ration.key); 
+			  GSMobileBannerAdView banner=new GSMobileBannerAdView(activity.getApplicationContext());
+		    banner.addListener(this);
+		    banner.refresh();
 		}
 		catch (Exception e) {               
 			adViewLayout.rotatePriAd();                       
@@ -53,9 +57,24 @@ public class GreystripeAdapter extends AdViewAdapter implements BannerListener
 		
 	}
 
+ 
+
+
 	@Override
-	public void onFailedToReceiveAd(BannerView arg0) {
-		// TODO Auto-generated method stub
+	public void onAdClickthrough(GSAd arg0) {
+		
+	}
+
+	@Override
+	public void onAdDismissal(GSAd arg0) {
+	 
+		
+	}
+
+
+
+	@Override
+	public void onFailedToFetchAd(GSAd arg0, GSAdErrorCode arg1) {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.d(AdViewUtil.ADVIEW, "Greystripe fail");
 		arg0.removeListener(this);
@@ -68,11 +87,12 @@ public class GreystripeAdapter extends AdViewAdapter implements BannerListener
 		
 	}
 
+
+
 	@Override
-	public void onReceivedAd(BannerView arg0) {
-		// TODO Auto-generated method stub
+	public void onFetchedAd(GSAd arg0) {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Greystripe success");
+		Log.d(AdViewUtil.ADVIEW, "Greystripe success");
 		arg0.removeListener(this);
 		
 	    AdViewLayout adViewLayout = adViewLayoutReference.get();
@@ -80,9 +100,52 @@ public class GreystripeAdapter extends AdViewAdapter implements BannerListener
 	      return;
 	    }
 	    adViewLayout.adViewManager.resetRollover();
-	    adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, arg0));
+//	    adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, arg0));
 	    adViewLayout.rotateThreadedDelayed();
 		
 	}
 
+
+
+	@Override
+	public void addListener(GSAdListener arg0) {
+		 
+		
+	}
+
+
+
+	@Override
+	public boolean isAdReady() {
+		 
+		return false;
+	}
+
+
+
+	@Override
+	public void removeListener(GSAdListener arg0) {
+		 
+		
+	}
+	  public void fetchFullscreenClicked(View v) {
+	        Log.d("log.d", "Fetch fullscreen clicked.");
+	        if (!myFullscreenAd.isAdReady()) {
+	            myFullscreenAd.fetch();
+	        } else {
+	        	  Log.d("log.d", "Ad ready!  Display it");
+	            
+	        }
+	    }
+	    
+	    
+	    public void displayFullscreenClicked(View v) {
+	        Log.d("log.d", "Fullscreen display clicked.");
+	        
+	        if (!myFullscreenAd.isAdReady()) {
+	           
+	        } else {
+	            myFullscreenAd.display();
+	        }
+	    }
 }

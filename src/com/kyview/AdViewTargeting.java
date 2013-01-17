@@ -15,7 +15,8 @@ public class AdViewTargeting {
 	private static String keywords;
 	private static Set<String> keywordSet;
 	private static Channel channel;
-	
+	private static int adWidth;
+	private static int adHeight;
 	
 
 	static {
@@ -32,6 +33,8 @@ public class AdViewTargeting {
 		AdViewTargeting.keywords = null;
 		AdViewTargeting.keywordSet = null;
 		AdViewTargeting.channel=Channel.OTHER;
+		AdViewTargeting.adWidth = 0;
+		AdViewTargeting.adHeight = 0;	
 		
 		
 	}
@@ -268,5 +271,17 @@ public class AdViewTargeting {
 		}
 		keywordSet.add(keyword);
 	 }
-	
+
+	 public static void setAdWidthHeight(int width, int height) {
+		    AdViewTargeting.adWidth = width;
+		    AdViewTargeting.adHeight = height;	
+	}
+
+	public static int getAdWidth() {
+		return AdViewTargeting.adWidth;
+	}
+
+	public static int getAdHeight() {
+		return AdViewTargeting.adHeight;
+	}	
 }

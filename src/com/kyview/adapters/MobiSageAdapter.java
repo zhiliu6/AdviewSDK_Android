@@ -90,5 +90,11 @@ public class MobiSageAdapter extends AdViewAdapter implements IMobiSageAdViewLis
 
 		adViewLayout.adViewManager.resetRollover_pri();
 		adViewLayout.rotateThreadedPri();	
-       }	
+       }
+
+	@Override
+	public void onMobiSageAdViewClick(Object arg0) {
+		 
+		
+	}	
 }

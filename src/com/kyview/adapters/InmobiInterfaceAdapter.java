@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.kyview.AdViewLayout;
 import com.kyview.AdViewTargeting;
-//import com.kyview.AdViewLayout.ViewAdRunnable;
+import com.kyview.AdviewWebView;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
@@ -19,8 +19,6 @@ import android.webkit.WebView;
 import android.widget.RelativeLayout;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-//import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.ImageView;
 
@@ -42,7 +40,7 @@ import org.xml.sax.InputSource;
 import java.io.StringReader;
 import java.net.URLEncoder;
 import android.webkit.WebSettings;
-
+import android.os.Bundle;
 
 
 class InmobiAD
@@ -142,8 +140,13 @@ public class InmobiInterfaceAdapter extends AdViewAdapter{
 	private void calcAdSize(int screenWidth) {
 		int width=320;
 		int height=48;
-		
-		if (screenWidth <= 480) {
+
+		if (AdViewTargeting.getAdWidth() > 0)
+		{
+			width = AdViewTargeting.getAdWidth();
+			height = AdViewTargeting.getAdHeight();			
+		}
+		else if (screenWidth <= 480) {
 			width = 320;
 			height = 48;
 		} else if (screenWidth < 728) {
@@ -193,9 +196,14 @@ public class InmobiInterfaceAdapter extends AdViewAdapter{
 			return;
 		}
 
-		Intent i = new Intent(Intent.ACTION_VIEW);
-		i.setData(Uri.parse(inmobiAD.getAdUrl()));
-		mContext.startActivity(i);
+		//Intent i = new Intent(Intent.ACTION_VIEW);
+		//i.setData(Uri.parse(inmobiAD.getAdUrl()));
+		//mContext.startActivity(i);
+		Intent intent = new Intent(mContext, AdviewWebView.class);
+		Bundle bundle = new Bundle();
+		bundle.putString("adviewurl", inmobiAD.getAdUrl());
+		intent.putExtras(bundle);
+		mContext.startActivity(intent);	
 	}
 
 	public String getAndroidId()

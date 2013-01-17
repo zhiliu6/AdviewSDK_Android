@@ -5,7 +5,6 @@ package com.kyview.adapters;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-
 import android.util.Log;
 
 import com.kyview.AdViewLayout;
@@ -15,10 +14,15 @@ import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+
 public abstract class AdViewAdapter {
 	protected final WeakReference<AdViewLayout> adViewLayoutReference;
 	protected Ration ration;
 	static AdViewAdapter adapter;
+	private Timer reqTimeListenerTimer;
 	
 	public AdViewAdapter(AdViewLayout adViewLayout, Ration ration) {
 		this.adViewLayoutReference = new WeakReference<AdViewLayout>(adViewLayout);
@@ -26,7 +30,8 @@ public abstract class AdViewAdapter {
 		
 	}
 	
-	private static AdViewAdapter getAdapter(AdViewLayout adViewLayout, Ration ration) {	
+	private static AdViewAdapter getAdapter(AdViewLayout adViewLayout,Ration ration) {	
+
 		try {
 			switch(ration.type) {
 				case AdViewUtil.NETWORK_TYPE_ADMOB:
@@ -37,7 +42,20 @@ public abstract class AdViewAdapter {
 						return unknownAdNetwork(adViewLayout, ration);
 					}  
 				
-					
+				case AdViewUtil.NETWORK_TYPE_ADLANTIS:
+					 if(Class.forName("jp.adlantis.android.AdlantisView") != null) {
+							return getNetworkAdapter("com.kyview.adapters.AdlantisAdapter", adViewLayout, ration);
+						}
+						else  
+						{
+							return unknownAdNetwork(adViewLayout, ration);
+						}
+				case AdViewUtil.NETWORK_TYPE_DoubleClick:
+					if(Class.forName("com.google.ads.AdView")!=null ){
+						return getNetworkAdapter("com.kyview.adapters.DoubleClickAdapter",adViewLayout,ration);
+					}else{
+						return unknownAdNetwork(adViewLayout,ration);
+					}	
 				case AdViewUtil.NETWORK_TYPE_MILLENNIAL:
 					if(Class.forName("com.millennialmedia.android.MMAdView") != null) {
                         return getNetworkAdapter("com.kyview.adapters.MillennialAdapter", adViewLayout, ration);
@@ -133,7 +151,7 @@ public abstract class AdViewAdapter {
 						return unknownAdNetwork(adViewLayout, ration);
 					}
 				case AdViewUtil.NETWORK_TYPE_WQ:
-					if(Class.forName("com.wqmobile.sdk.widget.ADView") != null) {
+					if(Class.forName("com.wqmobile.sdk.WQAdView") != null) {
 						return getNetworkAdapter("com.kyview.adapters.WqAdapter", adViewLayout, ration);
 					}
 					else {
@@ -245,7 +263,7 @@ public abstract class AdViewAdapter {
 						return unknownAdNetwork(adViewLayout, ration);
 					}	
 				case AdViewUtil.NETWORK_TYPE_MOBWIN:
-					if(Class.forName("com.tencent.mobwin.AdView") != null) {
+					if(Class.forName("com.tencent.exmobwin.MobWINManager") != null) {
                         			return getNetworkAdapter("com.kyview.adapters.MobWinAdapter", adViewLayout, ration);
 					}
 					else {
@@ -326,7 +344,7 @@ public abstract class AdViewAdapter {
 		return null;
 	}
 	
-	public static void handle(AdViewLayout adViewLayout, Ration ration)  {
+	public static void handle(AdViewLayout adViewLayout,Ration ration)  {
       adapter = AdViewAdapter.getAdapter(adViewLayout, ration);
       if(adapter != null) {
     	  if(AdViewTargeting.getRunMode()==RunMode.TEST)
@@ -340,13 +358,44 @@ public abstract class AdViewAdapter {
         
       }
 	}
-	
 	public static void onClickAd() throws Throwable {
 		if (adapter != null)
 			adapter.click();
 		else
 			throw new Exception("On Click failed");
 	}
+
+	public void startTimer()
+	{
+		if (this.reqTimeListenerTimer != null) {
+			this.reqTimeListenerTimer.cancel();
+			this.reqTimeListenerTimer = null;
+		}
+
+		this.reqTimeListenerTimer = new Timer();
+
+		this.reqTimeListenerTimer.schedule(new TimerTask()
+			{
+				public void run()
+				{
+					AdViewAdapter.this.requestTimeOut();
+				}
+			}
+			, 20000L);
+	}
+
+	public void shoutdownTimer()
+	{
+		if (this.reqTimeListenerTimer != null) {
+			this.reqTimeListenerTimer.cancel();
+			this.reqTimeListenerTimer = null;
+		}
+	}
+
+	public void requestTimeOut()
+	{
+	}
+
 
 	public abstract void handle();
 	

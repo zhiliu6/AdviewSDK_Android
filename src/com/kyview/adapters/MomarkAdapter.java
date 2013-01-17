@@ -1,6 +1,7 @@
 package com.kyview.adapters;
 
 import android.app.Activity;
+import android.content.Context;
 //import android.graphics.Color;
 import android.util.Log;
 
@@ -14,7 +15,6 @@ import com.kyview.AdViewLayout;
 import com.kyview.AdViewTargeting;
 import com.kyview.AdViewLayout.ViewAdRunnable;
 import com.kyview.AdViewTargeting.RunMode;
-//import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
 
@@ -43,16 +43,12 @@ public class MomarkAdapter extends AdViewAdapter implements AdViewListener{
 		if(adViewLayout == null) {
 			return;
 	 	}
-	 	//Extra extra = adViewLayout.extra;
-	    //int bgColor = Color.rgb(extra.bgRed, extra.bgGreen, extra.bgBlue);
-	    //int fgColor = Color.rgb(extra.fgRed, extra.fgGreen, extra.fgBlue);
+	
 	    Activity activity = adViewLayout.activityReference.get();
 		  if(activity == null) {
 			  return;
-		  }  	     
-	    // Instantiate an ad view and add it to the view
-		
-	    adView = new AdView(activity, "adview");		
+		  }  	     		
+	    adView = new AdView((Context)activity, "adview");		
 		adView.setAdViewListener(this);
 	}
 
