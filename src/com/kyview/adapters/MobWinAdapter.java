@@ -1,28 +1,31 @@
 package com.kyview.adapters;
 
 import android.app.Activity;
-import android.graphics.Color;
+import android.content.Context;
+//import android.graphics.Color;
 import android.util.Log;
 
 
-import com.tencent.mobwin.AdListener;
-import com.tencent.mobwin.AdView;
 
 import com.kyview.AdViewLayout;
 import com.kyview.AdViewTargeting;
 //import com.kyview.AdViewLayout.ViewAdRunnable;
 import com.kyview.AdViewTargeting.RunMode;
-import com.kyview.obj.Extra;
+//import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.tencent.exmobwin.MobWINManager;
+import com.tencent.exmobwin.Type;
+import com.tencent.exmobwin.banner.AdListener;
+import com.tencent.exmobwin.banner.TAdView;
 
 
 public class MobWinAdapter extends AdViewAdapter implements AdListener{
-	private AdView adView;
+	private TAdView adView;
 	
 	public MobWinAdapter(AdViewLayout adViewLayout, Ration ration) {
 		super(adViewLayout, ration);
-		// TODO Auto-generated constructor stub
+		 
 	}
 
 	@Override
@@ -35,18 +38,18 @@ public class MobWinAdapter extends AdViewAdapter implements AdListener{
 		if(adViewLayout == null) {
 			return;
 	 	}
-	 	Extra extra = adViewLayout.extra;
-	    int bgColor = Color.rgb(extra.bgRed, extra.bgGreen, extra.bgBlue);
-	    //int fgColor = Color.rgb(extra.fgRed, extra.fgGreen, extra.fgBlue);
+	 	//Extra extra = adViewLayout.extra;
+	    //int bgColor = Color.rgb(extra.bgRed, extra.bgGreen, extra.bgBlue);
+	      
 	    Activity activity = adViewLayout.activityReference.get();
 		  if(activity == null) {
 			  return;
 		  }  	     
-	    // Instantiate an ad view and add it to the view
-	
-	   adView = new AdView(activity, ration.key, "adview", "ben1574leo");
+	   Context mcontext=(Context)activity;
+	   MobWINManager.init(mcontext,  ration.key, "adview", "ben1574leo",Type.MOBWIN_BANNER);
+	   adView = new TAdView(activity); 
 	   adView.setAdListener(this);	
-	   adView.setBackgroundColor(bgColor);
+	   //adView.setBackgroundColor(bgColor);
 
 	   adViewLayout.AddSubView(adView);
 	}

@@ -2,16 +2,17 @@ package com.kyview.adapters;
 
 import android.app.Activity;
 import android.util.Log;
-import android.widget.RelativeLayout;
 
 import com.kyview.AdViewLayout;
 import com.kyview.AdViewTargeting;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.wqmobile.sdk.widget.ADView;
 
-public class WqAdapter extends AdViewAdapter{
+import com.wqmobile.sdk.WQAdEventListener;
+import com.wqmobile.sdk.WQAdView;
+
+public class WqAdapter extends AdViewAdapter implements WQAdEventListener{
 
 	public WqAdapter(AdViewLayout adViewLayout, Ration ration) {
 		super(adViewLayout, ration);
@@ -31,24 +32,58 @@ public class WqAdapter extends AdViewAdapter{
 		if(activity == null) {
 			  return;
 		}
-		String key=new String(ration.key);
-		String key2=new String(ration.key2);
-		String mode=null;
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			mode=new String("Y");
-		else
-			mode=new String("N");
-		ADView view = new ADView(activity);
-		String settings=new String("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-		settings=settings+"<AppSettings>"+"<AppID>"+key+"</AppID>"+"<PublisherID>"+key2+"</PublisherID>"+"<URL></URL>"+"<AppStoreURL></AppStoreURL>"+"<BackgroundColor></BackgroundColor>"+"<TextColor></TextColor>"+"<UseLocationInfo></UseLocationInfo>"+"<RefreshRate>60</RefreshRate>"+"<TestMode>"+mode+"</TestMode>"+"<NextADCount>0</NextADCount>"+"<LoopTimes>2</LoopTimes>"+"<AcceptsOfflineAD>N</AcceptsOfflineAD>"+"<OfflineADCount>0</OfflineADCount>"+"<OfflineADSurvivalDays>0</OfflineADSurvivalDays>"+"<Width></Width>"+"<Height></Height>"+"<UseInternalBrowser>false</UseInternalBrowser>"+"<FittingStrategy>stretch</FittingStrategy>"+"</AppSettings>";
-		view.Init(settings);
-		adViewLayout.removeAllViews();
-		adViewLayout.addView(view, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-		adViewLayout.adViewManager.resetRollover();
-		adViewLayout.rotateThreadedDelayed();
-		adViewLayout.reportImpression();
-		view=null;
-		
+
+		WQAdView adView = new WQAdView(activity);
+		adView.setAdEventListener(this);
+		adView.init(ration.key, ration.key2);
+		//LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		//adViewLayout.addView(adView, params);
+		adViewLayout.AddSubView(adView);
 	}
 
+	@Override
+	public void onWQAdReceived(WQAdView adView) {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+			  Log.d(AdViewUtil.ADVIEW, "onWQAdReceived");
+
+		adView.setAdEventListener(null);
+		
+		AdViewLayout adViewLayout = adViewLayoutReference.get();
+		if (adViewLayout == null) {
+			return;
+		}
+
+		adViewLayout.reportImpression();	
+		adViewLayout.adViewManager.resetRollover();
+		//adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, arg0));
+		adViewLayout.rotateThreadedDelayed();
+	}
+
+	@Override
+	public void onWQAdFailed(WQAdView adView) {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+			  Log.d(AdViewUtil.ADVIEW, "onWQAdFailed");
+		adView.setAdEventListener(null);
+
+		AdViewLayout adViewLayout = adViewLayoutReference.get();
+		if (adViewLayout == null) {
+			return;
+		}
+
+		adViewLayout.adViewManager.resetRollover_pri();
+		adViewLayout.rotateThreadedPri();
+	}
+
+	@Override
+	public void onWQAdDismiss(WQAdView arg0) {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+			Log.i(AdViewUtil.ADVIEW, "onWQAdDismiss");
+	}
+
+	@Override
+	public void onWQAdLoadTimeout(WQAdView arg0) {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+			Log.i(AdViewUtil.ADVIEW, "onWQAdDismiss");
+	}
+		
 }

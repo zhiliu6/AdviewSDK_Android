@@ -57,12 +57,14 @@ public class SmartAdAdapter extends AdViewAdapter implements AdListener{
 		ad.setListener(this);
 		
 		adViewLayout.removeAllViews();
+		startTimer();
 		//adViewLayout.addView(ad, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
 	}
 
 	@Override
 	public void onAdEvent(AdView arg0, int arg1) {
 		// TODO Auto-generated method stub
+		shoutdownTimer();
 		
 		switch(arg1){
 		
@@ -85,15 +87,7 @@ public class SmartAdAdapter extends AdViewAdapter implements AdListener{
 				arg0.setListener(null);
 			}
 				break;
-/*			
-			case AdView.EVENT_FINISHAD:
-			{
-				
-				if(AdViewTargeting.getRunMode()==RunMode.TEST)
-					Log.d(AdViewUtil.ADVIEW, "SmartAd success");
-				arg0.setListener(null);
-			}
-				break;*/
+
 			case AdView.EVENT_INVALIDAD:
 			{
 				
@@ -119,23 +113,15 @@ public class SmartAdAdapter extends AdViewAdapter implements AdListener{
 	{
 	}
 		
-/*
-	@Override
-	public void onAdStatus(int arg0) {
-		// TODO Auto-generated method stub
-	
-		if(arg0!=AdView.RETRUNCODE_OK){
-			if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "SmartAd fail ad");
-			
-			  AdViewLayout adViewLayout = adViewLayoutReference.get();
-			  if(adViewLayout == null) {
-				 return;
-			  }
-			 adViewLayout.adViewManager.resetRollover_pri();
-			  adViewLayout.rotateThreadedPri();
+	public void requestTimeOut()
+	{
+		Log.d(AdViewUtil.ADVIEW, "SmartAd requestTimeOut");
+
+		AdViewLayout adViewLayout = adViewLayoutReference.get();
+		if(adViewLayout == null) {
+			return;
 		}
-		
+		adViewLayout.adViewManager.resetRollover_pri();
+		adViewLayout.rotateThreadedPri();
 	}
-*/
 }

@@ -66,8 +66,13 @@
         <service android:name="com.mobisage.android.MobiSageApkService"
                  android:enabled="true"></service>
 	
-    <!-- AdView SDK for tencent MobinWin -->
-	<activity android:name="com.tencent.mobwin.MobinWINBrowserActivity" />
+   	 <!-- AdView SDK for tencent MobinWin -->
+        <activity android:name="com.tencent.exmobwin.banner.MobWINBrowserActivity" >
+        </activity>
+        <activity
+            android:name="com.tencent.exmobwin.banner.DialogActivity"
+            android:theme="@android:style/Theme.Dialog" >
+        </activity>
 	
 	<!-- AdView SDK for Umeng -->
 	<activity android:name="com.umengAd.android.UmengAdDetailActivity"
@@ -103,7 +108,7 @@
             </intent-filter>
         </receiver>
 	
-	<!-- AdView SDK for greystripe --> 
+	<!-- AdView SDK for greystripe
 	<provider android:name="com.greystripe.android.sdk.AdContentProvider"
 		android:authorities="com.kyview.AdContentProvider"
 		android:multiprocess="true" android:exported="false" />
@@ -113,14 +118,21 @@
 			<category android:name="android.intent.category.LAUNCHER" />
 		</intent-filter>
 	</activity>   
-
+ --> 
 	<!--   AdView SDK for Momark -->
 	<activity android:name="com.donson.momark.activity.AdActivity"
 		android:launchMode="singleTop" />
 
+	<!-- AdView SDK for WQ -->
+        <activity android:name="com.wqmobile.sdk.WQActionHandler"
+            android:configChanges="keyboardHidden|orientation" />
+        <activity android:name="com.wqmobile.sdk.WQBrowser"
+            android:configChanges="keyboardHidden|orientation" />
+            
 	<!--   Must declare it for Adivew SDK-->
 	<service android:name="com.kyview.DownloadService" />
-		
+	<activity android:name="com.kyview.AdviewWebView" />
+        
 	<!--   Channel id for app markets -->
 	<meta-data android:name="AdView_CHANNEL" android:value="GFAN"></meta-data>
 	<!--  supported markets are as follows:
