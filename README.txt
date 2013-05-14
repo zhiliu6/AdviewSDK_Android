@@ -9,6 +9,7 @@
 平台版本（AdView和各家广告平台的SDK均在libs目录下）：
 	库名					广告平台					版本
 
+AdViewSDK_Android.jar				AdView (原生聚合：随踪)				1.9.1
 adlantis.jar					Adlantis					1.3.7
 adchina_android_sdk.jar				易传媒						2.6.4
 adlib_android.jar				哇棒						2.3.0
