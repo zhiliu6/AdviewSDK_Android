@@ -14,6 +14,7 @@ import com.kyview.AdViewTargeting.RunMode;
 //import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.kyview.AdViewAdRegistry;
 import com.tencent.exmobwin.MobWINManager;
 import com.tencent.exmobwin.Type;
 import com.tencent.exmobwin.banner.AdListener;
@@ -23,9 +24,24 @@ import com.tencent.exmobwin.banner.TAdView;
 public class MobWinAdapter extends AdViewAdapter implements AdListener{
 	private TAdView adView;
 	
-	public MobWinAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
-		 
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_MOBWIN;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("com.tencent.exmobwin.banner.TAdView") != null) {
+				registry.registerClass(networkType(), MobWinAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public MobWinAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -98,7 +114,9 @@ public class MobWinAdapter extends AdViewAdapter implements AdListener{
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.d(AdViewUtil.ADVIEW, "onAdClick");
 		
-	}	
+	}
+
+
 	
 
 }

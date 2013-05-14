@@ -8,6 +8,7 @@ import com.kyview.AdViewTargeting;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.kyview.AdViewAdRegistry;
 
 import com.izp.views.IZPDelegate;
 import com.izp.views.IZPView;
@@ -16,8 +17,25 @@ import com.izp.views.IZPView;
 
 public class IzpAdapter extends AdViewAdapter implements IZPDelegate{
 	
-	public IzpAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_IZPTEC;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("com.izp.views.IZPView") != null) {
+				registry.registerClass(networkType(), IzpAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public IzpAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -124,5 +142,7 @@ public class IzpAdapter extends AdViewAdapter implements IZPDelegate{
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.d(AdViewUtil.ADVIEW, "didStopFullScreenAd");
 	}
+
+
 
 }

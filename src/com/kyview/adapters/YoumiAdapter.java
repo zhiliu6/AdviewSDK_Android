@@ -1,45 +1,56 @@
 package com.kyview.adapters;
 
 import net.youmi.android.AdManager;
-import net.youmi.android.AdView;
-import net.youmi.android.AdViewListener;
+import net.youmi.android.banner.AdSize;
+import net.youmi.android.banner.AdView;
+import net.youmi.android.banner.AdViewLinstener;
 import android.app.Activity;
-import android.graphics.Color;
 import android.util.Log;
 
 
 import com.kyview.AdViewLayout;
 import com.kyview.AdViewTargeting;
-//import com.kyview.AdViewLayout.ViewAdRunnable;
 import com.kyview.AdViewTargeting.RunMode;
-import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.kyview.AdViewAdRegistry;
 
+public class YoumiAdapter extends AdViewAdapter implements AdViewLinstener{
 
-public class YoumiAdapter extends AdViewAdapter implements AdViewListener{
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_YOUMI;
+	}
 	
-	public YoumiAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("net.youmi.android.banner.AdView") != null) {
+				registry.registerClass(networkType(), YoumiAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public YoumiAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
+		// TODO Auto-generated constructor stub
 		String key=new String(ration.key);
 		String key2=new String(ration.key2);
-		Extra extra = adViewLayout.extra;
-		int internal=extra.cycleTime;
+
 		Activity activity = adViewLayout.activityReference.get();
-		  if(activity == null) {
+		if(activity == null) {
 			  return;
-		  }
+		 }
 		if(AdViewTargeting.getRunMode()==RunMode.TEST){
 			if(adViewLayout.adViewManager.getYoumiInit()){
-				AdManager.init(activity, key, key2, internal, true);
-				AdManager.disableUpdateApp();
+				AdManager.getInstance(activity).init(key, key2, true);
 				adViewLayout.adViewManager.setYoumiInit(false);
 			}
 		}
 		else{
 			if(adViewLayout.adViewManager.getYoumiInit()){
-				AdManager.init(activity, key, key2, internal, false);
-				AdManager.disableUpdateApp();
+				AdManager.getInstance(activity).init(key, key2, false);
 				adViewLayout.adViewManager.setYoumiInit(false);
 			}
 		}
@@ -51,58 +62,60 @@ public class YoumiAdapter extends AdViewAdapter implements AdViewListener{
 	 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 	 		if(adViewLayout == null) {
 	 			return;
-	 	 }
-	 	Extra extra = adViewLayout.extra;
-	    int bgColor = Color.rgb(extra.bgRed, extra.bgGreen, extra.bgBlue);
-	    int fgColor = Color.rgb(extra.fgRed, extra.fgGreen, extra.fgBlue); 
-	    Activity activity = adViewLayout.activityReference.get();
-		  if(activity == null) {
-			  return;
-		  }
-	    AdView adView=new AdView(activity,bgColor, fgColor,255);  
-	    adView.setAdViewListener(this);
+	 	 	}
+	    		Activity activity = adViewLayout.activityReference.get();
+			if(activity == null) {
+				return;
+			}
+			AdView adView=new AdView(activity,AdSize.SIZE_320x50);  
+			adView.setAdListener(this);
 
-	   adViewLayout.AddSubView(adView);
-	    //adViewLayout.adViewManager.resetRollover();
-	    //adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
-	    //adViewLayout.rotateThreadedDelayed();
-
+			adViewLayout.AddSubView(adView);
 	}
 
 	@Override
-	public void onAdViewSwitchedAd(AdView adView)
+	public void onSwitchedAd(AdView adView)
 	{
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-	 		Log.d(AdViewUtil.ADVIEW, "onAdViewSwitchedAd");
+	 		Log.d(AdViewUtil.ADVIEW, "onSwitchedAd");
 
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		  if(adViewLayout == null) {
 			  return;
 		  }
 
-		adView.setAdViewListener(null);
+		adView.setAdListener(null);
 
 		adViewLayout.reportImpression();
-		  adViewLayout.adViewManager.resetRollover();
-		 // adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
-		  adViewLayout.rotateThreadedDelayed();
+		adViewLayout.adViewManager.resetRollover();
+		// adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
+		adViewLayout.rotateThreadedDelayed();
 	}
 
 	@Override
-	public void onConnectFailed(AdView adView)
+	public void onReceivedAd(AdView adView)
 	{
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-	 		Log.d(AdViewUtil.ADVIEW, "onConnectFailed");
-
-		adView.setAdViewListener(null);
-	
-		  AdViewLayout adViewLayout = adViewLayoutReference.get();
-		  if(adViewLayout == null) {
-			 return;
-		  }
-		  
-		  adViewLayout.adViewManager.resetRollover_pri();
-		  adViewLayout.rotateThreadedPri();
+	 		Log.d(AdViewUtil.ADVIEW, "onReceivedAd");
 	}
+	
+	@Override
+	public void onFailedToReceivedAd(AdView adView)
+	{
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+	 		Log.d(AdViewUtil.ADVIEW, "onFailedToReceivedAd");
+
+		adView.setAdListener(null);
+	
+		AdViewLayout adViewLayout = adViewLayoutReference.get();
+		if(adViewLayout == null) {
+			return;
+		}
+
+		adViewLayout.adViewManager.resetRollover_pri();
+		adViewLayout.rotateThreadedPri();
+	}
+
+
 	
 }

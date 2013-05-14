@@ -10,15 +10,33 @@ import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.kyview.AdViewAdRegistry;
 import com.wooboo.adlib_android.AdListener;
 import com.wooboo.adlib_android.WoobooAdView;
 
 public class WoobooAdapter extends AdViewAdapter implements AdListener {
 	
 	
-	public WoobooAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_WOOBOO;
 	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("com.wooboo.adlib_android.WoobooAdView") != null) {
+				registry.registerClass(networkType(), WoobooAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public WoobooAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
+		// TODO Auto-generated constructor stub
+	}
+
 	
 	public void handle() {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
@@ -90,5 +108,8 @@ public class WoobooAdapter extends AdViewAdapter implements AdListener {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			  Log.d(AdViewUtil.ADVIEW, "Wooboo onPlayFinish");
 	}
+
+
+
 	
 }

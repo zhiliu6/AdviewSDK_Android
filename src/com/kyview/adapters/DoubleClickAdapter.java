@@ -17,12 +17,28 @@ import com.kyview.AdViewLayout.ViewAdRunnable;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.kyview.AdViewAdRegistry;
 
 public class DoubleClickAdapter extends AdViewAdapter implements AdListener{
 
-	public DoubleClickAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
-		 
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_DoubleClick;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("com.google.ads.doubleclick.DfpAdView") != null) {
+				registry.registerClass(networkType(), DoubleClickAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public DoubleClickAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -108,5 +124,7 @@ public class DoubleClickAdapter extends AdViewAdapter implements AdListener{
 		adViewLayout.rotateThreadedDelayed();	 
 		
 	}
+
+
 
 }

@@ -15,14 +15,29 @@ import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-
+import com.kyview.AdViewAdRegistry;
 
 public class FractalAdapter extends AdViewAdapter implements AdStatusListener{
 
 	ADView view;
 	
-	public FractalAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_FRACTAL;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("com.fractalist.android.ads.ADView") != null) {
+				registry.registerClass(networkType(), FractalAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public FractalAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -109,5 +124,6 @@ public class FractalAdapter extends AdViewAdapter implements AdStatusListener{
 	public void fullScreenAdClose(boolean arg0) {
 		
 	}
+
 
 }

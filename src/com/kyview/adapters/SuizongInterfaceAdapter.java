@@ -10,6 +10,7 @@ import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
 import com.kyview.DownloadService;
+import com.kyview.AdViewAdRegistry;
 
 import com.kyview.util.MD5;
 import com.kyview.util.SHA1;
@@ -129,8 +130,20 @@ public class SuizongInterfaceAdapter extends AdViewAdapter{
 		return (int)pix;
 	}
 
-	public SuizongInterfaceAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_SUIZONG;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		registry.registerClass(networkType(), SuizongInterfaceAdapter.class);
+	}
+
+	public SuizongInterfaceAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -631,6 +644,8 @@ public boolean shouldOverrideUrlLoading(WebView view, String url)
 	return true;
 	}
 }
+
+
 
 }
 

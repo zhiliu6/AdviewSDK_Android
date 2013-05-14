@@ -9,6 +9,7 @@ import com.kyview.AdViewTargeting;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.kyview.AdViewAdRegistry;
 import com.kyview.DownloadService;
 import java.util.concurrent.TimeUnit;
 import android.text.TextUtils;
@@ -176,8 +177,20 @@ public class AduuInterfaceAdapter extends AdViewAdapter{
 	public String ADUU_EVTURL = "http://api.adcome.cn/v1/evt";
 	private String appid;
 	
-	public AduuInterfaceAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_ADUU;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		registry.registerClass(networkType(), AduuInterfaceAdapter.class);
+	}
+
+	public AduuInterfaceAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -591,6 +604,8 @@ public boolean shouldOverrideUrlLoading(WebView view, String url)
 }
 
 }
+
+
 
 }
 

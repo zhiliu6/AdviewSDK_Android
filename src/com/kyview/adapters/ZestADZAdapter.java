@@ -9,14 +9,30 @@ import com.kyview.AdViewLayout.ViewAdRunnable;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.kyview.AdViewAdRegistry;
 import com.zestadz.android.AdManager;
 import com.zestadz.android.ZestADZAdView;
 import com.zestadz.android.ZestADZAdView.ZestADZListener;
 
 public class ZestADZAdapter extends AdViewAdapter implements ZestADZListener{
 
-	public ZestADZAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_ZESTADZ;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("com.zestadz.android.ZestADZAdView") != null) {
+				registry.registerClass(networkType(), ZestADZAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public ZestADZAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -80,5 +96,7 @@ public class ZestADZAdapter extends AdViewAdapter implements ZestADZListener{
 	    adViewLayout.rotateThreadedDelayed();
 		
 	}
+
+
 
 }

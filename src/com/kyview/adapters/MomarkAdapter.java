@@ -17,15 +17,30 @@ import com.kyview.AdViewLayout.ViewAdRunnable;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-
+import com.kyview.AdViewAdRegistry;
 
 public class MomarkAdapter extends AdViewAdapter implements AdViewListener{
 	AdView adView;
-		
-	public MomarkAdapter(AdViewLayout adViewLayout, Ration ration) {
+
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_MOMARK;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("com.donson.momark.view.view.AdView") != null) {
+				registry.registerClass(networkType(), MomarkAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public MomarkAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
 		// TODO Auto-generated constructor stub
 
-		super(adViewLayout, ration);
 		String key=new String(ration.key);
 		String key2=new String(ration.key2);
 		
@@ -89,6 +104,8 @@ public class MomarkAdapter extends AdViewAdapter implements AdViewListener{
 		  adViewLayout.rotateThreadedDelayed();
 		
 	}
+
+
 
 
 }

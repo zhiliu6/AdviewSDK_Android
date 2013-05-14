@@ -9,6 +9,7 @@ import com.kyview.AdViewLayout.ViewAdRunnable;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.kyview.AdViewAdRegistry;
 import com.smaato.SOMA.AdDownloader;
 import com.smaato.SOMA.AdListener;
 import com.smaato.SOMA.ErrorCode;
@@ -19,8 +20,24 @@ import com.smaato.SOMA.SOMAReceivedBanner;
 
 public class SmaatoAdapter extends AdViewAdapter implements AdListener{
 	private SOMABanner banner=null;
-	public SmaatoAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_SMAATO;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("com.smaato.SOMA.SOMAReceivedBanner") != null) {
+				registry.registerClass(networkType(), SmaatoAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public SmaatoAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -82,5 +99,7 @@ public class SmaatoAdapter extends AdViewAdapter implements AdListener{
 	    adViewLayout.rotateThreadedDelayed();
 		
 	}
+
+
 
 }

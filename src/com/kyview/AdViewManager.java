@@ -26,6 +26,8 @@ import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.kyview.AdViewAdRegistry;
+import com.kyview.adapters.AdViewAdapter;
 import android.telephony.TelephonyManager;
 import java.util.Locale;
 import android.location.Criteria;
@@ -162,7 +164,7 @@ public class AdViewManager {
 		}
 		else
 		{
-			ration = getRation();
+			//ration = getRation();
 		}
 		
 		return ration;
@@ -508,7 +510,15 @@ public class AdViewManager {
 				if(jsonRation == null) {
 					continue;
 				}
-				
+
+				Class<? extends AdViewAdapter> adapterClass = AdViewAdRegistry.getInstance().adapterClassForAdType(jsonRation.getInt("type"));
+		
+				if (null == adapterClass) {
+					if(AdViewTargeting.getRunMode()==RunMode.TEST)
+						Log.d(AdViewUtil.ADVIEW, "don't include ad="+jsonRation.getInt("type"));
+					continue;
+				}
+		
 				Ration ration = new Ration();
 
 			    ration.nid = jsonRation.getString("nid");
@@ -516,35 +526,39 @@ public class AdViewManager {
 			    ration.name = jsonRation.getString("nname");
 			    ration.weight = jsonRation.getInt("weight");
 			    ration.priority = jsonRation.getInt("priority");
+		    	ration.key = jsonRation.getString("key");
+		    	ration.key2 = jsonRation.optString("key2");
+		    	ration.key3 = jsonRation.optString("key3");
+		    	ration.type2=jsonRation.optInt("type2");
+		    	ration.logo=jsonRation.optString("logo");
 			    
-			    
-			    switch(ration.type) {
-			    case AdViewUtil.NETWORK_TYPE_YOUMI:
-			    case AdViewUtil.NETWORK_TYPE_SMARTAD:
-			    case AdViewUtil.NETWORK_TYPE_WQ:
-			    case AdViewUtil.NETWORK_TYPE_SMAATO:
-			    case AdViewUtil.NETWORK_TYPE_UMENG:	
-			    case AdViewUtil.NETWORK_TYPE_ADUU:
-			    case AdViewUtil.NETWORK_TYPE_MOMARK:
-			    case AdViewUtil.NETWORK_TYPE_CUSTOMIZE:		
-			    	ration.key = jsonRation.getString("key");
-			    	ration.key2 = jsonRation.getString("key2");
-			    	break;
-			    case AdViewUtil.NETWORK_TYPE_ADVIEWAD:
-			    	
-			    	ration.key = jsonRation.getString("key");
-			    	ration.key2 = jsonRation.getString("key2");
-			    	ration.type2=jsonRation.getInt("type2");
-			    	ration.logo=jsonRation.getString("logo");
-			    	break;
-			    case AdViewUtil.NETWORK_TYPE_BAIDU:
-				ration.key = jsonRation.getString("key");
-			    	ration.key2 = jsonRation.getString("key2");	
-			    	//ration.key3=jsonRation.getString("key3");
-			    default:
-				    ration.key = jsonRation.getString("key");
-				    break;
-			    }
+//			    switch(ration.type) {
+//			    case AdViewUtil.NETWORK_TYPE_YOUMI:
+//			    case AdViewUtil.NETWORK_TYPE_SMARTAD:
+//			    case AdViewUtil.NETWORK_TYPE_WQ:
+//			    case AdViewUtil.NETWORK_TYPE_SMAATO:
+//			    case AdViewUtil.NETWORK_TYPE_UMENG:	
+//			    case AdViewUtil.NETWORK_TYPE_ADUU:
+//			    case AdViewUtil.NETWORK_TYPE_MOMARK:
+//			    case AdViewUtil.NETWORK_TYPE_CUSTOMIZE:		
+//			    	ration.key = jsonRation.getString("key");
+//			    	ration.key2 = jsonRation.getString("key2");
+//			    	break;
+//			    case AdViewUtil.NETWORK_TYPE_ADVIEWAD:
+//			    	
+//			    	ration.key = jsonRation.getString("key");
+//			    	ration.key2 = jsonRation.getString("key2");
+//			    	ration.type2=jsonRation.getInt("type2");
+//			    	ration.logo=jsonRation.getString("logo");
+//			    	break;
+//			    case AdViewUtil.NETWORK_TYPE_BAIDU:
+//				ration.key = jsonRation.getString("key");
+//			    	ration.key2 = jsonRation.getString("key2");	
+//			    	//ration.key3=jsonRation.getString("key3");
+//			    default:
+//				    ration.key = jsonRation.getString("key");
+//				    break;
+//			    }
 				
 	    		rationsList.add(ration);
 	    		totalweight += ration.weight;

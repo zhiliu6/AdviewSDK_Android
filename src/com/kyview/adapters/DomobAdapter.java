@@ -3,7 +3,7 @@ package com.kyview.adapters;
 import android.app.Activity;
 //import android.graphics.Color;
 import android.util.Log;
-
+import android.content.Context;
 
 //import cn.domob.android.ads.DomobAdListener;
 import cn.domob.android.ads.DomobAdManager;
@@ -17,14 +17,30 @@ import com.kyview.AdViewTargeting.RunMode;
 //import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-
+import com.kyview.AdViewAdRegistry;
 
 public class DomobAdapter extends AdViewAdapter implements DomobAdEventListener{
 
-	public DomobAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_DOMOB;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("cn.domob.android.ads.DomobAdView") != null) {
+				registry.registerClass(networkType(), DomobAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public DomobAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
 		// TODO Auto-generated constructor stub
 	}
+
 
 	@Override
 	public void handle() {
@@ -137,4 +153,15 @@ public class DomobAdapter extends AdViewAdapter implements DomobAdEventListener{
 			Log.i(AdViewUtil.ADVIEW, "Overrided be dismissed");
 		
 	}
+
+	@Override
+	public Context onDomobAdRequiresCurrentContext() {
+		// TODO Auto-generated method stub
+		AdViewLayout adViewLayout = adViewLayoutReference.get();
+		Context mContext = (Context)adViewLayout.activityReference.get();
+		
+		return mContext;
+	}
+
+
 }

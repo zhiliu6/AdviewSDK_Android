@@ -10,6 +10,7 @@ import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.kyview.AdViewAdRegistry;
 
 import com.wiyun.ad.AdView;
 import com.wiyun.ad.AdView.AdListener;
@@ -19,9 +20,24 @@ import android.widget.RelativeLayout;
 public class WiyunAdapter extends AdViewAdapter implements AdListener{
 	AdView ad;
 
-	public WiyunAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
-		
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_WIYUN;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("com.wiyun.ad.AdView") != null) {
+				registry.registerClass(networkType(), WiyunAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public WiyunAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
+		// TODO Auto-generated constructor stub
 	}
 
 	
@@ -135,6 +151,8 @@ public void onMiniSiteClosed()
 	if(AdViewTargeting.getRunMode()==RunMode.TEST)
 		Log.d(AdViewUtil.ADVIEW, "Wiyun onMiniSiteClosed");	
 }
+
+
 
 
 }

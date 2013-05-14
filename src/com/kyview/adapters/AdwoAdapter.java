@@ -3,21 +3,36 @@ package com.kyview.adapters;
 import android.app.Activity;
 import android.util.Log;
 
+import com.adwo.adsdk.AdListener;
+import com.adwo.adsdk.AdwoAdView;
+import com.adwo.adsdk.ErrorCode;
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
 import com.kyview.AdViewTargeting;
-//import com.kyview.AdViewLayout.ViewAdRunnable;
 import com.kyview.AdViewTargeting.RunMode;
-import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.adwo.adsdk.AdwoAdView;
-import com.adwo.adsdk.AdListener;
-import com.adwo.adsdk.ErrorCode;
+//import com.kyview.AdViewLayout.ViewAdRunnable;
 
 public class AdwoAdapter extends AdViewAdapter implements AdListener{
 
-	public AdwoAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_ADWO;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("com.adwo.adsdk.AdwoAdView") != null) {
+				registry.registerClass(networkType(), AdwoAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public AdwoAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -36,16 +51,12 @@ public class AdwoAdapter extends AdViewAdapter implements AdListener{
 		if (activity == null) {
 			return;
 		}
-		Extra extra = adViewLayout.extra;
 		AdwoAdView adView=null;
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			adView=new AdwoAdView((Activity)adViewLayout.getContext(), ration.key,true,extra.cycleTime);
-		else if(AdViewTargeting.getRunMode()==RunMode.NORMAL)
-			adView=new AdwoAdView((Activity)adViewLayout.getContext(), ration.key,false,extra.cycleTime);
-		else{
-			adView=new AdwoAdView((Activity)adViewLayout.getContext(), ration.key,false,extra.cycleTime);
-		}
-
+			adView=new AdwoAdView((Activity)adViewLayout.getContext(), ration.key,true,0);
+		else			
+			adView=new AdwoAdView((Activity)adViewLayout.getContext(), ration.key,false,0);
+		
 		byte id=2;	
 		AdwoAdView.setAggChannelId(id);
 		adView.setListener(this);
@@ -117,6 +128,8 @@ public class AdwoAdapter extends AdViewAdapter implements AdListener{
 		  adViewLayout.adViewManager.resetRollover();
 		  //adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
 		  adViewLayout.rotateThreadedDelayed();
-	};
+	}
+
+
 	
 }

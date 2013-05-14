@@ -11,6 +11,7 @@ import com.kyview.AdViewLayout.ViewAdRunnable;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.kyview.AdViewAdRegistry;
 
 import com.kyview.obj.Extra;
 import android.graphics.Color;
@@ -22,8 +23,24 @@ import com.mdotm.android.ads.MdotMView.MdotMActionListener;
 public class MdotMAdapter extends AdViewAdapter implements MdotMActionListener {
 	
 	//private AdView adView=null;
-	public MdotMAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_MDOTM;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("com.mdotm.android.ads.MdotMView") != null) {
+				registry.registerClass(networkType(), MdotMAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public MdotMAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -91,5 +108,7 @@ public class MdotMAdapter extends AdViewAdapter implements MdotMActionListener {
 		 adViewLayout.rotateThreadedPri();
 		
 	}
+
+
 	
 }

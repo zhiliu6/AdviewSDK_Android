@@ -10,13 +10,29 @@ import com.kyview.AdViewLayout.ViewAdRunnable;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.kyview.AdViewAdRegistry;
 import android.view.View;
 
-public class AdChinaAdapter extends AdViewAdapter implements AdListener{
+public class AdChinaAdapter extends AdViewAdapter implements AdBannerListener{
 
-	public AdChinaAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
-		 
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_ADCHINA;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("com.adchina.android.ads.views.AdView") != null) {
+				registry.registerClass(networkType(), AdChinaAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public AdChinaAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -28,35 +44,33 @@ public class AdChinaAdapter extends AdViewAdapter implements AdListener{
 	 	if(adViewLayout == null) {
 	 		return;
 	 	}
-	 	 
-		// …Ë÷√π„∏Êº‡Ã˝
-		AdEngine.setAdListener(this);	  
+
 		AdManager.setRefershinterval(-1);
+		AdManager.setRelateScreenRotate(adViewLayout.getContext(),true);	
 		AdView mAdView=new AdView(adViewLayout.getContext(), ration.key, true, false);
-		mAdView.setVisibility(View.VISIBLE);	
+		mAdView.setAdBannerListener(this);
 		
+		mAdView.setVisibility(View.VISIBLE);	
+		mAdView.start();
 	}
 	
 	public void onFailedToReceiveAd(AdView arg0) {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			  Log.d(AdViewUtil.ADVIEW, "onFailedToReceiveAd");
-	    
-		AdEngine.setAdListener(null);
 
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 			return;
 		}
 		adViewLayout.adViewManager.resetRollover_pri();
-		adViewLayout.rotateThreadedPri();
+		adViewLayout.rotateThreadedPri(); 
 	}
 
 	public void onReceiveAd(AdView adView) {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			  Log.d(AdViewUtil.ADVIEW, "onReceiveAd");
 
-		AdEngine.setAdListener(null);
-		  
+
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 		return;
@@ -67,63 +81,31 @@ public class AdChinaAdapter extends AdViewAdapter implements AdListener{
 		adViewLayout.rotateThreadedDelayed();
 	}
 
-	public void onClickBanner (AdView view)
-	{
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "onClickBanner");	
+	@Override
+	public boolean OnRecvSms(AdView arg0, String arg1) {
+		// TODO Auto-generated method stub
+		return false;
 	}
-	
-	public void onReceiveVideoAd(){
+
+	@Override
+	public void onClickBanner(AdView arg0) {
+		// TODO Auto-generated method stub
 		
 	}
 
-	public void onEndFullScreenLandpage() {
-
-	}
-
-	public void onStartFullScreenLandPage(){
-
-	}
-	
-	/**
-	 * Called when user clicks on an sms button on ad the promptText will be
-	 * something like SMS:123 To:1000 You can pop up an AlertDialog here and
-	 * show the promptText return true for OK, return false for Cancel or you
-	 * may simply return true to allow sms
-	 */
-	public boolean OnRecvSms(AdView adView, String promptText) {
-		return true;
-	}
-
+	@Override
 	public void onFailedToRefreshAd(AdView arg0) {
-
+		// TODO Auto-generated method stub
+		
 	}
 
+	@Override
 	public void onRefreshAd(AdView arg0) {
-
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void onFailedToPlayVideoAd() {
 
-	}
+	
 
-	public void onPlayVideoAd() {
-
-	}
-
-	public void onFailedToReceiveVideoAd() {
-
-	}
-
-	public void onReceiveFullScreenAd() {
-
-	}
-
-	public void onFailedToReceiveFullScreenAd() {
-
-	}
-
-	public void onDisplayFullScreenAd() {
-
-	}
 }

@@ -92,6 +92,7 @@ public class AdViewTargeting {
 		if(runMode==null)
 			runMode=RunMode.NORMAL;
 		AdViewTargeting.runMode=runMode;
+			
 	}
 	
 	/**

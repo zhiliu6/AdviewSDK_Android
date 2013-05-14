@@ -5,8 +5,10 @@ import android.util.Log;
 
 import android.view.ViewGroup;
 
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
 import com.kyview.AdViewTargeting;
+import com.kyview.AdViewLayout.ViewAdRunnable;
 //import com.kyview.AdViewLayout.ViewAdRunnable;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
@@ -21,127 +23,167 @@ import com.baidu.mobads.AdViewListener;
 import android.content.Context;
 import org.json.JSONObject;
 
+public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener {
+	private boolean isFailed=false;
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_BAIDU;
+	}
 
-public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener  {
-	
-	//private AdView adView;
-	//private AdService adService;
-	
-	public AdBaiduAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if (Class.forName("com.baidu.mobads.AdView") != null) {
+				registry.registerClass(networkType(), AdBaiduAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {
+		}
+	}
 
-		Context mContext = (Context)adViewLayout.activityReference.get();
-		
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-		{
+	public AdBaiduAdapter() {
+	}
+
+	// private AdView adView;
+	// private AdService adService;
+
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
+		Context mContext = (Context) adViewLayout.activityReference.get();
+		AdService.setChannelId("e498eab7");
+		if (AdViewTargeting.getRunMode() == RunMode.TEST) {
 			AdView.setAppSid(mContext, "debug");
-			AdView.setAppSec(mContext, "debug");	
-		}
-		else
-		{
+			AdView.setAppSec(mContext, "debug");
+		} else {
 			AdView.setAppSid(mContext, ration.key);
-			AdView.setAppSec(mContext, ration.key2);	
+			AdView.setAppSec(mContext, ration.key2);
 		}
+
 	}
 
 	@Override
 	public void handle() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+		if (AdViewTargeting.getRunMode() == RunMode.TEST)
 			Log.d(AdViewUtil.ADVIEW, "Into Baidu");
-		
+
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
-		if(adViewLayout == null) {
+		if (adViewLayout == null) {
 			return;
-	 	}
-	 	Activity activity = adViewLayout.activityReference.get();
-		if(activity == null) {
+		}
+		Activity activity = adViewLayout.activityReference.get();
+		if (activity == null) {
 			return;
 		}
 		adViewLayout.removeAllViews();
 		adViewLayout.activeRation = adViewLayout.nextRation;
-
-		//if((ration.key3).compareTo("1")==0)
-		//	new AdService(activity,adViewLayout, new ViewGroup.LayoutParams(-1, -2), this);
-		//else
-			new AdService(activity, adViewLayout, new ViewGroup.LayoutParams(-1, -2), this);
+		// if((ration.key3).compareTo("1")==0)
+		// new AdService(activity,adViewLayout, new ViewGroup.LayoutParams(-1,
+		// -2), this);
+		// else
+		new AdService(activity, adViewLayout,
+				new ViewGroup.LayoutParams(-1, -2), this);
 	}
 
-	public void onAdReady(AdView adView2) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.w(AdViewUtil.ADVIEW, "onAdReady");
-		
-		try {
-			//adView = adService.requestAdView();
-			//adView = adView2;
-			AdViewLayout adViewLayout = adViewLayoutReference.get();
-			if(adViewLayout == null) {
-				return;
-		 	}
-			
-			//Extra extra = adViewLayout.extra;
-		       //int bgColor = Color.rgb(extra.bgRed, extra.bgGreen, extra.bgBlue);
-		       //int fgColor = Color.rgb(extra.fgRed, extra.fgGreen, extra.fgBlue); 
-			//adView2.setBackgroundColor(bgColor);
-      			//adView2.setTextColor(fgColor);
-	  
-		} catch (Exception e) {
-			Log.w(AdViewUtil.ADVIEW, e.getMessage());
-		}
-	}
-
-	public void onAdShow(JSONObject paramJSONObject) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.w(AdViewUtil.ADVIEW, "onAdShow");
-
-		AdViewLayout adViewLayout = adViewLayoutReference.get();
-		if(adViewLayout == null) {
-			return;
-		}
-		adViewLayout.reportBaiduImpression();
-	}
-
-	public void onAdClick(JSONObject paramJSONObject) { 
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+	@Override
+	public void onAdClick(JSONObject arg0) {
+		if (AdViewTargeting.getRunMode() == RunMode.TEST)
 			Log.w(AdViewUtil.ADVIEW, "onAdClick");
 
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
-		if(adViewLayout == null) {
+		if (adViewLayout == null) {
 			return;
 		}
 		adViewLayout.reportClick();
 	}
 
-	public void onAdFailed(String reason) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.w(AdViewUtil.ADVIEW, "AdViewListener.onAdFailed, reason="+reason);	
+	@Override
+	public void onAdFailed(String arg0) {
+		isFailed=true;
+		if (AdViewTargeting.getRunMode() == RunMode.TEST)
+			Log.w(AdViewUtil.ADVIEW, "AdViewListener.onAdFailed, reason="
+					+ arg0);
 
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
-		if(adViewLayout == null) {
+		if (adViewLayout == null) {
 			return;
 		}
 		adViewLayout.adViewManager.resetRollover_pri();
 		adViewLayout.rotateThreadedPri();
 	}
 
-	public void onAdSwitch() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.w(AdViewUtil.ADVIEW, "onAdSwitch");
-
+	@Override
+	public void onAdReady(AdView arg0) {
+		if (AdViewTargeting.getRunMode() == RunMode.TEST)
+			Log.w(AdViewUtil.ADVIEW, "onAdReady");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
+		return;
+		}
+		if(!isFailed){
+		adViewLayout.adViewManager.resetRollover();
+		adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, arg0));
+		adViewLayout.rotateThreadedDelayed();
+		isFailed=false;
+		}
+	}
+
+	@Override
+	public void onAdShow(JSONObject arg0) {
+		if (AdViewTargeting.getRunMode() == RunMode.TEST)
+			Log.w(AdViewUtil.ADVIEW, "onAdShow");
+		AdViewLayout adViewLayout = adViewLayoutReference.get();
+		if (adViewLayout == null) {
 			return;
 		}
-		adViewLayout.adViewManager.resetRollover();
-		adViewLayout.rotateThreadedDelayed();
+		adViewLayout.reportBaiduImpression();
+	}
+
+	@Override
+	public void onAdSwitch() {
+		if (AdViewTargeting.getRunMode() == RunMode.TEST)
+			Log.w(AdViewUtil.ADVIEW, "onAdSwitch");
+
+	}
+
+	@Override
+	public void onVideoClickAd() {
+		if (AdViewTargeting.getRunMode() == RunMode.TEST)
+			Log.w(AdViewUtil.ADVIEW, "onAdClick");
+
+		AdViewLayout adViewLayout = adViewLayoutReference.get();
+		if (adViewLayout == null) {
+			return;
+		}
+		adViewLayout.reportClick();
+	}
+
+	@Override
+	public void onVideoClickClose() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onVideoClickReplay() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onVideoError() {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
 	public void onVideoFinish() {
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void onVideoStart() {
+		// TODO Auto-generated method stub
 
 	}
+
+
+
 }

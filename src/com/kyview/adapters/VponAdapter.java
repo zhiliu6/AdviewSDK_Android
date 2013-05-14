@@ -9,6 +9,7 @@ import com.kyview.AdViewTargeting;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.kyview.AdViewAdRegistry;
 import com.vpon.adon.android.AdListener;
 import com.vpon.adon.android.AdOnPlatform;
 import com.vpon.adon.android.AdView;
@@ -17,8 +18,24 @@ public class VponAdapter extends AdViewAdapter implements AdListener{
 	private int adHeight;
 	private int adWidth;
 	
-	public VponAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_VPON;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("com.vpon.adon.android.AdView") != null) {
+				registry.registerClass(networkType(), VponAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public VponAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
+		// TODO Auto-generated constructor stub
 	}
 
 	private void calcAdSize(AdViewLayout adViewLayout) {
@@ -113,5 +130,7 @@ public class VponAdapter extends AdViewAdapter implements AdListener{
 		adViewLayout.rotateThreadedDelayed();
 		
 	}
+
+
 
 }

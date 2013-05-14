@@ -8,6 +8,7 @@ import com.kyview.AdViewTargeting;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.kyview.AdViewAdRegistry;
 import com.mobisage.android.MobiSageAdBanner;
 import com.mobisage.android.MobiSageAnimeType;
 import com.mobisage.android.MobiSageEnviroment;
@@ -18,8 +19,24 @@ import android.widget.RelativeLayout;
 public class MobiSageAdapter extends AdViewAdapter implements IMobiSageAdViewListener{
 	private MobiSageAdBanner adv;
 	
-	public MobiSageAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_ADSAGE;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("com.mobisage.android.MobiSageAdBanner") != null) {
+				registry.registerClass(networkType(), MobiSageAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public MobiSageAdapter() {
+		
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -96,5 +113,7 @@ public class MobiSageAdapter extends AdViewAdapter implements IMobiSageAdViewLis
 	public void onMobiSageAdViewClick(Object arg0) {
 		 
 		
-	}	
+	}
+
+
 }

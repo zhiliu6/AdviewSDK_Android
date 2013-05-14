@@ -8,16 +8,33 @@ import com.kyview.AdViewTargeting;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.kyview.AdViewAdRegistry;
 
 import com.wqmobile.sdk.WQAdEventListener;
 import com.wqmobile.sdk.WQAdView;
 
 public class WqAdapter extends AdViewAdapter implements WQAdEventListener{
 
-	public WqAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_WQ;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("com.wqmobile.sdk.WQAdView") != null) {
+				registry.registerClass(networkType(), WqAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public WqAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
 		// TODO Auto-generated constructor stub
 	}
+
 
 	@Override
 	public void handle() {
@@ -35,6 +52,9 @@ public class WqAdapter extends AdViewAdapter implements WQAdEventListener{
 
 		WQAdView adView = new WQAdView(activity);
 		adView.setAdEventListener(this);
+		//adView.init(ration.key, ration.key2); 
+	
+		adView.setAdPlatform("adviewc633659b4fda54", AdViewUtil.ADVIEW_VER); 
 		adView.init(ration.key, ration.key2);
 		//LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		//adViewLayout.addView(adView, params);
@@ -51,12 +71,11 @@ public class WqAdapter extends AdViewAdapter implements WQAdEventListener{
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if (adViewLayout == null) {
 			return;
-		}
-
-		adViewLayout.reportImpression();	
+		}	
 		adViewLayout.adViewManager.resetRollover();
 		//adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, arg0));
 		adViewLayout.rotateThreadedDelayed();
+		adViewLayout.reportImpression();	
 	}
 
 	@Override
@@ -69,7 +88,6 @@ public class WqAdapter extends AdViewAdapter implements WQAdEventListener{
 		if (adViewLayout == null) {
 			return;
 		}
-
 		adViewLayout.adViewManager.resetRollover_pri();
 		adViewLayout.rotateThreadedPri();
 	}
@@ -81,9 +99,21 @@ public class WqAdapter extends AdViewAdapter implements WQAdEventListener{
 	}
 
 	@Override
-	public void onWQAdLoadTimeout(WQAdView arg0) {
+	public void onWQAdClick(WQAdView arg0) {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.i(AdViewUtil.ADVIEW, "onWQAdDismiss");
+			Log.w(AdViewUtil.ADVIEW, "onAdClick");
+
+		AdViewLayout adViewLayout = adViewLayoutReference.get();
+		if(adViewLayout == null) {
+			return;
+		}
+		adViewLayout.reportClick();
+		
+	}
+
+	@Override
+	public void onWQAdView(WQAdView arg0) {
+
 	}
 		
 }

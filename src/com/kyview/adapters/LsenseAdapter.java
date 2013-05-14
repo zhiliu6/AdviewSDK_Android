@@ -11,17 +11,39 @@ import com.kyview.AdViewLayout.ViewAdRunnable;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.kyview.AdViewAdRegistry;
+
 import com.l.adlib_android.AdListenerEx;
 import com.l.adlib_android.AdView;
 import com.kyview.obj.Extra;
 
+
 public class LsenseAdapter extends AdViewAdapter implements AdListenerEx{
 	//static private AdView adView = null;
 	private AdView adView = null;
-	public LsenseAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_LSENSE;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("com.l.adlib_android.AdView") != null) {
+				registry.registerClass(networkType(), LsenseAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
 	}
 
+	public LsenseAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
+		// TODO Auto-generated constructor stub
+	}
+	
+
+	@SuppressWarnings("unused")
 	@Override
 	public void handle() {
 		// TODO Auto-generated method stub
@@ -42,14 +64,15 @@ public class LsenseAdapter extends AdViewAdapter implements AdListenerEx{
 		try {
 			//adView = new AdView(activity);
 			adView = null;
-			adView = new AdView(
-					activity, 
-					Integer.valueOf(ration.key), 
-					Color.rgb(65, 65, 65), 
-					bgColor, 
-					fgColor, 
-					255,5,
-					true);	
+//			adView = new AdView(
+//					activity, 
+//					Integer.valueOf(ration.key), 
+//					Color.rgb(65, 65, 65), 
+//					bgColor, 
+//					fgColor, 
+//					255,5,
+//					true);	
+			adView = new AdView(activity, Integer.valueOf(ration.key), AdView.ROTATE3D);
 		/*	
 	        DisplayMetrics dm = new DisplayMetrics();
 	        dm = adViewLayout.getContext().getApplicationContext().getResources().getDisplayMetrics();
@@ -104,5 +127,7 @@ public class LsenseAdapter extends AdViewAdapter implements AdListenerEx{
 		//adViewLayout.rotateThreadedDelayed();
 		
 	}
+
+
 
 }

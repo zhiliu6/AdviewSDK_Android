@@ -9,6 +9,7 @@ import com.kyview.AdViewTargeting;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.kyview.AdViewAdRegistry;
 
 import cn.immob.sdk.ImmobView;
 import cn.immob.sdk.LMAdListener;
@@ -20,8 +21,23 @@ public class LmMobAdapter extends AdViewAdapter implements LMAdListener{
 
 	private ImmobView adView;
 	
-	public LmMobAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_LMMOB;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("cn.immob.sdk.ImmobView") != null) {
+				registry.registerClass(networkType(), LmMobAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public LmMobAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -118,5 +134,7 @@ public class LmMobAdapter extends AdViewAdapter implements LMAdListener{
 		// TODO Auto-generated method stub
 		Log.d(AdViewUtil.ADVIEW, "LmMob onPresentScreen");
 	}
+
+
 	
 }

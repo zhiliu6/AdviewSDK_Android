@@ -14,14 +14,31 @@ import com.kyview.AdViewLayout.ViewAdRunnable;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.kyview.AdViewAdRegistry;
 
 
 public class UmengAdapter extends AdViewAdapter implements UmengAdListener{
 
-	public UmengAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_UMENG;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("com.umengAd.android.AdView") != null) {
+				registry.registerClass(networkType(), UmengAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public UmengAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
 		// TODO Auto-generated constructor stub
 	}
+
 
 	@Override
 	public void handle() {
@@ -92,5 +109,6 @@ public class UmengAdapter extends AdViewAdapter implements UmengAdListener{
 		adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, paramAdView));
 		adViewLayout.rotateThreadedDelayed();
 	}
+
 
 }

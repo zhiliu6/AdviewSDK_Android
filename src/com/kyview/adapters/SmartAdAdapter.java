@@ -9,20 +9,34 @@ import com.kyview.AdViewLayout;
 import com.kyview.AdViewTargeting;
 import com.kyview.AdViewLayout.ViewAdRunnable;
 import com.kyview.AdViewTargeting.RunMode;
-import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.madhouse.android.ads.AdListener;
-import com.madhouse.android.ads.AdManager;
-import com.madhouse.android.ads.AdView;
-//import android.widget.RelativeLayout;
+import com.kyview.AdViewAdRegistry;
+import cn.smartmad.ads.android.SMAdBannerListener;
+import cn.smartmad.ads.android.SMAdBannerView;
+import cn.smartmad.ads.android.SMAdManager;
+import cn.smartmad.ads.android.SMRequestEventCode;
 
-
-public class SmartAdAdapter extends AdViewAdapter implements AdListener{
-
+public class SmartAdAdapter extends AdViewAdapter implements SMAdBannerListener{
+	private SMAdBannerView smAdBannerView;
 	
-	public SmartAdAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_SMARTAD;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("cn.smartmad.ads.android.SMAdBannerView") != null) {
+				registry.registerClass(networkType(), SmartAdAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public SmartAdAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -30,98 +44,126 @@ public class SmartAdAdapter extends AdViewAdapter implements AdListener{
 	public void handle() {
 		// TODO Auto-generated method stub
 		
-// TODO Auto-generated method stub
-		
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.d(AdViewUtil.ADVIEW, "Into SmartAd");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 			return;
 	 	}
-	 	Extra extra = adViewLayout.extra;
 	   
-	    Activity activity = adViewLayout.activityReference.get();
-		  if(activity == null) {
-			  return;
-		  }  	         
-	    // Instantiate an ad view and add it to the view
-		AdManager.setApplicationId(activity, ration.key);
-		AdView ad=null;
+		Activity activity = adViewLayout.activityReference.get();
+		if(activity == null) {
+			return;
+		}  	         
+
+		SMAdManager.setApplicationId(activity, ration.key);
+		SMAdManager.setAdRefreshInterval(300);
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			ad = new AdView(activity, null, 0, ration.key2, extra.cycleTime, 0, true);
-		else if(AdViewTargeting.getRunMode()==RunMode.NORMAL)
-			ad = new AdView(activity, null, 0, ration.key2, extra.cycleTime, 0, false);
-		else{
-			ad = new AdView(activity, null, 0, ration.key2, extra.cycleTime, 0, false);
-		}
-		ad.setListener(this);
-		
-		adViewLayout.removeAllViews();
-		startTimer();
-		//adViewLayout.addView(ad, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+			SMAdManager.setDebuMode(true);
+		else
+			SMAdManager.setDebuMode(false);
+		smAdBannerView = new SMAdBannerView(activity, ration.key2, SMAdBannerView.AUTO_AD_MEASURE);
+		smAdBannerView.setSMAdBannerListener(this);
 	}
 
 	@Override
-	public void onAdEvent(AdView arg0, int arg1) {
-		// TODO Auto-generated method stub
-		shoutdownTimer();
-		
-		switch(arg1){
-		
-			case AdView.EVENT_NEWAD:
-			//case AdView.EVENT_EXISTAD:
-			
-			{
-				if(AdViewTargeting.getRunMode()==RunMode.TEST)
-				Log.d(AdViewUtil.ADVIEW, "SmartAd new Ad");
+	public void onAppResumeFromAd(SMAdBannerView arg0) {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+	 		Log.d(AdViewUtil.ADVIEW, "onAppResumeFromAd");
 
-				AdViewLayout adViewLayout = adViewLayoutReference.get();
-				if(adViewLayout == null) {
-					return;
-				}
-
-				adViewLayout.adViewManager.resetRollover();
-				adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, arg0));
-				//adViewLayout.reportImpression();
-				adViewLayout.rotateThreadedDelayed();
-				arg0.setListener(null);
-			}
-				break;
-
-			case AdView.EVENT_INVALIDAD:
-			{
-				
-				if(AdViewTargeting.getRunMode()==RunMode.TEST)
-					Log.d(AdViewUtil.ADVIEW, "SmartAd invalid ad");
-				arg0.setListener(null);
-				
-				  AdViewLayout adViewLayout = adViewLayoutReference.get();
-				  if(adViewLayout == null) {
-					 return;
-				  }
-				 adViewLayout.adViewManager.resetRollover_pri();
-				  adViewLayout.rotateThreadedPri();
-			}
-				break;
-			default:
-				break;
-		}
 	}
 
 	@Override
-	public void onAdFullScreenStatus(boolean isFullScreen)
-	{
+	public void onAppSuspendForAd(SMAdBannerView arg0) {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+	 		Log.d(AdViewUtil.ADVIEW, "onAppSuspendForAd");
+
 	}
-		
-	public void requestTimeOut()
-	{
-		Log.d(AdViewUtil.ADVIEW, "SmartAd requestTimeOut");
+
+	public void onAttachedToScreen(SMAdBannerView arg0) {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+	 		Log.d(AdViewUtil.ADVIEW, "onAttachedToScreen");
+
+	}
+
+	@Override
+	public void onClickedAd() {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+	 		Log.d(AdViewUtil.ADVIEW, "smartmad onClickedAd");
 
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 			return;
 		}
-		adViewLayout.adViewManager.resetRollover_pri();
-		adViewLayout.rotateThreadedPri();
+		adViewLayout.reportClick();	
 	}
+
+	@Override
+	public void onClosedAdExpand(SMAdBannerView arg0) {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+	 		Log.d(AdViewUtil.ADVIEW, "onClosedAdExpand");
+
+	}
+
+	@Override
+	public void onDetachedFromScreen(SMAdBannerView arg0) {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+	 		Log.d(AdViewUtil.ADVIEW, "onDetachedFromScreen");
+
+	}
+
+	@Override
+	public void onExpandedAd(SMAdBannerView arg0) {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+	 		Log.d(AdViewUtil.ADVIEW, "onExpandedAd");
+
+	}
+
+	@Override
+	public void onLeaveApplication(SMAdBannerView arg0) {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+	 		Log.d(AdViewUtil.ADVIEW, "onLeaveApplication");
+
+	}
+
+	@Override
+	public void onReceivedAd(SMAdBannerView arg0) {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+	 		Log.d(AdViewUtil.ADVIEW, "onReceivedAd");
+		
+		  AdViewLayout adViewLayout = adViewLayoutReference.get();
+		  if(adViewLayout == null) {
+			  return;
+		  }
+
+		  adViewLayout.adViewManager.resetRollover();
+		  adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, arg0));
+		  adViewLayout.rotateThreadedDelayed();		
+
+	}
+
+	@Override
+	public void onAttachedToScreen(SMAdBannerView arg0, SMRequestEventCode arg1) {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+	 		Log.d(AdViewUtil.ADVIEW, "onAttachedToScreen");
+		
+	}
+
+	@Override
+	public void onFailedToReceiveAd(SMAdBannerView arg0, SMRequestEventCode arg1) {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+	 		Log.d(AdViewUtil.ADVIEW, "onFailedToReceiveAd");
+
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+			  Log.d(AdViewUtil.ADVIEW, "smartmad failure, SMRequestEventCode="+arg1);
+
+		  AdViewLayout adViewLayout = adViewLayoutReference.get();
+		  if(adViewLayout == null) {
+			 return;
+		  }
+		 adViewLayout.adViewManager.resetRollover_pri();
+		 adViewLayout.rotateThreadedPri();		
+	}
+
+
 }

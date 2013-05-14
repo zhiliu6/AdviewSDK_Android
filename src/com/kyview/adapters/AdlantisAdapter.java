@@ -13,14 +13,31 @@ import com.kyview.AdViewTargeting;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.kyview.AdViewAdRegistry;
 
 public class AdlantisAdapter extends AdViewAdapter implements AdRequestListener{
 	AdlantisView adView;
-	public AdlantisAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
-	 
+
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_ADLANTIS;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("jp.adlantis.android.AdlantisView") != null) {
+				registry.registerClass(networkType(), AdlantisAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
 	}
 
+	public AdlantisAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
+		// TODO Auto-generated constructor stub
+	}
+	
 	@Override
 	public void handle() {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
@@ -67,5 +84,6 @@ public class AdlantisAdapter extends AdViewAdapter implements AdRequestListener{
 		
 		
 	}
+
 
 }

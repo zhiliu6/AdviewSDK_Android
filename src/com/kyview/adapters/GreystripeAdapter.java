@@ -9,7 +9,7 @@ import com.kyview.AdViewTargeting;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-
+import com.kyview.AdViewAdRegistry;
 
 import com.greystripe.sdk.GSAd;
 import com.greystripe.sdk.GSAdErrorCode;
@@ -25,9 +25,24 @@ public class GreystripeAdapter extends AdViewAdapter implements GSAdListener,GSA
 	private GSFullscreenAd myFullscreenAd;
 
 
-	public GreystripeAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
-	 
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_GREYSTRIP;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("com.greystripe.sdk.GSMobileBannerAdView") != null) {
+				registry.registerClass(networkType(), GreystripeAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public GreystripeAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
+		// TODO Auto-generated constructor stub
 	}
 
 	
@@ -148,4 +163,6 @@ public class GreystripeAdapter extends AdViewAdapter implements GSAdListener,GSA
 	            myFullscreenAd.display();
 	        }
 	    }
+
+
 }

@@ -10,7 +10,7 @@ import com.kyview.AdViewTargeting;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-
+import com.kyview.AdViewAdRegistry;
 
 import com.mt.airad.AirAD;
 import com.mt.airad.AirADListener;
@@ -20,8 +20,24 @@ import com.mt.airad.AirADListener;
 public class AirAdAdapter extends AdViewAdapter implements AirADListener {
 	
 	private AirAD airAD=null;
-	public AirAdAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_AIRAD;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("com.mt.airad.AirAD") != null) {
+				registry.registerClass(networkType(), AirAdAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public AirAdAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
 		// TODO Auto-generated constructor stub
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			AirAD.setAppID(AirAD.TEST_APP_ID);
@@ -71,11 +87,11 @@ public class AirAdAdapter extends AdViewAdapter implements AirADListener {
 		if(adViewLayout == null) {
 			return;
 		}
-
+		adViewLayout.reportImpression();
 		adViewLayout.adViewManager.resetRollover();
 		//adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, airAD));
 		adViewLayout.rotateThreadedDelayed();
-		
+
 	}
 
 	@Override
@@ -121,4 +137,6 @@ public class AirAdAdapter extends AdViewAdapter implements AirADListener {
 			Log.d(AdViewUtil.ADVIEW, "onAdBannerShown");
 
             }
+
+	
 }

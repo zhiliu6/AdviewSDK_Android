@@ -2,29 +2,50 @@
 
 package com.kyview.adapters;
 
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
 import android.app.Activity;
-
+import android.content.Context;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
 import com.kyview.AdViewTargeting;
-
-import com.kyview.AdViewLayout.ViewAdRunnable;
 import com.kyview.AdViewTargeting.Gender;
 import com.kyview.AdViewTargeting.RunMode;
-
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.millennialmedia.android.MMAd;
 import com.millennialmedia.android.MMAdView;
-import com.millennialmedia.android.MMAdViewSDK;
-import com.millennialmedia.android.MMAdView.MMAdListener;
+import com.millennialmedia.android.MMException;
+import com.millennialmedia.android.MMRequest;
+import com.millennialmedia.android.MMSDK;
+import com.millennialmedia.android.RequestListener;
 
-public class MillennialAdapter extends AdViewAdapter implements MMAdListener {
-	public MillennialAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+public class MillennialAdapter extends AdViewAdapter implements RequestListener {
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_MILLENNIAL;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		try {
+			if(Class.forName("com.millennialmedia.android.MMAdView") != null) {
+				registry.registerClass(networkType(), MillennialAdapter.class);
+			}
+		} catch (ClassNotFoundException e) {}
+	}
+
+	public MillennialAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
+		// TODO Auto-generated constructor stub
+		
 	}
 
 	@Override
@@ -33,7 +54,11 @@ public class MillennialAdapter extends AdViewAdapter implements MMAdListener {
 		if(adViewLayout == null) {
 			return;
 	 	}
-	 	Hashtable<String, String> map = new Hashtable<String, String>();
+		Activity activity = adViewLayout.activityReference.get();
+		
+	 	Hashtable<String, String> map = new Hashtable<String, String>();	
+	 	
+	 	map.putAll(getAdSize(activity));
 	 	final AdViewTargeting.Gender gender = AdViewTargeting.getGender();
 	    if (gender == Gender.MALE) {
 	      map.put("gender", "male");
@@ -55,36 +80,82 @@ public class MillennialAdapter extends AdViewAdapter implements MMAdListener {
 	          map.put("keywords", keywords);
 	    }
 	    map.put("vendor", "adwhirl");
-	 //   Extra extra = adViewLayout.extra;
+	    
         // Instantiate an ad view and add it to the view
-	    MMAdView adView=null;
-	    adView = new MMAdView((Activity)adViewLayout.getContext(), ration.key, MMAdView.BANNER_AD_TOP, MMAdView.REFRESH_INTERVAL_OFF,map);
-	    adView.setId(MMAdViewSDK.DEFAULT_VIEWID);
+	    MMAdView adView = new MMAdView(activity);
+	    adView.setApid(ration.key);
+	    adView.setId(MMSDK.getDefaultAdId());
+		MMRequest request = new MMRequest();
+		request.setMetaValues(map);
+		adView.setMMRequest(request);
 	    adView.setListener(this);
-	    adView.callForAd();
+	    adView.getAd();
+	    adViewLayout.AddSubView(adView);
+
 	    adView.setHorizontalScrollBarEnabled(false);
 	    adView.setVerticalScrollBarEnabled(false);
+
+
+	}
+	static boolean isTablet(Context context)
+	{
+		DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+		return (metrics.heightPixels >= 728 && metrics.widthPixels >= 728);
+	}
+	static Map<String, String> getAdSize(Context context)
+	{
+		Map<String, String> metaData = new HashMap<String, String>();
+		if(isTablet(context))
+		{
+			metaData.put("width", "728");
+			metaData.put("height", "90");
+		}
+		else
+		{
+			metaData.put("width", "480");
+			metaData.put("height", "60");
+		}
+		return metaData;
 	}
 
-	public void MMAdReturned(MMAdView adView) {
+	
+
+	@Override
+	public void MMAdOverlayLaunched(MMAd arg0) {
+		// TODO Auto-generated method stub
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+		Log.d(AdViewUtil.ADVIEW, "Millennial Ad Overlay Launched" );
+	}
+
+	@Override
+	public void MMAdRequestIsCaching(MMAd arg0) {
+		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+		Log.d(AdViewUtil.ADVIEW, "MMAdRequestIsCaching" );
+		
+	}
+
+	@Override
+	public void requestCompleted(MMAd arg0) {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.d(AdViewUtil.ADVIEW, "Millennial success");
- 		adView.setListener(null);
+		arg0.setListener(null);
 
 	 	AdViewLayout adViewLayout = adViewLayoutReference.get();
 	 	if(adViewLayout == null) {
 	 		return;
 	 	}
-	 	 
+		adViewLayout.reportImpression();
  		adViewLayout.adViewManager.resetRollover();
- 		adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
+// 		adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
 		adViewLayout.rotateThreadedDelayed();
+
 	}
-	
-	public void MMAdFailed(MMAdView adView) {
+
+	@Override
+	public void requestFailed(MMAd arg0, MMException arg1) {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.d(AdViewUtil.ADVIEW, "Millennial failure");
-		adView.setListener(null);
+		arg0.setListener(null);
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 	 	if(adViewLayout == null) {
 	 		return;
@@ -92,32 +163,7 @@ public class MillennialAdapter extends AdViewAdapter implements MMAdListener {
 	 	 
 	 	adViewLayout.adViewManager.resetRollover_pri();
 		adViewLayout.rotateThreadedPri();
-	}		
-	
-	public void MMAdClickedToNewBrowser(MMAdView adview) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-		Log.d(AdViewUtil.ADVIEW, "Millennial Ad clicked, new browser launched" );
-	}
-	
-	public void MMAdClickedToOverlay(MMAdView adview) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-		Log.d(AdViewUtil.ADVIEW, "Millennial Ad Clicked to overlay" );
-	}
-	
-	public void MMAdOverlayLaunched(MMAdView adview) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-		Log.d(AdViewUtil.ADVIEW, "Millennial Ad Overlay Launched" );
-	}
-
-	@Override
-	public void MMAdRequestIsCaching(MMAdView arg0) {
-		// TODO Auto-generated method stub
 		
 	}
-
-	public void MMAdCachingCompleted(MMAdView adview, boolean success)
-	{
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.i(AdViewUtil.ADVIEW, "Millennial Ad caching completed successfully: " + success);
-	}	
+	
 }

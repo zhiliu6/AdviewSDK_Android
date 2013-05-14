@@ -7,6 +7,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import android.util.Log;
 
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
 import com.kyview.AdViewTargeting;
 
@@ -19,18 +20,38 @@ import java.util.TimerTask;
 
 
 public abstract class AdViewAdapter {
-	protected final WeakReference<AdViewLayout> adViewLayoutReference;
+	protected WeakReference<AdViewLayout> adViewLayoutReference;
 	protected Ration ration;
 	static AdViewAdapter adapter;
 	private Timer reqTimeListenerTimer;
 	
-	public AdViewAdapter(AdViewLayout adViewLayout, Ration ration) {
-		this.adViewLayoutReference = new WeakReference<AdViewLayout>(adViewLayout);
-		this.ration = ration;
+	public AdViewAdapter() {
 		
 	}
 	
+	public AdViewAdapter(AdViewLayout adViewLayout, Ration ration) {
+		this.setParamters(adViewLayout, ration);
+	}
+	
+	public void setParamters(AdViewLayout adViewLayout, Ration ration) {
+		this.adViewLayoutReference = new WeakReference<AdViewLayout>(adViewLayout);
+		this.ration = ration;
+	}
+	
 	private static AdViewAdapter getAdapter(AdViewLayout adViewLayout,Ration ration) {	
+		
+		//new codes of new logic find adapter.
+		Class<? extends AdViewAdapter> adapterClass = AdViewAdRegistry.getInstance().adapterClassForAdType(ration.type);
+		
+		if (null != adapterClass) {
+			return getNetworkAdapter(adapterClass, adViewLayout, ration);
+		}
+		
+		return unknownAdNetwork(adViewLayout, ration);
+		
+		//new codes end.
+		
+		/*
 
 		try {
 			switch(ration.type) {
@@ -72,7 +93,7 @@ public abstract class AdViewAdapter {
 						return unknownAdNetwork(adViewLayout, ration);
 					}
 				case AdViewUtil.NETWORK_TYPE_YOUMI:
-					if(Class.forName("net.youmi.android.AdView") != null) {
+					if(Class.forName("net.youmi.android.banner.AdView") != null) {
 						return getNetworkAdapter("com.kyview.adapters.YoumiAdapter", adViewLayout, ration);
 					}
 					else {
@@ -80,10 +101,10 @@ public abstract class AdViewAdapter {
 					}
 			
 				case AdViewUtil.NETWORK_TYPE_CASEE:
-					/*if(Class.forName("cn.casee.adsdk.CaseeAdView") != null) {
-						return getNetworkAdapter("com.kyview.adapters.CaseeAdapter", adViewLayout, ration);
-					}
-					else */
+					//if(Class.forName("cn.casee.adsdk.CaseeAdView") != null) {
+					//	return getNetworkAdapter("com.kyview.adapters.CaseeAdapter", adViewLayout, ration);
+					//}
+					//else 
 					{
 						return unknownAdNetwork(adViewLayout, ration);
 					}
@@ -116,7 +137,7 @@ public abstract class AdViewAdapter {
 						return unknownAdNetwork(adViewLayout, ration);
 					}
 				case AdViewUtil.NETWORK_TYPE_SMARTAD:
-					if(Class.forName("com.madhouse.android.ads.AdView") != null) {
+					if(Class.forName("cn.smartmad.ads.android.SMAdBannerView") != null) {
 						return getNetworkAdapter("com.kyview.adapters.SmartAdAdapter", adViewLayout, ration);
 					}
 					else {
@@ -185,13 +206,13 @@ public abstract class AdViewAdapter {
 					else {
 						return unknownAdNetwork(adViewLayout, ration);
 					}
-/*				case AdViewUtil.NETWORK_TYPE_YINGGAO:
-					if(Class.forName("com.winad.android.ads.AdView") != null) {
-						return getNetworkAdapter("com.kyview.adapters.WinAdAdapter", adViewLayout, ration);
-					}
-					else {
-						return unknownAdNetwork(adViewLayout, ration);
-					}*/
+				//case AdViewUtil.NETWORK_TYPE_YINGGAO:
+				//	if(Class.forName("com.winad.android.ads.AdView") != null) {
+				//		return getNetworkAdapter("com.kyview.adapters.WinAdAdapter", adViewLayout, ration);
+				//	}
+				//	else {
+				//		return unknownAdNetwork(adViewLayout, ration);
+				//	}
 				case AdViewUtil.NETWORK_TYPE_ZESTADZ:
 					if(Class.forName("com.zestadz.android.ZestADZAdView") != null) {
 						return getNetworkAdapter("com.kyview.adapters.ZestADZAdapter", adViewLayout, ration);
@@ -207,7 +228,7 @@ public abstract class AdViewAdapter {
 						return unknownAdNetwork(adViewLayout, ration);
 					}
 				case AdViewUtil.NETWORK_TYPE_GREYSTRIP:
-					if(Class.forName("com.greystripe.android.sdk.BannerView") != null) {
+					if(Class.forName("com.greystripe.sdk.GSMobileBannerAdView") != null) {
 						return getNetworkAdapter("com.kyview.adapters.GreystripeAdapter", adViewLayout, ration);
 					}
 					else {
@@ -221,9 +242,12 @@ public abstract class AdViewAdapter {
 						return unknownAdNetwork(adViewLayout, ration);
 					}		
 				case AdViewUtil.NETWORK_TYPE_INMOBI:
-					if(Class.forName("com.kyview.adapters.InmobiInterfaceAdapter") != null) {
-						return getNetworkAdapter("com.kyview.adapters.InmobiInterfaceAdapter", adViewLayout, ration);
-					}
+					if(Class.forName("com.inmobi.androidsdk.IMAdView") != null) {
+						return getNetworkAdapter("com.kyview.adapters.InmobiAdapter", adViewLayout, ration);
+					}	
+					//if(Class.forName("com.kyview.adapters.InmobiInterfaceAdapter") != null) {
+					//	return getNetworkAdapter("com.kyview.adapters.InmobiInterfaceAdapter", adViewLayout, ration);
+					//}
 					else {
 						return unknownAdNetwork(adViewLayout, ration);
 					}	
@@ -307,44 +331,59 @@ public abstract class AdViewAdapter {
 			  Log.e("AdView", "YYY - Caught VerifyError", e);
           return unknownAdNetwork(adViewLayout, ration);
 		}
+		*/
 	}
 	
-  private static AdViewAdapter getNetworkAdapter(String networkAdapter, AdViewLayout adViewLayout, Ration ration) {
-	  AdViewAdapter adViewAdapter = null;
+	private static AdViewAdapter getNetworkAdapter(Class<? extends AdViewAdapter> adapterClass, AdViewLayout adViewLayout, Ration ration) {
+		AdViewAdapter adViewAdapter = null;
+		try {
+			/*
+			Class<?>[] parameterTypes = new Class[2];
+			parameterTypes[0] = AdViewLayout.class;
+			parameterTypes[1] = Ration.class;
 
-	  try {
-    	  @SuppressWarnings("unchecked")
-    	  Class<? extends AdViewAdapter> adapterClass = (Class<? extends AdViewAdapter>) Class.forName(networkAdapter);
-    	  
-    	  Class<?>[] parameterTypes = new Class[2];
-    	  parameterTypes[0] = AdViewLayout.class;
-    	  parameterTypes[1] = Ration.class;
-    	  
-    	  Constructor<? extends AdViewAdapter> constructor = adapterClass.getConstructor(parameterTypes);
-    	 
-    	  Object[] args = new Object[2];
-    	  args[0] = adViewLayout;
-    	  args[1] = ration;
-    	  
-    	  adViewAdapter = constructor.newInstance(args);
-	  }
-	  catch(ClassNotFoundException e) {}
-	  catch(SecurityException e) {}
-	  catch(NoSuchMethodException e) {}
-	  catch(InvocationTargetException e) {}
-	  catch(IllegalAccessException e) {}
-	  catch(InstantiationException e) {}
-	  
-	  return adViewAdapter;
+			Constructor<? extends AdViewAdapter> constructor = adapterClass.getConstructor(parameterTypes);
+
+			Object[] args = new Object[2];
+			args[0] = adViewLayout;
+			args[1] = ration;
+
+			adViewAdapter = constructor.newInstance(args);*/
+			Constructor<? extends AdViewAdapter> constructor = adapterClass.getConstructor();
+			adViewAdapter = constructor.newInstance();
+			adViewAdapter.setParamters(adViewLayout, ration);
+			adViewAdapter.initAdapter(adViewLayout, ration);
+		}
+		catch(SecurityException e) {}
+		catch(NoSuchMethodException e) {}
+		catch(InvocationTargetException e) {}
+		catch(IllegalAccessException e) {}
+		catch(InstantiationException e) {}
+
+		return adViewAdapter;
 	}
-	
+
+	/*
+	private static AdViewAdapter getNetworkAdapter(String networkAdapter, AdViewLayout adViewLayout, Ration ration) {
+		AdViewAdapter adViewAdapter = null;
+
+		try {
+			@SuppressWarnings("unchecked")
+			Class<? extends AdViewAdapter> adapterClass = (Class<? extends AdViewAdapter>) Class.forName(networkAdapter);
+			adViewAdapter = getNetworkAdapter(adapterClass, adViewLayout, ration);
+		}
+		catch(ClassNotFoundException e) {}
+
+		return adViewAdapter;
+	}
+*/	
 	private static AdViewAdapter unknownAdNetwork(AdViewLayout adViewLayout, Ration ration) {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.w(AdViewUtil.ADVIEW, "Unsupported ration type: " + ration.type);
 		return null;
 	}
 	
-	public static void handle(AdViewLayout adViewLayout,Ration ration)  {
+	public static void handleOne(AdViewLayout adViewLayout,Ration ration)  {
       adapter = AdViewAdapter.getAdapter(adViewLayout, ration);
       if(adapter != null) {
     	  if(AdViewTargeting.getRunMode()==RunMode.TEST)
@@ -357,6 +396,10 @@ public abstract class AdViewAdapter {
        
         
       }
+	}
+	public static void onRelease(){
+		if(null!=adapter)
+		adapter.release(adapter.adViewLayoutReference.get());
 	}
 	public static void onClickAd() throws Throwable {
 		if (adapter != null)
@@ -398,6 +441,9 @@ public abstract class AdViewAdapter {
 
 
 	public abstract void handle();
+	public void release(AdViewLayout adViewLayout) {
+	}
+	public abstract void initAdapter(AdViewLayout adViewLayout, Ration ration);
 	
 	public void click()
 	{
