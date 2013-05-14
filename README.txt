@@ -7,7 +7,7 @@
 
 ====================================
 平台版本（AdView和各家广告平台的SDK均在libs目录下）：
-	库名					广告平台					版本
+	库名					广告平台						版本
 
 AdViewSDK_Android.jar				AdView (原生聚合：随踪)				1.9.1
 adlantis.jar					Adlantis					1.3.7
@@ -31,10 +31,10 @@ InMobiCommons_3.6.2.jar				InMobi						3.6.2
 
 mdotm-sdk-android.jar				MdotM						3.0.0
 MMSDK.jar					MillennialMedia					4.6.0
-mobisageSDK.jar					艾德思奇					5.1.5
+mobisageSDK.jar					艾德思奇						5.1.5
 momark_sdk_v1.4.1.jar				Momark						1.4.1
 smartmad-sdk-android.jar			亿动智道					3.0.0
-SOMAAndroidSDK2.5.4.jar				Smaato						2.5.4
+SOMAAndroidSDK2.5.4.jar				Smaato							2.5.4
 Tencent_MobWIN_SDK_2.0.jar			腾讯(MobWin)					2.0
 tinmoo-android-sdk_v3.1.0.jar			天幕(Tinmoo)					3.1.0
 umeng_ad_android_sdk_v1.4.4.jar			友盟						1.4.4
