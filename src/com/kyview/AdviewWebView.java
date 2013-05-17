@@ -1,12 +1,22 @@
 package com.kyview;
  
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -14,8 +24,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -26,20 +38,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import android.util.Log;
-import android.view.ViewGroup;
-import com.kyview.util.AdViewUtil;
-import com.kyview.DownloadService;
 
- import android.graphics.Paint;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.PorterDuff;
-import android.content.pm.ResolveInfo;
+import com.kyview.util.AdViewUtil;
 
 
 public class AdviewWebView extends Activity 
@@ -366,10 +366,11 @@ public class AdviewWebView extends Activity
 
 		public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength)
 		{
-			Intent updateIntent = new Intent(AdviewWebView.this, DownloadService.class);
-			updateIntent.putExtra("adview_url", url);
-			AdviewWebView.this.startService(updateIntent);
-			AdviewWebView.this.finish();
+			// remove download service
+//			Intent updateIntent = new Intent(AdviewWebView.this, DownloadService.class);
+//			updateIntent.putExtra("adview_url", url);
+//			AdviewWebView.this.startService(updateIntent);
+//			AdviewWebView.this.finish();
 		}
 	}
 

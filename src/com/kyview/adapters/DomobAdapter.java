@@ -1,6 +1,7 @@
 package com.kyview.adapters;
 
 import android.app.Activity;
+import android.content.Context;
 //import android.graphics.Color;
 import android.util.Log;
 
@@ -20,6 +21,9 @@ import com.kyview.util.AdViewUtil;
 
 
 public class DomobAdapter extends AdViewAdapter implements DomobAdEventListener{
+	
+	private AdViewLayout adViewLayout;
+	private Context mContext;
 
 	public DomobAdapter(AdViewLayout adViewLayout, Ration ration) {
 		super(adViewLayout, ration);
@@ -28,7 +32,11 @@ public class DomobAdapter extends AdViewAdapter implements DomobAdEventListener{
 
 	@Override
 	public void handle() {
-		// TODO Auto-generated method stub
+		adViewLayout = adViewLayoutReference.get();
+		if(adViewLayout == null) {
+			return;
+	 	}
+		mContext = (Context)adViewLayout.activityReference.get();
 		
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.d(AdViewUtil.ADVIEW, "Into Domob");
@@ -136,5 +144,11 @@ public class DomobAdapter extends AdViewAdapter implements DomobAdEventListener{
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.i(AdViewUtil.ADVIEW, "Overrided be dismissed");
 		
+	}
+
+	@Override
+	public Context onDomobAdRequiresCurrentContext() {
+		// TODO Auto-generated method stub
+		return mContext;
 	}
 }
