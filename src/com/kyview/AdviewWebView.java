@@ -263,7 +263,7 @@ public class AdviewWebView extends Activity
 			if (packList.size() > 0)
 				startActivity(marketIntent);
 			else {
-				Toast.makeText(this, "Á´½Ó´íÎó", 200).show();
+				Toast.makeText(this, "ï¿½ï¿½ï¿½Ó´ï¿½ï¿½ï¿½", 200).show();
 			}
 			return 0;
 		}
@@ -271,7 +271,7 @@ public class AdviewWebView extends Activity
 		return -1;
 	}
 	 
-	@SuppressWarnings("rawtypes")
+
 	private void onWebViewLoad()
 	{
 		isLoading = true;
@@ -279,10 +279,10 @@ public class AdviewWebView extends Activity
 		btnDoRefresh.setImageDrawable(new BitmapDrawable(
 			getClass().getResourceAsStream(WEBVIEW_IMAGE_BASE_PATH+"webview_bar_pause.png")));
 		btnDoRefresh.setId(BTN_DO_STOP);
-		btnDoRefresh.setOnTouchListener((View.OnTouchListener)((ArrayList)btnDoRefresh.getTag()).get(1));
+		btnDoRefresh.setOnTouchListener((View.OnTouchListener)((ArrayList<?>)btnDoRefresh.getTag()).get(1));
 	}
  
-	@SuppressWarnings("rawtypes")
+
 	private void loadComplete()
 	{
 		isLoading = false;
@@ -310,7 +310,7 @@ public class AdviewWebView extends Activity
 		btnDoRefresh.setImageDrawable(new BitmapDrawable(
 			getClass().getResourceAsStream(WEBVIEW_IMAGE_BASE_PATH+"webview_bar_refresh.png")));
 		btnDoRefresh.setId(BTN_DO_REFRESH);
-		btnDoRefresh.setOnTouchListener((View.OnTouchListener)((ArrayList)this.btnDoRefresh.getTag()).get(0));
+		btnDoRefresh.setOnTouchListener((View.OnTouchListener)((ArrayList<?>)this.btnDoRefresh.getTag()).get(0));
 	}
 
 	private void shareConent()
@@ -320,7 +320,7 @@ public class AdviewWebView extends Activity
 		intent.putExtra("android.intent.extra.SUBJECT", "");
 		intent.putExtra("android.intent.extra.TEXT", this.adLink);
 		intent.setFlags(268435456);
-		startActivity(Intent.createChooser(intent, "·ÖÏíÄÚÈÝ"));
+		startActivity(Intent.createChooser(intent, "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"));
 	} 
  
 	protected void onPause()

@@ -17,10 +17,12 @@ import android.app.Activity;
 
 
 public class AdViewUtil {
-	public static final String SERVER_HEADER="http://www.adview.cn/";
 	
-	
+	public static final String SERVER_HEADER="http://www.adview.cn/";	
 	public static final String urlConfig = "http://config.adview.cn/agent/agent1_android.php?appid=%s&appver=%d&client=0&simulator=%d&location=%s";
+//	public static final String SERVER_HEADER="http://test2012.adview.cn/";
+//	public static final String urlConfig = "http://test2012.adview.cn/agent/agent1_android.php?appid=%s&appver=%d&client=0&simulator=%d&location=%s";
+
 	public static  String urlImpression = SERVER_HEADER+"agent/agent2.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d&keydev=%s";
 	
 	public static  String urlClick = SERVER_HEADER+"agent/agent3.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d&keydev=%s";
@@ -29,9 +31,11 @@ public class AdViewUtil {
 	// Don't change anything below this line
 	/***********************************************/ 
 	 
-	public static final int VERSION = 186;
+	public static final int VERSION = 191;
 
-	public static final String ADVIEW = "AdView SDK v1.8.6";
+	public static final String ADVIEW = "AdView SDK v1.9.1";
+
+	public static final String ADVIEW_VER = "1.9.1";
 	
 	// Could be an enum, but this gives us a slight performance improvement
 	//abroad
@@ -62,7 +66,6 @@ public class AdViewUtil {
 	public static final int NETWORK_TYPE_TINMOO=37;
 	public static final int NETWORK_TYPE_BAIDU=38;
 	public static final int NETWORK_TYPE_LSENSE=39;
-//	public static final int NETWORK_TYPE_YINGGAO=40;
 	public static final int NETWORK_TYPE_IZPTEC=41;
 	public static final int NETWORK_TYPE_ADSAGE=42;
 	public static final int NETWORK_TYPE_UMENG=43;
@@ -72,7 +75,10 @@ public class AdViewUtil {
 	public static final int NETWORK_TYPE_SUIZONG=47;	
 	public static final int NETWORK_TYPE_ADUU=48;
 	public static final int NETWORK_TYPE_MOMARK=49;
-
+//	public static final int NETWORK_TYPE_YINGGAO=40;
+	public static final int NETWORK_TYPE_YUNYUN=53;
+//	public static final int NETWORK_TYPE_YJF=54;
+	
 	public static final int NETWORK_TYPE_CUSTOMIZE=999;
 	
 	public static final int NETWORK_TYPE_DoubleClick = 51;
@@ -235,6 +241,10 @@ public class AdViewUtil {
 			widthAndHeight = new int[] { height, width };
 		}
 		return widthAndHeight;
+	}
+	
+	static {
+		Log.i(AdViewUtil.class.getSimpleName(), "static");
 	}
 
 }

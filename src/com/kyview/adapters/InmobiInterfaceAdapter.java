@@ -11,6 +11,7 @@ import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+import com.kyview.AdViewAdRegistry;
 import com.kyview.util.MD5;
 import java.io.InputStream;
 import java.net.URL;
@@ -115,8 +116,20 @@ public class InmobiInterfaceAdapter extends AdViewAdapter{
 	public InmobiAD inmobiAD;
 	private String userAgent = "";
 
-	public InmobiInterfaceAdapter(AdViewLayout adViewLayout, Ration ration) {
-		super(adViewLayout, ration);
+	private static int networkType() {
+		return AdViewUtil.NETWORK_TYPE_INMOBI;
+	}
+	
+	public static void load(AdViewAdRegistry registry) {
+		registry.registerClass(networkType(), InmobiInterfaceAdapter.class);
+	}
+
+	public InmobiInterfaceAdapter() {
+	}
+	
+	@Override
+	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -456,6 +469,7 @@ public class InmobiInterfaceAdapter extends AdViewAdapter{
 		}
 	}
 
+
 }
 
 class DisplayInmobiADRunnable implements Runnable
@@ -469,7 +483,7 @@ class DisplayInmobiADRunnable implements Runnable
 
 	public void run() {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "DisplaySuizongADRunnable");
+			Log.d(AdViewUtil.ADVIEW, "DisplayInmobiADRunnable");
 		
 		this.inmobiADAdapter.displayInmobiAD();
 	}
