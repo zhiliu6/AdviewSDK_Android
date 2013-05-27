@@ -2,23 +2,18 @@ package com.kyview.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-//import android.graphics.Color;
-import android.util.Log;
 
-
-
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
-//import com.kyview.AdViewLayout.ViewAdRunnable;
-import com.kyview.AdViewTargeting.RunMode;
-//import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
 import com.tencent.exmobwin.MobWINManager;
 import com.tencent.exmobwin.Type;
 import com.tencent.exmobwin.banner.AdListener;
 import com.tencent.exmobwin.banner.TAdView;
+//import android.graphics.Color;
+//import com.kyview.AdViewLayout.ViewAdRunnable;
+//import com.kyview.obj.Extra;
 
 
 public class MobWinAdapter extends AdViewAdapter implements AdListener{
@@ -48,8 +43,7 @@ public class MobWinAdapter extends AdViewAdapter implements AdListener{
 	public void handle() {
 		// TODO Auto-generated method stub
 		
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into MobWin");
+		AdViewUtil.logInfo("Into MobWin");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 			return;
@@ -74,9 +68,7 @@ public class MobWinAdapter extends AdViewAdapter implements AdListener{
 	public void onReceiveFailed(int errorId) {
 		// TODO Auto-generated method stub
 		
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "onReceiveFailed, errorId="+errorId);
-	    
+		AdViewUtil.logInfo("onReceiveFailed, errorId="+errorId);
 		  adView.setAdListener(null);
 
 		  AdViewLayout adViewLayout = adViewLayoutReference.get();
@@ -92,9 +84,7 @@ public class MobWinAdapter extends AdViewAdapter implements AdListener{
 	public void onReceiveAd() {
 		// TODO Auto-generated method stub
 	
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "onReceiveAd");
-
+		AdViewUtil.logInfo("onReceiveAd");
 		adView.setAdListener(null);
 		
 		  AdViewLayout adViewLayout = adViewLayoutReference.get();
@@ -111,9 +101,7 @@ public class MobWinAdapter extends AdViewAdapter implements AdListener{
 
 	//@Override
 	public void onAdClick() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "onAdClick");
-		
+		AdViewUtil.logInfo("onAdClick");
 	}
 
 

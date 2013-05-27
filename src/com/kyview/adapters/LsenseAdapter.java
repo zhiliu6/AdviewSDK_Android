@@ -2,20 +2,16 @@ package com.kyview.adapters;
 
 import android.app.Activity;
 import android.graphics.Color;
-//import android.util.DisplayMetrics;
-import android.util.Log;
 
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
 import com.kyview.AdViewLayout.ViewAdRunnable;
-import com.kyview.AdViewTargeting.RunMode;
+import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
-
 import com.l.adlib_android.AdListenerEx;
 import com.l.adlib_android.AdView;
-import com.kyview.obj.Extra;
+//import android.util.DisplayMetrics;
 
 
 public class LsenseAdapter extends AdViewAdapter implements AdListenerEx{
@@ -47,8 +43,7 @@ public class LsenseAdapter extends AdViewAdapter implements AdListenerEx{
 	@Override
 	public void handle() {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into Lsense");
+		AdViewUtil.logInfo("Into Lsense");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if (adViewLayout == null) {
 			return;
@@ -95,9 +90,7 @@ public class LsenseAdapter extends AdViewAdapter implements AdListenerEx{
 	}
 	@Override
 	public void OnConnectFailed(String arg0) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "Lsense failure");
-	    
+		AdViewUtil.logInfo("Lsense failure");
 		adView.setOnAdListenerEx(null);
 
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
@@ -111,9 +104,7 @@ public class LsenseAdapter extends AdViewAdapter implements AdListenerEx{
 	@Override
 	public void OnAcceptAd(int arg0) {
 		// TODO Auto-generated method stub
-		
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "Lsense success");
+		AdViewUtil.logInfo("Lsense success");
 
 		adView.setOnAdListenerEx(null);
 		

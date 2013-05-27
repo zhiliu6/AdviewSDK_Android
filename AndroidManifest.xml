@@ -27,8 +27,8 @@
         <!-- AdView SDK for AdMob -->
         <activity
             android:name="com.google.ads.AdActivity"
-            android:configChanges="orientation|keyboard|keyboardHidden" />
-        <!-- android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/> -->
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
+        <!-- android:configChanges="orientation|keyboard|keyboardHidden" /> -->
 
 
         <!-- AdView SDK for AirAd -->
@@ -79,11 +79,10 @@
             android:configChanges="keyboardHidden|orientation|keyboard" >
         </activity>
         <!-- AdView SDK for MobiSage -->
-        <activity
+               <activity
             android:name="com.mobisage.android.MobiSageActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" >
+            android:label="@string/app_name" >
         </activity>
 
         <service
@@ -91,14 +90,12 @@
             android:enabled="true" >
         </service>
 
-        <receiver android:name="com.mobisage.android.MobiSageAdReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED" />
-
-                <data android:scheme="package" >
-                </data>
+       <receiver android:name="com.mobisage.android.MobiSageAdReceiver">
+              <intent-filter>
+               <action android:name="android.intent.action.PACKAGE_ADDED"/>
+                <data android:scheme="package"></data>
             </intent-filter>
-        </receiver>
+         </receiver>
 
         <!-- AdView SDK for tencent MobinWin -->
         <activity android:name="com.tencent.exmobwin.banner.MobWINBrowserActivity" >
@@ -159,6 +156,7 @@
             </intent-filter>
         </receiver>
 
+
         <!-- AdView SDK for greystripe -->
         <!--
 	<provider android:name="com.greystripe.android.sdk.AdContentProvider"
@@ -201,6 +199,7 @@
             android:name="cn.aduu.android.AdSpotActivity"
             android:theme="@android:style/Theme.Translucent" />
 
+
         <!-- Must declare it for Adivew SDK -->
         <service android:name="com.kyview.DownloadService" />
 
@@ -240,7 +239,8 @@
 		APKOK(乐致网) 
 		360MARKET(360市场)
         -->
-
+        <activity android:name="TestModeActivity" >
+        </activity>
     </application>
 
     <uses-sdk android:minSdkVersion="4" />
@@ -257,7 +257,8 @@
     <uses-permission android:name="android.permission.GET_TASKS" /> <!-- momark -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- wiyun -->
     <uses-permission android:name="android.permission.VIBRATE" /> <!-- 哇棒 -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />  <!-- airAd-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- airAd -->
+
 
     <!-- 以下为云云必要权限 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />

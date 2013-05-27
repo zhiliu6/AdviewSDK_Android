@@ -5,15 +5,13 @@ import net.youmi.android.banner.AdSize;
 import net.youmi.android.banner.AdView;
 import net.youmi.android.banner.AdViewLinstener;
 import android.app.Activity;
-import android.util.Log;
 
-
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
 import com.kyview.AdViewTargeting;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
 
 public class YoumiAdapter extends AdViewAdapter implements AdViewLinstener{
 
@@ -35,8 +33,6 @@ public class YoumiAdapter extends AdViewAdapter implements AdViewLinstener{
 	@Override
 	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
 		// TODO Auto-generated constructor stub
-		String key=new String(ration.key);
-		String key2=new String(ration.key2);
 
 		Activity activity = adViewLayout.activityReference.get();
 		if(activity == null) {
@@ -44,21 +40,21 @@ public class YoumiAdapter extends AdViewAdapter implements AdViewLinstener{
 		 }
 		if(AdViewTargeting.getRunMode()==RunMode.TEST){
 			if(adViewLayout.adViewManager.getYoumiInit()){
-				AdManager.getInstance(activity).init(key, key2, true);
+				AdManager.getInstance(activity).init(ration.key, ration.key2, true);
 				adViewLayout.adViewManager.setYoumiInit(false);
 			}
 		}
 		else{
 			if(adViewLayout.adViewManager.getYoumiInit()){
-				AdManager.getInstance(activity).init(key, key2, false);
+			
+				AdManager.getInstance(activity).init(ration.key, ration.key2, false);
 				adViewLayout.adViewManager.setYoumiInit(false);
 			}
 		}
 	}
 	
 	 	public void handle() {
-	 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-	 			Log.d(AdViewUtil.ADVIEW, "Into Youmi");
+	 		AdViewUtil.logInfo("Into Youmi");
 	 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 	 		if(adViewLayout == null) {
 	 			return;
@@ -67,6 +63,7 @@ public class YoumiAdapter extends AdViewAdapter implements AdViewLinstener{
 			if(activity == null) {
 				return;
 			}
+			
 			AdView adView=new AdView(activity,AdSize.SIZE_320x50);  
 			adView.setAdListener(this);
 
@@ -76,9 +73,7 @@ public class YoumiAdapter extends AdViewAdapter implements AdViewLinstener{
 	@Override
 	public void onSwitchedAd(AdView adView)
 	{
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-	 		Log.d(AdViewUtil.ADVIEW, "onSwitchedAd");
-
+		AdViewUtil.logInfo("onSwitchedAd");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		  if(adViewLayout == null) {
 			  return;
@@ -95,16 +90,13 @@ public class YoumiAdapter extends AdViewAdapter implements AdViewLinstener{
 	@Override
 	public void onReceivedAd(AdView adView)
 	{
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-	 		Log.d(AdViewUtil.ADVIEW, "onReceivedAd");
+		AdViewUtil.logInfo("onReceivedAd");
 	}
 	
 	@Override
 	public void onFailedToReceivedAd(AdView adView)
 	{
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-	 		Log.d(AdViewUtil.ADVIEW, "onFailedToReceivedAd");
-
+		AdViewUtil.logInfo("onFailedToReceivedAd");
 		adView.setAdListener(null);
 	
 		AdViewLayout adViewLayout = adViewLayoutReference.get();

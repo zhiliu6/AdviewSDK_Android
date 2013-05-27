@@ -1,17 +1,15 @@
 package com.kyview.adapters;
 
 import android.app.Activity;
-import android.util.Log;
 
+import com.izp.views.IZPDelegate;
+import com.izp.views.IZPView;
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
 import com.kyview.AdViewTargeting;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
-
-import com.izp.views.IZPDelegate;
-import com.izp.views.IZPView;
 
 
 
@@ -42,8 +40,7 @@ public class IzpAdapter extends AdViewAdapter implements IZPDelegate{
 	public void handle() {
 		// TODO Auto-generated method stub
 		
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into Izp");
+		AdViewUtil.logInfo("Into Izp");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if (adViewLayout == null) {
 			return;
@@ -72,35 +69,27 @@ public class IzpAdapter extends AdViewAdapter implements IZPDelegate{
 
 	//@Override
 	public boolean shouldRequestFreshAd(IZPView view) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.i(AdViewUtil.ADVIEW,"shouldRequestFreshAd");
-		
+		AdViewUtil.logInfo("shouldRequestFreshAd");
 		return true;
 	}
 
 	//@Override
 	public void didReceiveFreshAd(IZPView view, int adCount)
 	{
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "didReceiveFreshAd, adCount="+adCount);
-		  
+		AdViewUtil.logInfo("didReceiveFreshAd, adCount="+adCount);
 	}
 
 	//@Override
 	public boolean shouldShowFreshAd(IZPView view)
 	{
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "shouldShowFreshAd");
-
+		AdViewUtil.logInfo("shouldShowFreshAd");
 		return true;
 	}
 
 	//@Override
 	public void didShowFreshAd(IZPView view)
 	{
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "didShowFreshAd");
-
+		AdViewUtil.logInfo("didShowFreshAd");
 		view.stopAdExchange();
 		view.delegate=null;
 		
@@ -115,16 +104,13 @@ public class IzpAdapter extends AdViewAdapter implements IZPDelegate{
 	//@Override
 	public void willLeaveApplication(IZPView view)
 	{
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "willLeaveApplication");
+		AdViewUtil.logInfo("willLeaveApplication");
 	}
 
 	//@Override
 	public void errorReport(IZPView view, int errorCode,String errorInfo)
 	{
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "errorReport");
-
+		AdViewUtil.logInfo("errorReport");
 		view.stopAdExchange();
 		view.delegate=null;
 		
@@ -139,8 +125,7 @@ public class IzpAdapter extends AdViewAdapter implements IZPDelegate{
 	//@Override
 	public void didStopFullScreenAd(IZPView view)
 	{
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "didStopFullScreenAd");
+		AdViewUtil.logInfo("didStopFullScreenAd");
 	}
 
 

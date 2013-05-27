@@ -1,7 +1,13 @@
 package com.kyview;
 
+
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.kyview.AdViewTargeting.RunMode;
@@ -13,24 +19,22 @@ import com.kyview.AdViewTargeting.UpdateMode;
 
 
 
-public class Invoker extends Activity implements AdViewInterface {
-	AdViewLayout adViewLayout;
+public class Invoker extends Activity implements AdViewInterface ,OnClickListener{
+	public static AdViewLayout adViewLayout;
+	public static LinearLayout layout;
+	public static String sdkKey="SDK201310111003303e4rx5msd7cn1pa";
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        LinearLayout layout = (LinearLayout)findViewById(R.id.layout_main);
-
-        if (layout == null) 
-            return; 
-          
+        layout = (LinearLayout)findViewById(R.id.layout_main);
+        Button ceshi=(Button) findViewById(R.id.ceshi_btn);
+        Button normal=(Button) findViewById(R.id.normal_btn);
+        ceshi.setOnClickListener(this);
+        normal.setOnClickListener(this);
         AdViewTargeting.setUpdateMode(UpdateMode.EVERYTIME);
-//        AdViewTargeting.setRunMode(RunMode.TEST);
-        adViewLayout = new AdViewLayout(this, "SDK20131513030520qwgmx5x6av08xym");		
-        adViewLayout.setAdViewInterface(this);     
-        layout.addView(adViewLayout);
-        layout.invalidate();
+        AdViewTargeting.setRunMode(RunMode.TEST);
 
     }
 
@@ -47,7 +51,40 @@ public class Invoker extends Activity implements AdViewInterface {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.normal_btn:
+
+	        if (layout == null) 
+	            return; 
+			AdViewLayout.isTest=false;
+	        adViewLayout = new AdViewLayout(this, sdkKey);   		
+			break;
+		case R.id.ceshi_btn:
+			AdViewLayout.isTest=true;		
+	        adViewLayout = new AdViewLayout(this, sdkKey);		
+			Intent intent=new Intent();
+			intent.setClass(this, TestModeActivity.class);
+			startActivity(intent);
+			break;
+		}
+        adViewLayout.setAdViewInterface(this); 
+        layout.removeAllViews();
+        layout.addView(adViewLayout);
+        layout.invalidate();
+	}
 	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		Log.i("onDestroy", "onDestroy");
+//		adViewLayout.release();
+	}
 //	public void amazon_proc() {
 //		// TODO Auto-generated method stub
 //		Log.d("AdViewSample", "Into zmazon");

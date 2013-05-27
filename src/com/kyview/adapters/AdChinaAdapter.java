@@ -1,17 +1,15 @@
 package com.kyview.adapters;
 
-import android.util.Log;
+import android.view.View;
 
-import com.adchina.android.ads.*;
+import com.adchina.android.ads.AdBannerListener;
+import com.adchina.android.ads.AdManager;
 import com.adchina.android.ads.views.AdView;
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
 import com.kyview.AdViewLayout.ViewAdRunnable;
-import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
-import android.view.View;
 
 public class AdChinaAdapter extends AdViewAdapter implements AdBannerListener{
 
@@ -38,8 +36,8 @@ public class AdChinaAdapter extends AdViewAdapter implements AdBannerListener{
 	@Override
 	public void handle() {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into AdChina");
+		AdViewUtil.logInfo("Into AdChina");
+
 	 	AdViewLayout adViewLayout = adViewLayoutReference.get();
 	 	if(adViewLayout == null) {
 	 		return;
@@ -55,9 +53,7 @@ public class AdChinaAdapter extends AdViewAdapter implements AdBannerListener{
 	}
 	
 	public void onFailedToReceiveAd(AdView arg0) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "onFailedToReceiveAd");
-
+		AdViewUtil.logInfo("onFailedToReceiveAd");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 			return;
@@ -67,10 +63,8 @@ public class AdChinaAdapter extends AdViewAdapter implements AdBannerListener{
 	}
 
 	public void onReceiveAd(AdView adView) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "onReceiveAd");
-
-
+		
+		AdViewUtil.logInfo("onReceiveAd");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 		return;

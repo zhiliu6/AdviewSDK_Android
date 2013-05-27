@@ -48,7 +48,7 @@ public class DownloadService extends Service {
 				DownloadService.this.updatePendingIntent = PendingIntent
 						.getActivity(DownloadService.this, 0, installIntent, 0);
 
-				DownloadService.this.updateNotification.tickerText = ("ÏÂÔØÍê³É");
+				DownloadService.this.updateNotification.tickerText = ("ä¸‹è½½å®Œæˆ");
 
 				DownloadService.this.updateNotificationManager.notify(
 						DownloadService.index,
@@ -110,20 +110,20 @@ public class DownloadService extends Service {
 
 		updateNotificationManager = ((NotificationManager) getSystemService("notification"));
 		long when = System.currentTimeMillis();
-		updateNotification = new Notification(17301633, "¿ªÊ¼ÏÂÔØÓ¦ÓÃ", when);
+		updateNotification = new Notification(17301633, "æ­£åœ¨ä¸‹è½½", when);
 
 		updateIntent = new Intent(this, intent.getClass());
 		updatePendingIntent = PendingIntent.getActivity(this, 0, updateIntent,
 				0);
 
-		updateNotification.setLatestEventInfo(this, "ÕýÔÚÏÂÔØÓ¦ÓÃ", "0%",
+		updateNotification.setLatestEventInfo(this, "ä¸‹è½½è¿›åº¦ï¼š", "0%",
 				updatePendingIntent);
 		updateNotification.flags |= 2;
 
 		updateNotificationManager.notify(index, this.updateNotification);
 	}
 
-	// downloadUrlÏÂÔØÁ´½Ó saveFile
+	// downloadUrlï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ saveFile
 	public long downloadFile(String downloadUrl, File saveFile)
 			throws Exception {
 		int downloadCount = 0;
@@ -159,7 +159,7 @@ public class DownloadService extends Service {
 				if ((downloadCount == 0)
 						|| ((int) (totalSize * 100L / updateTotalSize) - 10 > downloadCount)) {
 					downloadCount += 10;
-					this.updateNotification.setLatestEventInfo(this, "ÕýÔÚÏÂÔØÓ¦ÓÃ",
+					this.updateNotification.setLatestEventInfo(this, "ä¸‹è½½è¿›åº¦",
 							(int) totalSize * 100 / updateTotalSize + "%",
 							this.updatePendingIntent);
 					this.updateNotificationManager.notify(index,
@@ -200,7 +200,7 @@ public class DownloadService extends Service {
 				e.printStackTrace();
 				this.message.what = 1;
 				Bundle bundle = new Bundle();
-				bundle.putString("faild", "Ã»ÓÐ´æ´¢¿¨");
+				bundle.putString("faild", "ä¸‹è½½å¤±è´¥");
 				this.message.setData(bundle);
 
 				DownloadService.this.updateHandler.sendMessage(this.message);
@@ -218,7 +218,7 @@ public class DownloadService extends Service {
 				e.printStackTrace();
 				this.message.what = 1;
 				Bundle bundle = new Bundle();
-				bundle.putString("faild", "ÏÂÔØÊ§°Ü");
+				bundle.putString("faild", "ä¸‹è½½å¤±è´¥");
 				this.message.setData(bundle);
 
 				DownloadService.this.updateHandler.sendMessage(this.message);

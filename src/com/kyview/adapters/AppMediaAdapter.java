@@ -1,17 +1,14 @@
 package com.kyview.adapters;
 
 import android.app.Activity;
-import android.util.Log;
 import cn.appmedia.ad.AdManager;
 import cn.appmedia.ad.AdViewListener;
 import cn.appmedia.ad.BannerAdView;
 
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
-import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
 
 public class AppMediaAdapter extends AdViewAdapter implements AdViewListener{
 
@@ -39,8 +36,7 @@ public class AppMediaAdapter extends AdViewAdapter implements AdViewListener{
 	@Override
 	public void handle() {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "Into AppMedia");
+		AdViewUtil.logInfo("Into AppMedia");
 		  AdViewLayout adViewLayout = adViewLayoutReference.get();
 		  if(adViewLayout == null) {
 			  return;
@@ -58,8 +54,7 @@ public class AppMediaAdapter extends AdViewAdapter implements AdViewListener{
 	@Override
 	public void onReceiveAdFailure(BannerAdView arg0) {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "AppMedia failure");
+		AdViewUtil.logInfo("AppMedia failure");
 	    
 		arg0.setAdListener(null);
 
@@ -75,8 +70,7 @@ public class AppMediaAdapter extends AdViewAdapter implements AdViewListener{
 	@Override
 	public void onReceiveAdSuccess(BannerAdView arg0) {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "AppMedia success");
+		AdViewUtil.logInfo("AppMedia success");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 
 		arg0.setAdListener(null);

@@ -1,18 +1,15 @@
 package com.kyview.adapters;
 
 import android.app.Activity;
-import android.util.Log;
 
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
-//import com.kyview.AdViewLayout.ViewAdRunnable;
-import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
 import com.vpon.adon.android.AdListener;
 import com.vpon.adon.android.AdOnPlatform;
 import com.vpon.adon.android.AdView;
+//import com.kyview.AdViewLayout.ViewAdRunnable;
 
 public class VponAdapter extends AdViewAdapter implements AdListener{
 	private int adHeight;
@@ -60,8 +57,7 @@ public class VponAdapter extends AdViewAdapter implements AdListener{
 	@Override
 	public void handle() {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into Vpon");
+		AdViewUtil.logInfo("Into Vpon");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if (adViewLayout == null) {
 			return;
@@ -96,8 +92,7 @@ public class VponAdapter extends AdViewAdapter implements AdListener{
 	@Override
 	public void onFailedToRecevieAd(AdView arg0) {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "Vpon fail");
+		AdViewUtil.logInfo("Vpon fail");
 		arg0.setAdListener(null);
 
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
@@ -114,9 +109,7 @@ public class VponAdapter extends AdViewAdapter implements AdListener{
 	public void onRecevieAd(AdView arg0) {
 		// TODO Auto-generated method stub
 		
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "Vpon success");
-
+		AdViewUtil.logInfo("Vpon success");
 		arg0.setAdListener(null);
 		
 		AdViewLayout adViewLayout = adViewLayoutReference.get();

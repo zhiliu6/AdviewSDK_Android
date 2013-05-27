@@ -1,20 +1,15 @@
 package com.kyview.adapters;
 
 import android.app.Activity;
-//import android.graphics.Color;
-import android.util.Log;
 
-
-import com.umengAd.android.AdView;
-import com.umengAd.controller.UmengAdListener;
-
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
 import com.kyview.AdViewLayout.ViewAdRunnable;
-import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
+import com.umengAd.android.AdView;
+import com.umengAd.controller.UmengAdListener;
+//import android.graphics.Color;
 
 
 public class UmengAdapter extends AdViewAdapter implements UmengAdListener{
@@ -44,8 +39,7 @@ public class UmengAdapter extends AdViewAdapter implements UmengAdListener{
 	public void handle() {
 		// TODO Auto-generated method stub
 		
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into Umeng");
+		AdViewUtil.logInfo("Into Umeng");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 			return;
@@ -80,9 +74,7 @@ public class UmengAdapter extends AdViewAdapter implements UmengAdListener{
 
 	@Override
 	public void onRequestFail(AdView paramAdView) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Umeng failure");
-
+		AdViewUtil.logInfo("Umeng failure");
 		paramAdView.setUmengAdListener(null);
 
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
@@ -95,9 +87,7 @@ public class UmengAdapter extends AdViewAdapter implements UmengAdListener{
 
 	@Override
 	public void onRequestSuccess(AdView paramAdView) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Umeng success");
-
+		AdViewUtil.logInfo("Umeng success");
 		paramAdView.setUmengAdListener(null);
 		
 		AdViewLayout adViewLayout = adViewLayoutReference.get();

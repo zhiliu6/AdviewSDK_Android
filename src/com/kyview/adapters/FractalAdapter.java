@@ -2,20 +2,15 @@ package com.kyview.adapters;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.util.Log;
-
 
 import com.fractalist.android.ads.ADView;
 import com.fractalist.android.ads.AdStatusListener;
-
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
 import com.kyview.AdViewLayout.ViewAdRunnable;
-import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
 
 public class FractalAdapter extends AdViewAdapter implements AdStatusListener{
 
@@ -45,8 +40,7 @@ public class FractalAdapter extends AdViewAdapter implements AdStatusListener{
 	public void handle() {
 		// TODO Auto-generated method stub
 		
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into Fractal");
+		AdViewUtil.logInfo("Into Fractal");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 			return;
@@ -83,9 +77,7 @@ public class FractalAdapter extends AdViewAdapter implements AdStatusListener{
 
 	@Override
 	public void onFail() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Fractal failure");
-
+		AdViewUtil.logInfo("Fractal failure");
 		view.setAdStatusListener(null);
 		view = null;
 
@@ -99,9 +91,7 @@ public class FractalAdapter extends AdViewAdapter implements AdStatusListener{
 
 	@Override
 	public void onReceiveAd() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Fractal success");
-
+		AdViewUtil.logInfo("Fractal success");
 		view.setAdStatusListener(null);
 		
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
@@ -116,8 +106,7 @@ public class FractalAdapter extends AdViewAdapter implements AdStatusListener{
 
 	@Override
 	public void onRefreshAd() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Fractal, onRefreshAd");
+		AdViewUtil.logInfo("Fractal, onRefreshAd");
 	}
 
 	//@Override

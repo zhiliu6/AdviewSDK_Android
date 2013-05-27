@@ -48,8 +48,7 @@ import android.content.DialogInterface;
 import com.kyview.AdviewWebView;
 import android.os.Bundle;
 
-class AduuAD
-{
+class AduuAD {
 	private String reqid;
 	private String adid;
 	private String feetype;
@@ -63,12 +62,10 @@ class AduuAD
 	private String subtext;
 	private String pic;
 
-	public AduuAD()
-	{
+	public AduuAD() {
 	}
-	
-	public String getReqid()
-	{
+
+	public String getReqid() {
 		return reqid;
 	}
 
@@ -76,8 +73,7 @@ class AduuAD
 		reqid = id;
 	}
 
-	public String getAdid()
-	{
+	public String getAdid() {
 		return adid;
 	}
 
@@ -166,28 +162,28 @@ class AduuAD
 	}
 }
 
-public class AduuInterfaceAdapter extends AdViewAdapter{
+public class AduuInterfaceAdapter extends AdViewAdapter {
 	private double adHeight;
 	private double adWidth;
 	private AdViewLayout adViewLayout;
 	public Context mContext;
-	
-	public AduuAD aduuAD=null;
+
+	public AduuAD aduuAD = null;
 	public String ADUU_ADURL = "http://api.adcome.cn/v1/adlist";
 	public String ADUU_EVTURL = "http://api.adcome.cn/v1/evt";
 	private String appid;
-	
+
 	private static int networkType() {
 		return AdViewUtil.NETWORK_TYPE_ADUU;
 	}
-	
+
 	public static void load(AdViewAdRegistry registry) {
 		registry.registerClass(networkType(), AduuInterfaceAdapter.class);
 	}
 
 	public AduuInterfaceAdapter() {
 	}
-	
+
 	@Override
 	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
 		// TODO Auto-generated constructor stub
@@ -195,37 +191,33 @@ public class AduuInterfaceAdapter extends AdViewAdapter{
 
 	@Override
 	public void handle() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into AduuInterfaceAdapter");
-		
+		AdViewUtil.logInfo("Into AduuInterfaceAdapter");
 		adViewLayout = adViewLayoutReference.get();
-		if(adViewLayout == null) {
+		if (adViewLayout == null) {
 			return;
-	 	}
+		}
 
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
+		if (AdViewTargeting.getRunMode() == RunMode.TEST)
 			appid = "89BDDA1F21";
 		else
 			appid = ration.key;
-		
-		mContext = (Context)adViewLayout.activityReference.get();
-		
+
+		mContext = (Context) adViewLayout.activityReference.get();
+
 		calcAdSize(adViewLayout.adViewManager.width);
-		
-		adViewLayout.scheduler.schedule(
-			new FetchAduuADRunnable(this, this.ration), 0L, TimeUnit.SECONDS);
+
+		adViewLayout.scheduler.schedule(new FetchAduuADRunnable(this,
+				this.ration), 0L, TimeUnit.SECONDS);
 	}
 
 	private void calcAdSize(int screenWidth) {
-		int width=320;
-		int height=48;
-		
-		if (AdViewTargeting.getAdWidth() > 0)
-		{
+		int width = 320;
+		int height = 48;
+
+		if (AdViewTargeting.getAdWidth() > 0) {
 			width = AdViewTargeting.getAdWidth();
-			height = AdViewTargeting.getAdHeight();			
-		}
-		else if (screenWidth <= 480) {
+			height = AdViewTargeting.getAdHeight();
+		} else if (screenWidth <= 480) {
 			width = 320;
 			height = 48;
 		} else if (screenWidth < 728) {
@@ -241,35 +233,28 @@ public class AduuInterfaceAdapter extends AdViewAdapter{
 		adHeight = AdViewUtil.convertToScreenPixels(height, density);
 		adWidth = AdViewUtil.convertToScreenPixels(width, density);
 	}
-	
-	//@Override
-	public void click()
-	{
-	/*
-		if ((inmobiAD == null) || (inmobiAD.getAdUrl() == null)) {
-			Log.d(AdViewUtil.ADVIEW, "Url is null");
-			return;
-		}
 
-		Intent i = new Intent(Intent.ACTION_VIEW);
-		i.setData(Uri.parse(inmobiAD.getAdUrl()));
-		mContext.startActivity(i);
-		*/
+	// @Override
+	public void click() {
+		/*
+		 * if ((inmobiAD == null) || (inmobiAD.getAdUrl() == null)) {
+		 * Log.d(AdViewUtil.ADVIEW, "Url is null"); return; }
+		 * 
+		 * Intent i = new Intent(Intent.ACTION_VIEW);
+		 * i.setData(Uri.parse(inmobiAD.getAdUrl())); mContext.startActivity(i);
+		 */
 	}
 
-	 private void parseJson(String jsonStr)
-	{
-		try
-		{
-			//Log.i(AdViewUtil.ADVIEW, "jsonStr :" + jsonStr);
-			
+	private void parseJson(String jsonStr) {
+		try {
+			// Log.i(AdViewUtil.ADVIEW, "jsonStr :" + jsonStr);
+
 			JSONObject jsonObject = new JSONObject(jsonStr);
 			boolean isresult = jsonObject.isNull("result");
 			if (!isresult) {
 				String msg = jsonObject.getString("msg");
-				Log.i(AdViewUtil.ADVIEW, "msg is :" + msg);
-			}
-			else {
+				AdViewUtil.logInfo("msg is :" + msg);
+			} else {
 				aduuAD = new AduuAD();
 				aduuAD.setReqid(jsonObject.getString("reqid"));
 				JSONArray ja = jsonObject.getJSONArray("ads");
@@ -300,41 +285,37 @@ public class AduuInterfaceAdapter extends AdViewAdapter{
 							aduuAD.setText(jo.getString("text"));
 							aduuAD.setSubtext(jo.getString("subtext"));
 						} else if ("5".equals(showtype)) {
-							Log.i(AdViewUtil.ADVIEW, "clicktype=5"); 
+							AdViewUtil.logInfo("clicktype=5");
 							aduuAD = null;
 						} else {
-							Log.i(AdViewUtil.ADVIEW, "showtype="+showtype);
+							AdViewUtil.logInfo("showtype=" + showtype);
 							aduuAD = null;
 						}
 					}
-				} 
-			else
-			{
-				Log.i(AdViewUtil.ADVIEW, "ads is zero");
-				aduuAD = null;
+				} else {
+					AdViewUtil.logInfo("ads is zero");
+					aduuAD = null;
+				}
 			}
-			}
-		}
-		catch (Exception e) {
-			Log.i(AdViewUtil.ADVIEW, e.toString());
+		} catch (Exception e) {
+			AdViewUtil.logInfo(e.toString());
 			aduuAD = null;
 		}
 	}
 
-	public static String aduu_encrypt(String s)
-	{
+	public static String aduu_encrypt(String s) {
 		byte[] sb = s.getBytes();
 		String s1 = null;
-		char[] ac = { '9', '0', '6', 'e', 'd', 'c', '1', 'b', '3', '8', '7', '2', 'a', '5', 'f', '4' };
-		
-		try
-		{
+		char[] ac = { '9', '0', '6', 'e', 'd', 'c', '1', 'b', '3', '8', '7',
+				'2', 'a', '5', 'f', '4' };
+
+		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			md.update(sb);
 			byte[] abyte1 = md.digest();
 			char[] ac1 = new char[32];
 			int l = 0;
-			
+
 			for (int i1 = 0; i1 < 16; i1++) {
 				byte byte0 = abyte1[i1];
 				ac1[(l++)] = ac[(byte0 >>> 4 & 0xF)];
@@ -342,19 +323,18 @@ public class AduuInterfaceAdapter extends AdViewAdapter{
 			}
 			s1 = new String(ac1);
 		} catch (NoSuchAlgorithmException e) {
-			Log.i(AdViewUtil.ADVIEW, e.toString());
+			AdViewUtil.logError("", e);
 		}
 
 		return s1;
 	}
 
-
-	private ArrayList<NameValuePair> getADHttpParams()
-	{
+	private ArrayList<NameValuePair> getADHttpParams() {
 		String timestamp = String.valueOf(System.currentTimeMillis());
-		String imei = AdViewUtil.getImei(mContext);	
-		String token = aduu_encrypt("adview_androidm643b0lz8sph7ka0" + timestamp + imei);
-		String deviceid = new String (adViewLayout.adViewManager.mDeviceid);
+		String imei = AdViewUtil.getImei(mContext);
+		String token = aduu_encrypt("adview_androidm643b0lz8sph7ka0"
+				+ timestamp + imei);
+		String deviceid = new String(adViewLayout.adViewManager.mDeviceid);
 		String uuid = deviceid.replace(":", "") + "00";
 		String imsi = AdViewUtil.getImsi(mContext);
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -368,14 +348,16 @@ public class AduuInterfaceAdapter extends AdViewAdapter{
 		params.add(new BasicNameValuePair("imei", imei));
 		params.add(new BasicNameValuePair("imsi", imsi));
 		params.add(new BasicNameValuePair("brand", Build.MODEL));
-		params.add(new BasicNameValuePair("platform", "android-" + Build.VERSION.RELEASE));		
-		params.add(new BasicNameValuePair("nettype", AdViewUtil.getAduuNetworkType(mContext)));
+		params.add(new BasicNameValuePair("platform", "android-"
+				+ Build.VERSION.RELEASE));
+		params.add(new BasicNameValuePair("nettype", AdViewUtil
+				.getAduuNetworkType(mContext)));
 		String macAdd = AdViewUtil.getIDByMAC(mContext);
 		if (!TextUtils.isEmpty(macAdd))
 			macAdd = macAdd.replace(":", "");
 		else {
 			macAdd = "000000000000";
-		}	
+		}
 		params.add(new BasicNameValuePair("macaddr", macAdd));
 		int[] wAndH = AdViewUtil.getWidthAndHeight(mContext);
 		String screen = "";
@@ -388,15 +370,15 @@ public class AduuInterfaceAdapter extends AdViewAdapter{
 		params.add(new BasicNameValuePair("appid", appid));
 
 		return params;
-	}  
+	}
 
-	public ArrayList<NameValuePair> getEvtHttpParams(String evttype)
-	{
+	public ArrayList<NameValuePair> getEvtHttpParams(String evttype) {
 		String timestamp = String.valueOf(System.currentTimeMillis());
-		String token = aduu_encrypt("adview_androidm643b0lz8sph7ka0" + timestamp);
-		String deviceid = new String (adViewLayout.adViewManager.mDeviceid);
+		String token = aduu_encrypt("adview_androidm643b0lz8sph7ka0"
+				+ timestamp);
+		String deviceid = new String(adViewLayout.adViewManager.mDeviceid);
 		String uuid = deviceid.replace(":", "") + "00";
-		
+
 		ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("sourceid", "adview_android"));
 		params.add(new BasicNameValuePair("token", token));
@@ -404,80 +386,80 @@ public class AduuInterfaceAdapter extends AdViewAdapter{
 		params.add(new BasicNameValuePair("evttime", timestamp));
 		params.add(new BasicNameValuePair("reqid", aduuAD.getReqid()));
 		params.add(new BasicNameValuePair("evttype", evttype));
-		params.add(new BasicNameValuePair("nettype", AdViewUtil.getAduuNetworkType(mContext)));
+		params.add(new BasicNameValuePair("nettype", AdViewUtil
+				.getAduuNetworkType(mContext)));
 		params.add(new BasicNameValuePair("appid", appid));
 		params.add(new BasicNameValuePair("adid", aduuAD.getAdid()));
-		
+
 		return params;
 	}
 
-
-	public void requestAduuAD(AdViewLayout adViewLayout, Ration rat)
-	{
+	public void requestAduuAD(AdViewLayout adViewLayout, Ration rat) {
 		HttpParams httpParameters = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParameters, 20000);
 		HttpConnectionParams.setSoTimeout(httpParameters, 20000);
 		HttpClient httpClient = new DefaultHttpClient(httpParameters);
 		HttpPost httpPost = new HttpPost(ADUU_ADURL);
-		ArrayList <NameValuePair>params = getADHttpParams();
-		
-		try
-		{
+		ArrayList<NameValuePair> params = getADHttpParams();
+
+		try {
 			httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 			HttpResponse httpResponse = httpClient.execute(httpPost);
-			
-			if (httpResponse.getStatusLine().getStatusCode() == 200)
-			{
-				String strResult = EntityUtils.toString(httpResponse.getEntity());
+
+			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+				String strResult = EntityUtils.toString(httpResponse
+						.getEntity());
 				if (TextUtils.isEmpty(strResult)) {
-					Log.i(AdViewUtil.ADVIEW, "aduu return is null");
+					AdViewUtil.logInfo("aduu return is null");
 					return;
 				}
 				parseJson(strResult);
 
-			 
 				if (aduuAD != null) {
 					String html = "<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' /><style type='text/css'>*{padding:0px;margin:0px;} a:link{text-decoration:none;}</style>";
 					if (aduuAD.getShowtype().equals("1"))
-						html = html + 
-						String.format("<a href='www.adview.cn'><div style='width:320px;height:50px;background-image:url(%s);background-repeat :repeat-x';><img style='width:44px;height:44px;float:left;padding:3px' src='%s'></img> <p style='line-height:50px;color:#000;'>%s</p></div></a>", 
-						new Object[] { aduuAD.getBg(), aduuAD.getIcon(), aduuAD.getText() });
+						html = html
+								+ String.format(
+										"<a href='www.adview.cn'><div style='width:320px;height:50px;background-image:url(%s);background-repeat :repeat-x';><img style='width:44px;height:44px;float:left;padding:3px' src='%s'></img> <p style='line-height:50px;color:#000;'>%s</p></div></a>",
+										new Object[] { aduuAD.getBg(),
+												aduuAD.getIcon(),
+												aduuAD.getText() });
 					else if (aduuAD.getShowtype().equals("2"))
-						html = html + 
-						String.format("<a href='www.adview.cn'><img style='width:320px;height:50px;' src='%s'></img></a>", 
-						new Object[] { aduuAD.getPic() });
+						html = html
+								+ String.format(
+										"<a href='www.adview.cn'><img style='width:320px;height:50px;' src='%s'></img></a>",
+										new Object[] { aduuAD.getPic() });
 					else if (aduuAD.getShowtype().equals("4"))
-						html = html + 
-						String.format("<a href='www.adview.cn'><div style='width:320px;height:50px; background-color:#FFF'><p style='line-height:50px;color:#000;'>%s</p></div></a>", 
-						new Object[] { aduuAD.getText() });
+						html = html
+								+ String.format(
+										"<a href='www.adview.cn'><div style='width:320px;height:50px; background-color:#FFF'><p style='line-height:50px;color:#000;'>%s</p></div></a>",
+										new Object[] { aduuAD.getText() });
 					else {
 						html = null;
 					}
 					if (html != null) {
-						adViewLayout.handler.post(new DisplayAduuADRunnable(this, html));
+						adViewLayout.handler.post(new DisplayAduuADRunnable(
+								this, html));
 					} else {
 						aduuAD = null;
-						Log.i(AdViewUtil.ADVIEW, "html is null");
+						AdViewUtil.logInfo("html is null");
 					}
-				} 
-       		} 
-			else 
-			{
-				Log.i(AdViewUtil.ADVIEW, "aduu request Fail at StatusCode:" + 
-					httpResponse.getStatusLine().getStatusCode());
+				}
+			} else {
+				AdViewUtil.logInfo("aduu request Fail at StatusCode:"
+						+ httpResponse.getStatusLine().getStatusCode());
 			}
 		} catch (Exception e) {
-			Log.i(AdViewUtil.ADVIEW, e.toString());
+			AdViewUtil.logError("", e);
 		}
 	}
 
-	public void displayAduuAD(String html) 
-	{
-		Activity activity = (Activity)adViewLayout.activityReference.get();
+	public void displayAduuAD(String html) {
+		Activity activity = (Activity) adViewLayout.activityReference.get();
 		if (activity == null) {
 			return;
 		}
-		
+
 		WebView bannerView = new WebView(activity);
 		bannerView.setBackgroundColor(Color.alpha(0));
 		bannerView.setWebViewClient(new webViewClient());
@@ -490,161 +472,162 @@ public class AduuInterfaceAdapter extends AdViewAdapter{
 		adViewLayout.reportImpression();
 		adViewLayout.activeRation = adViewLayout.nextRation;
 		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-			 (int)this.adWidth, (int)this.adHeight);
+				(int) this.adWidth, (int) this.adHeight);
 		layoutParams.addRule(13, -1);
 
 		adViewLayout.addView(bannerView, layoutParams);
 		adViewLayout.adViewManager.resetRollover();
 		adViewLayout.rotateThreadedDelayed();
 
-		adViewLayout.scheduler.schedule(new SendAduuCountRunnable(AduuInterfaceAdapter.this, "1"), 2, TimeUnit.SECONDS);
+		adViewLayout.scheduler.schedule(new SendAduuCountRunnable(
+				AduuInterfaceAdapter.this, "1"), 2, TimeUnit.SECONDS);
 	}
 
-public class webViewClient extends WebViewClient
-{
-String url2="";
-private webViewClient()
-{
-}
- 
-public boolean shouldOverrideUrlLoading(WebView view, String url)
-{
-	AdViewLayout adViewLayout = (AdViewLayout)AduuInterfaceAdapter.this.adViewLayoutReference.get();
+	public class webViewClient extends WebViewClient {
+		String url2 = "";
 
-	String clickcontent = AduuInterfaceAdapter.this.aduuAD.getClickcontent();
-	String clicktype = AduuInterfaceAdapter.this.aduuAD.getClicktype();
-
-	if (TextUtils.isEmpty(clicktype) || TextUtils.isEmpty(clickcontent))
-	{
-		return false;
-	}
-
-	if (clicktype.equals("2")==false)
-	{
-		adViewLayout.scheduler.schedule(new SendAduuCountRunnable(AduuInterfaceAdapter.this, "2"), 2, TimeUnit.SECONDS);
-		adViewLayout.reportClick();
-	}
-	
-	if (clicktype.equals("1")) 
-	{
-		//Intent i = new Intent(Intent.ACTION_VIEW);
-		//i.setData(Uri.parse(clickcontent));
-		//mContext.startActivity(i);
-		Intent intent = new Intent(mContext, AdviewWebView.class);
-		Bundle bundle = new Bundle();
-		bundle.putString("adviewurl", clickcontent);
-		intent.putExtras(bundle);
-		mContext.startActivity(intent);			
-	}
-	else if (clicktype.equals("2")) 
-	{
-		if (clickcontent.toLowerCase().endsWith(".apk")) {
-			//Intent intent = new Intent(mContext, DownloadService.class);
-			//intent.putExtra("adview_url",clickcontent);
-			//mContext.startService(intent);	
-			String title = "下载提示";
-			String message = "确定要下载应用吗?";
-			String yesBtn = "确定";
-			String noBtn = "取消";
-			url2 = clickcontent;
-			
-	           	AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-			builder.setMessage(message)
-			.setTitle(title)
-			.setPositiveButton(yesBtn, 
-			new DialogInterface.OnClickListener()
-				{
-					public void onClick(DialogInterface dialog, int which)
-					{
-						//AduuInterfaceAdapter.this.adViewLayout.scheduler.execute(new SendAduuCountRunnable(AduuInterfaceAdapter.this, "2"));
-						AduuInterfaceAdapter.this.adViewLayout.scheduler.schedule(new SendAduuCountRunnable(AduuInterfaceAdapter.this, "2"), 2, TimeUnit.SECONDS);
-						AduuInterfaceAdapter.this.adViewLayout.reportClick();
-						
-						Intent intent = new Intent(mContext, DownloadService.class);
-						intent.putExtra("adview_url",url2);
-						mContext.startService(intent);	
-					}
-				}).setNegativeButton(noBtn, 
-			new DialogInterface.OnClickListener()
-				{
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-					}
-				});
-			builder.create();
-			builder.show();			
+		private webViewClient() {
 		}
-	}
-	else if (clicktype.equals("3")) 
-	{
-		try {
-			Intent intent = new Intent("android.intent.action.DIAL", Uri.parse("tel:" + clickcontent));
-			intent.addFlags(268435456);
-			mContext.startActivity(intent);
-		} catch (Exception e) {
-			Log.i(AdViewUtil.ADVIEW, e.toString());
-		}		
-	}
-	else if (clicktype.equals("4")) 
-	{
-		try {
-			String[] sms = clickcontent.split(",");
-			if (sms.length >= 2) {
-				Intent intent = new Intent("android.intent.action.SENDTO", Uri.parse("smsto:" + sms[0]));
-				intent.putExtra("sms_body", sms[1]);
-				mContext.startActivity(intent);
+
+		public boolean shouldOverrideUrlLoading(WebView view, String url) {
+			AdViewLayout adViewLayout = (AdViewLayout) AduuInterfaceAdapter.this.adViewLayoutReference
+					.get();
+
+			String clickcontent = AduuInterfaceAdapter.this.aduuAD
+					.getClickcontent();
+			String clicktype = AduuInterfaceAdapter.this.aduuAD.getClicktype();
+
+			if (TextUtils.isEmpty(clicktype) || TextUtils.isEmpty(clickcontent)) {
+				return false;
 			}
-		} catch (Exception e) {
-			Log.i(AdViewUtil.ADVIEW, e.toString());
-		}		
-	}
-	
-	return true;
+
+			if (clicktype.equals("2") == false) {
+				adViewLayout.scheduler.schedule(new SendAduuCountRunnable(
+						AduuInterfaceAdapter.this, "2"), 2, TimeUnit.SECONDS);
+				adViewLayout.reportClick();
+			}
+
+			if (clicktype.equals("1")) {
+				// Intent i = new Intent(Intent.ACTION_VIEW);
+				// i.setData(Uri.parse(clickcontent));
+				// mContext.startActivity(i);
+				Intent intent = new Intent(mContext, AdviewWebView.class);
+				Bundle bundle = new Bundle();
+				bundle.putString("adviewurl", clickcontent);
+				intent.putExtras(bundle);
+				mContext.startActivity(intent);
+			} else if (clicktype.equals("2")) {
+				if (clickcontent.toLowerCase().endsWith(".apk")) {
+					// Intent intent = new Intent(mContext,
+					// DownloadService.class);
+					// intent.putExtra("adview_url",clickcontent);
+					// mContext.startService(intent);
+
+					String title = "涓嬭浇鎻愮ず";
+					String message = "纭畾瑕佷笅杞藉簲鐢ㄥ悧?";
+					String yesBtn = "纭畾";
+					String noBtn = "鍙栨秷";
+					url2 = clickcontent;
+
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							mContext);
+					builder.setMessage(message)
+							.setTitle(title)
+							.setPositiveButton(yesBtn,
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+											// AduuInterfaceAdapter.this.adViewLayout.scheduler.execute(new
+											// SendAduuCountRunnable(AduuInterfaceAdapter.this,
+											// "2"));
+											AduuInterfaceAdapter.this.adViewLayout.scheduler
+													.schedule(
+															new SendAduuCountRunnable(
+																	AduuInterfaceAdapter.this,
+																	"2"), 2,
+															TimeUnit.SECONDS);
+											AduuInterfaceAdapter.this.adViewLayout
+													.reportClick();
+
+											Intent intent = new Intent(
+													mContext,
+													DownloadService.class);
+											intent.putExtra("adview_url", url2);
+											mContext.startService(intent);
+										}
+									})
+							.setNegativeButton(noBtn,
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog, int id) {
+											dialog.cancel();
+										}
+									});
+					builder.create();
+					builder.show();
+				}
+			} else if (clicktype.equals("3")) {
+				try {
+					Intent intent = new Intent("android.intent.action.DIAL",
+							Uri.parse("tel:" + clickcontent));
+					intent.addFlags(268435456);
+					mContext.startActivity(intent);
+				} catch (Exception e) {
+					AdViewUtil.logError("", e);
+				}
+			} else if (clicktype.equals("4")) {
+				try {
+					String[] sms = clickcontent.split(",");
+					if (sms.length >= 2) {
+						Intent intent = new Intent(
+								"android.intent.action.SENDTO",
+								Uri.parse("smsto:" + sms[0]));
+						intent.putExtra("sms_body", sms[1]);
+						mContext.startActivity(intent);
+					}
+				} catch (Exception e) {
+					AdViewUtil.logError("", e);
+				}
+			}
+
+			return true;
+
+		}
+
+	}
 
 }
 
-}
-
-
-
-}
-
-
-class DisplayAduuADRunnable implements Runnable
-{
+class DisplayAduuADRunnable implements Runnable {
 	private AduuInterfaceAdapter aduuADAdapter;
 	String html;
-	 
-	public DisplayAduuADRunnable(AduuInterfaceAdapter aduuADAdapter, String htm)
-	{
+
+	public DisplayAduuADRunnable(AduuInterfaceAdapter aduuADAdapter, String htm) {
 		this.aduuADAdapter = aduuADAdapter;
 		html = htm;
 	}
 
 	public void run() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "DisplayAduuADRunnable");
-		
+		AdViewUtil.logInfo("DisplayAduuADRunnable");
+
 		aduuADAdapter.displayAduuAD(html);
 	}
 }
 
-class SendAduuCountRunnable implements Runnable
-{
+class SendAduuCountRunnable implements Runnable {
 	String evttype;
 	AduuInterfaceAdapter aduuADAdapter;
-	
-	public SendAduuCountRunnable(AduuInterfaceAdapter aduuADAdapter, String evttype)
-	{
+
+	public SendAduuCountRunnable(AduuInterfaceAdapter aduuADAdapter,
+			String evttype) {
 		this.aduuADAdapter = aduuADAdapter;
 		this.evttype = evttype;
 	}
 
-	public void run()
-	{
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "SendAduuCountRunnable");
-		
+	public void run() {
+		AdViewUtil.logInfo("SendAduuCountRunnable");
+
 		HttpParams httpParameters = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParameters, 20000);
 		HttpConnectionParams.setSoTimeout(httpParameters, 20000);
@@ -652,25 +635,23 @@ class SendAduuCountRunnable implements Runnable
 
 		HttpPost httpPost = new HttpPost(aduuADAdapter.ADUU_EVTURL);
 
-		ArrayList <NameValuePair> params = aduuADAdapter.getEvtHttpParams(evttype);
-		try
-		{
+		ArrayList<NameValuePair> params = aduuADAdapter
+				.getEvtHttpParams(evttype);
+		try {
 			httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
 
 			HttpResponse httpResponse = httpClient.execute(httpPost);
 
 			if (httpResponse.getStatusLine().getStatusCode() == 200) {
-				String strResult = EntityUtils.toString(httpResponse.getEntity());
-				if(AdViewTargeting.getRunMode()==RunMode.TEST)
-					Log.d(AdViewUtil.ADVIEW, "aduu Result="+strResult);
+				String strResult = EntityUtils.toString(httpResponse
+						.getEntity());
+				AdViewUtil.logInfo("aduu Result=" + strResult);
+			} else {
+				AdViewUtil.logDebug("aduu send count StatusCode="
+						+ httpResponse.getStatusLine().getStatusCode());
 			}
-			else
-			{
-				Log.d(AdViewUtil.ADVIEW, "aduu send count StatusCode="+httpResponse.getStatusLine().getStatusCode());
-			}
-		}
-		catch (Exception e) {
-			Log.i(AdViewUtil.ADVIEW, e.toString());
+		} catch (Exception e) {
+			AdViewUtil.logError("", e);
 		}
 	}
 }
@@ -678,30 +659,26 @@ class SendAduuCountRunnable implements Runnable
 class FetchAduuADRunnable implements Runnable {
 	private AduuInterfaceAdapter aduuADAdapter;
 	private Ration ration;
-	
-	public FetchAduuADRunnable(AduuInterfaceAdapter aduuADAdapter, Ration ration)
-	{
-	       this.aduuADAdapter = aduuADAdapter;
-	       this.ration = ration;
+
+	public FetchAduuADRunnable(AduuInterfaceAdapter aduuADAdapter, Ration ration) {
+		this.aduuADAdapter = aduuADAdapter;
+		this.ration = ration;
 	}
-	 
+
 	public void run() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "FetchAduuADRunnable");
+		AdViewUtil.logInfo("FetchAduuADRunnable");
 
-	       AdViewLayout adViewLayout = this.aduuADAdapter.adViewLayoutReference.get();
-	       if (adViewLayout == null) {
+		AdViewLayout adViewLayout = this.aduuADAdapter.adViewLayoutReference
+				.get();
+		if (adViewLayout == null) {
 			return;
-	       }
+		}
 
-		aduuADAdapter.requestAduuAD(adViewLayout, ration);	   
-	       if (aduuADAdapter.aduuAD == null)
-	       {
-			if(AdViewTargeting.getRunMode()==RunMode.TEST)
-				Log.d(AdViewUtil.ADVIEW, "FetchAduuAD failure");
-			
-	       	adViewLayout.adViewManager.resetRollover_pri();
+		aduuADAdapter.requestAduuAD(adViewLayout, ration);
+		if (aduuADAdapter.aduuAD == null) {
+			AdViewUtil.logInfo("FetchAduuAD failure");
+			adViewLayout.adViewManager.resetRollover_pri();
 			adViewLayout.rotateThreadedPri();
-	       }	       
+		}
 	}
 }

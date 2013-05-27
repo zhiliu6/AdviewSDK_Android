@@ -4,16 +4,13 @@ import jp.adlantis.android.AdRequestListener;
 import jp.adlantis.android.AdRequestNotifier;
 import jp.adlantis.android.AdlantisView;
 import jp.adlantis.android.utils.AdlantisUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.RelativeLayout;
 
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
-import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
 
 public class AdlantisAdapter extends AdViewAdapter implements AdRequestListener{
 	AdlantisView adView;
@@ -40,8 +37,7 @@ public class AdlantisAdapter extends AdViewAdapter implements AdRequestListener{
 	
 	@Override
 	public void handle() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into Adlantis");
+		AdViewUtil.logInfo("Into Adlantis");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 	 		return;
@@ -56,9 +52,8 @@ public class AdlantisAdapter extends AdViewAdapter implements AdRequestListener{
 
 	@Override
 	public void onFailedToReceiveAd(AdRequestNotifier arg0) {
-		 if(AdViewTargeting.getRunMode()==RunMode.TEST){
-			 Log.i(AdViewUtil.ADVIEW, "Adlantis  fauire");
-		 }
+		 
+		 AdViewUtil.logInfo("Adlantis  fauire");
 		adView.removeRequestListener(this);
 		AdViewLayout adviewlayout=adViewLayoutReference.get();
 		if(adviewlayout==null){
@@ -70,8 +65,7 @@ public class AdlantisAdapter extends AdViewAdapter implements AdRequestListener{
 
 	@Override
 	public void onReceiveAd(AdRequestNotifier arg0) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "Adlantis success");
+		AdViewUtil.logInfo("Adlantis success");
 		  adView.removeRequestListener(this);
 		  AdViewLayout adViewLayout = adViewLayoutReference.get();
 		  if(adViewLayout == null) {

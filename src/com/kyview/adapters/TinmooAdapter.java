@@ -1,16 +1,15 @@
 package com.kyview.adapters;
 
 import android.app.Activity;
-import android.util.Log;
 
+import com.ignitevision.android.ads.AdManager;
+import com.ignitevision.android.ads.AdView;
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
 import com.kyview.AdViewTargeting;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
-import com.ignitevision.android.ads.AdManager;
-import com.ignitevision.android.ads.AdView;
 
 public class TinmooAdapter extends AdViewAdapter{
 
@@ -37,8 +36,7 @@ public class TinmooAdapter extends AdViewAdapter{
 	@Override
 	public void handle() {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into Tinmoo");
+		AdViewUtil.logInfo("Into Tinmoo");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
  		if(adViewLayout == null) {
  			return;

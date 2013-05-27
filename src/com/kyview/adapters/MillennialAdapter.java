@@ -10,13 +10,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
 import com.kyview.AdViewTargeting;
 import com.kyview.AdViewTargeting.Gender;
-import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
 import com.millennialmedia.android.MMAd;
@@ -123,21 +121,17 @@ public class MillennialAdapter extends AdViewAdapter implements RequestListener 
 	@Override
 	public void MMAdOverlayLaunched(MMAd arg0) {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-		Log.d(AdViewUtil.ADVIEW, "Millennial Ad Overlay Launched" );
+		AdViewUtil.logInfo("Millennial Ad Overlay Launched");
 	}
 
 	@Override
 	public void MMAdRequestIsCaching(MMAd arg0) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-		Log.d(AdViewUtil.ADVIEW, "MMAdRequestIsCaching" );
-		
+		AdViewUtil.logInfo("MMAdRequestIsCaching");
 	}
 
 	@Override
 	public void requestCompleted(MMAd arg0) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Millennial success");
+		AdViewUtil.logInfo("Millennial success");
 		arg0.setListener(null);
 
 	 	AdViewLayout adViewLayout = adViewLayoutReference.get();
@@ -153,8 +147,7 @@ public class MillennialAdapter extends AdViewAdapter implements RequestListener 
 
 	@Override
 	public void requestFailed(MMAd arg0, MMException arg1) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Millennial failure");
+		AdViewUtil.logInfo("Millennial failure");
 		arg0.setListener(null);
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 	 	if(adViewLayout == null) {

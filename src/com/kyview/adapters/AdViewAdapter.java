@@ -5,18 +5,13 @@ package com.kyview.adapters;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import android.util.Log;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
-
-import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 public abstract class AdViewAdapter {
@@ -378,16 +373,14 @@ public abstract class AdViewAdapter {
 	}
 */	
 	private static AdViewAdapter unknownAdNetwork(AdViewLayout adViewLayout, Ration ration) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.w(AdViewUtil.ADVIEW, "Unsupported ration type: " + ration.type);
+		AdViewUtil.logInfo("Unsupported ration type: " + ration.type);
 		return null;
 	}
 	
 	public static void handleOne(AdViewLayout adViewLayout,Ration ration)  {
       adapter = AdViewAdapter.getAdapter(adViewLayout, ration);
       if(adapter != null) {
-    	  if(AdViewTargeting.getRunMode()==RunMode.TEST)
-    		  Log.d(AdViewUtil.ADVIEW, "Valid adapter, calling handle()");
+    		AdViewUtil.logInfo("Valid adapter, calling handle()");
          adapter.handle();
       }
       else {

@@ -1,33 +1,14 @@
 package com.kyview.adapters;
 
-import android.app.Activity;
-import android.graphics.Color;
-import android.util.Log;
-
-import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
-import com.kyview.AdviewWebView;
-import com.kyview.AdViewTargeting.RunMode;
-import com.kyview.obj.Extra;
-import com.kyview.obj.Ration;
-import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
-import com.kyview.util.MD5;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.concurrent.TimeUnit;
-import android.webkit.WebView;
-import android.widget.RelativeLayout;
-import android.content.Context;
-import android.content.Intent;
-import android.widget.TextView;
-import android.widget.ImageView;
-
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -38,10 +19,29 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-import java.io.StringReader;
-import java.net.URLEncoder;
-import android.webkit.WebSettings;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.kyview.AdViewAdRegistry;
+import com.kyview.AdViewLayout;
+import com.kyview.AdViewTargeting;
+import com.kyview.AdViewTargeting.RunMode;
+import com.kyview.AdviewWebView;
+import com.kyview.obj.Extra;
+import com.kyview.obj.Ration;
+import com.kyview.util.AdViewUtil;
+import com.kyview.util.MD5;
 
 
 class InmobiAD
@@ -134,9 +134,7 @@ public class InmobiInterfaceAdapter extends AdViewAdapter{
 
 	@Override
 	public void handle() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into InmobiInterfaceAdapter");
-		
+		AdViewUtil.logInfo("Into InmobiInterfaceAdapter");
 		adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 			return;
@@ -184,7 +182,7 @@ public class InmobiInterfaceAdapter extends AdViewAdapter{
 		} 
 		catch (Exception e)
 		{
-			Log.e(AdViewUtil.ADVIEW, "encodeString", e);
+			AdViewUtil.logError("encodeString", e);
 		}
 		return str;
 	}
@@ -205,7 +203,7 @@ public class InmobiInterfaceAdapter extends AdViewAdapter{
 	public void click()
 	{
 		if ((inmobiAD == null) || (inmobiAD.getAdUrl() == null)) {
-			Log.d(AdViewUtil.ADVIEW, "Url is null");
+			AdViewUtil.logInfo("Url is null");
 			return;
 		}
 
@@ -229,7 +227,6 @@ public class InmobiInterfaceAdapter extends AdViewAdapter{
 			mAndroidId = android.provider.Settings.System.getString(mContext.getContentResolver(),
 			android.provider.Settings.System.ANDROID_ID);
 		}
-		//Log.i(AdViewUtil.ADVIEW, "mAndroidId:" + mAndroidId);
 		return mAndroidId;
 	}
 
@@ -266,8 +263,7 @@ public class InmobiInterfaceAdapter extends AdViewAdapter{
 		String.format("mk-siteid=%s&h-user-agent=%s&u-id-map=%s&u-key-ver=0&d-localization=%s&d-netType=%s&mk-version=%s&ref-tag=%s&format=%s&d-device-screen-density=%3.1f&d-device-screen-size=%s", new Object[] { //&tp=c_adview
 			mkSiteid, hUserAagent, uId, dLocalization, 
 			dNetType, mkVersion, refTag, format,adViewLayout.mDensity, adViewLayout.resolution});
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)	
-			Log.i(AdViewUtil.ADVIEW, "request parameters:" + paramsStr);
+		AdViewUtil.logInfo("request parameters:" + paramsStr);
 		try {
 			String host;
 			if(AdViewTargeting.getRunMode()==RunMode.TEST)
@@ -288,13 +284,13 @@ public class InmobiInterfaceAdapter extends AdViewAdapter{
 				inmobiAd = getInmobiADByXML(EntityUtils.toString(httpResponse.getEntity(), "utf-8"));
 			else
 			{
-				Log.i(AdViewUtil.ADVIEW, "getStatusCode=" + httpResponse.getStatusLine().getStatusCode());
+				AdViewUtil.logInfo("getStatusCode=" + httpResponse.getStatusLine().getStatusCode());
 				return null;
 			}
 		}
 		catch (Exception e)
 		{
-			Log.e(AdViewUtil.ADVIEW, "requestInmobiAD", e);
+			AdViewUtil.logError("requestInmobiAD", e);
 		}
 
 		return inmobiAd;
@@ -304,29 +300,27 @@ public class InmobiInterfaceAdapter extends AdViewAdapter{
 	{
 		InmobiAD inmobiAD = null;
 
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)	
-			Log.i(AdViewUtil.ADVIEW, "getInmobiADByXML, xml="+xmlStr);
-		
+		AdViewUtil.logInfo("getInmobiADByXML, xml="+xmlStr);
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		try {
 			DocumentBuilder builder = factory.newDocumentBuilder();
 			Document doc = builder.parse(new InputSource(new StringReader(xmlStr)));
 
 			if (doc == null) {
-				Log.w(AdViewUtil.ADVIEW, "xml is null");
+				AdViewUtil.logInfo("xml is null");
 				return null;
 			}
 
 			Element root = doc.getDocumentElement();
 			if (root == null) {
-				Log.w(AdViewUtil.ADVIEW, "invalid xml");
+				AdViewUtil.logInfo("invalid xml");
 				return null;
 			}
 			NodeList nodeList = root.getElementsByTagName("Ad");
 
 			if ((nodeList == null) || (nodeList.getLength() < 1))
 			{
-				Log.w(AdViewUtil.ADVIEW, "list is null");
+				AdViewUtil.logInfo("list is null");
 				return null;
 			}
 
@@ -382,7 +376,7 @@ public class InmobiInterfaceAdapter extends AdViewAdapter{
 			is.close();
 			return d;
 		} catch (Exception e) {
-			Log.e(AdViewUtil.ADVIEW, "fetchImage: ", e);
+			AdViewUtil.logError("fetchImage:", e);
 		}
 		return null;
 	}
@@ -394,15 +388,12 @@ public class InmobiInterfaceAdapter extends AdViewAdapter{
 			return;
 		}
 
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Inmobi AD type="+inmobiAD.getAdsType());
-					
+		AdViewUtil.logInfo("Inmobi AD type="+inmobiAD.getAdsType());
 		switch (inmobiAD.getAdsType()) {
 		case 1:
 			if (inmobiAD.getAdImg() == null)
 			{
-				Log.d(AdViewUtil.ADVIEW, "image is null");
-				
+				AdViewUtil.logInfo("image is null");
 				adViewLayout.adViewManager.resetRollover_pri();
 				adViewLayout.rotateThreadedPri();
 			
@@ -430,8 +421,7 @@ public class InmobiInterfaceAdapter extends AdViewAdapter{
 		case 2:
 			if (inmobiAD.getLinkText() == null)
 			{
-				Log.d(AdViewUtil.ADVIEW, "text is null");
-				
+				AdViewUtil.logInfo("text is null");
 				adViewLayout.adViewManager.resetRollover_pri();
 				adViewLayout.rotateThreadedPri();
 			
@@ -482,9 +472,7 @@ class DisplayInmobiADRunnable implements Runnable
 	}
 
 	public void run() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "DisplayInmobiADRunnable");
-		
+		AdViewUtil.logInfo("DisplayInmobiADRunnable");
 		this.inmobiADAdapter.displayInmobiAD();
 	}
 }
@@ -500,9 +488,7 @@ class FetchInmobiADRunnable implements Runnable {
 	}
 	 
 	public void run() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "FetchInmobiADRunnable");
-		
+		AdViewUtil.logInfo("FetchInmobiADRunnable");
 	       AdViewLayout adViewLayout = this.inmobiADAdapter.adViewLayoutReference.get();
 	       if (adViewLayout == null) {
 			return;
@@ -515,9 +501,7 @@ class FetchInmobiADRunnable implements Runnable {
 	       }
 		else
 		{
-			if(AdViewTargeting.getRunMode()==RunMode.TEST)
-				Log.d(AdViewUtil.ADVIEW, "FetchInmobiAD failure");
-			
+			AdViewUtil.logInfo("FetchInmobiAD failure");
 	       	adViewLayout.adViewManager.resetRollover_pri();
 			adViewLayout.rotateThreadedPri();
 	       }	

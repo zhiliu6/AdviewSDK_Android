@@ -1,15 +1,11 @@
 package com.kyview.adapters;
 
 import android.app.Activity;
-import android.util.Log;
 
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
-import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
-
 import com.wqmobile.sdk.WQAdEventListener;
 import com.wqmobile.sdk.WQAdView;
 
@@ -39,8 +35,7 @@ public class WqAdapter extends AdViewAdapter implements WQAdEventListener{
 	@Override
 	public void handle() {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
- 			Log.d(AdViewUtil.ADVIEW, "Into WQ");
+		AdViewUtil.logInfo("Into WQ");
  		AdViewLayout adViewLayout = adViewLayoutReference.get();
  		if(adViewLayout == null) {
  			return;
@@ -63,9 +58,7 @@ public class WqAdapter extends AdViewAdapter implements WQAdEventListener{
 
 	@Override
 	public void onWQAdReceived(WQAdView adView) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "onWQAdReceived");
-
+		AdViewUtil.logInfo("onWQAdReceived");
 		adView.setAdEventListener(null);
 		
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
@@ -80,8 +73,7 @@ public class WqAdapter extends AdViewAdapter implements WQAdEventListener{
 
 	@Override
 	public void onWQAdFailed(WQAdView adView) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "onWQAdFailed");
+		AdViewUtil.logInfo("onWQAdFailed");
 		adView.setAdEventListener(null);
 
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
@@ -94,15 +86,12 @@ public class WqAdapter extends AdViewAdapter implements WQAdEventListener{
 
 	@Override
 	public void onWQAdDismiss(WQAdView arg0) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.i(AdViewUtil.ADVIEW, "onWQAdDismiss");
+		AdViewUtil.logInfo("onWQAdDismiss");
 	}
 
 	@Override
 	public void onWQAdClick(WQAdView arg0) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.w(AdViewUtil.ADVIEW, "onAdClick");
-
+		AdViewUtil.logInfo("onAdClick");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 			return;

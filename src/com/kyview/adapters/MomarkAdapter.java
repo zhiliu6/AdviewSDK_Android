@@ -2,22 +2,16 @@ package com.kyview.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-//import android.graphics.Color;
-import android.util.Log;
-
 
 import com.donson.momark.AdManager;
-import com.donson.momark.view.view.AdView;
 import com.donson.momark.util.AdViewListener;
-
-
+import com.donson.momark.view.view.AdView;
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
 import com.kyview.AdViewLayout.ViewAdRunnable;
-import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
+//import android.graphics.Color;
 
 public class MomarkAdapter extends AdViewAdapter implements AdViewListener{
 	AdView adView;
@@ -52,8 +46,7 @@ public class MomarkAdapter extends AdViewAdapter implements AdViewListener{
 	public void handle() {
 		// TODO Auto-generated method stub
 		
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into Momark");
+		AdViewUtil.logInfo("Into Momark");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 			return;
@@ -70,10 +63,7 @@ public class MomarkAdapter extends AdViewAdapter implements AdViewListener{
 	@Override
 	public void onConnectFailed(AdView paramAdView) {
 		// TODO Auto-generated method stub
-		
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "Momark failure");
-	    
+		AdViewUtil.logInfo("Momark failure");
 		 paramAdView.setAdViewListener(null);
 
 		  AdViewLayout adViewLayout = adViewLayoutReference.get();
@@ -89,9 +79,7 @@ public class MomarkAdapter extends AdViewAdapter implements AdViewListener{
 	public void onAdViewSwitchedAd(AdView paramAdView) {
 		// TODO Auto-generated method stub
 	
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "Momark success");
-
+		AdViewUtil.logInfo("Momark success");
 		paramAdView.setAdViewListener(null);
 		
 		  AdViewLayout adViewLayout = adViewLayoutReference.get();

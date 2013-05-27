@@ -1,15 +1,12 @@
 package com.kyview.adapters;
 
 import android.app.Activity;
-import android.util.Log;
 
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
 import com.kyview.AdViewLayout.ViewAdRunnable;
-import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
 import com.zestadz.android.AdManager;
 import com.zestadz.android.ZestADZAdView;
 import com.zestadz.android.ZestADZAdView.ZestADZListener;
@@ -70,8 +67,7 @@ public class ZestADZAdapter extends AdViewAdapter implements ZestADZListener{
 	@Override
 	public void AdFailed(ZestADZAdView arg0) {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "ZestADZ fail");
+		AdViewUtil.logInfo("ZestADZ fail");
 		arg0.setListener(null);
 	    AdViewLayout adViewLayout = adViewLayoutReference.get();
 	    if (adViewLayout == null) {
@@ -84,8 +80,7 @@ public class ZestADZAdapter extends AdViewAdapter implements ZestADZListener{
 	@Override
 	public void AdReturned(ZestADZAdView arg0) {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "ZestADZ success");
+		AdViewUtil.logInfo("ZestADZ success");
 		arg0.setListener(null);
 	    AdViewLayout adViewLayout = adViewLayoutReference.get();
 	    if (adViewLayout == null) {

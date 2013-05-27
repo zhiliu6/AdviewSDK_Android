@@ -3,13 +3,11 @@ package com.kyview.adapters;
 
 import java.lang.reflect.Method;
 
-import android.util.Log;
-
+import com.kyview.AdViewAdRegistry;
+import com.kyview.AdViewInterface;
 import com.kyview.AdViewLayout;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewInterface;
-import com.kyview.AdViewAdRegistry;
 	
 public class EventAdapter extends AdViewAdapter {
 
@@ -31,8 +29,7 @@ public class EventAdapter extends AdViewAdapter {
 
 	@Override
 	public void handle() {
-		Log.d(AdViewUtil.ADVIEW, "Event notification request initiated");
-
+		AdViewUtil.logInfo("Event notification request initiated");
 	 	 AdViewLayout adViewLayout = adViewLayoutReference.get();
 	 	 if(adViewLayout == null) {
 	 		 return;
@@ -42,7 +39,7 @@ public class EventAdapter extends AdViewAdapter {
 		if(adViewLayout.adViewInterface != null) {
 			String key = this.ration.key;
 			if(key.length()<1) {
-				Log.w(AdViewUtil.ADVIEW, "Event key is null");
+				AdViewUtil.logInfo("Event key is null");
 				adViewLayout.rollover();
 				return;
 			}
@@ -55,14 +52,14 @@ public class EventAdapter extends AdViewAdapter {
 				listenerMethod = listenerClass.getMethod(method, (Class[])null);
 				listenerMethod.invoke(adViewLayout.adViewInterface, (Object[])null);
 			} catch (Exception e) { 
-				Log.e(AdViewUtil.ADVIEW, "Caught exception in handle()", e);
+				AdViewUtil.logError("Caught exception in handle()", e);
 				//adViewLayout.rollover();
 				adViewLayout.rotateThreadedPri();
 				return;
 			}
 		}
 		else {
-			Log.w(AdViewUtil.ADVIEW, "Event notification would be sent, but no interface is listening");
+			AdViewUtil.logInfo("Event notification would be sent, but no interface is listening");
 			adViewLayout.rollover();
 			return;
 		}

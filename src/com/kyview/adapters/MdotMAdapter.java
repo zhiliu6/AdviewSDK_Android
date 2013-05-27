@@ -1,21 +1,15 @@
 package com.kyview.adapters;
 
 import android.app.Activity;
-import android.util.Log;
+import android.graphics.Color;
 import android.view.View;
 
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
-
 import com.kyview.AdViewLayout.ViewAdRunnable;
-import com.kyview.AdViewTargeting.RunMode;
+import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
-
-import com.kyview.obj.Extra;
-import android.graphics.Color;
-
 import com.mdotm.android.ads.MdotMManager;
 import com.mdotm.android.ads.MdotMView;
 import com.mdotm.android.ads.MdotMView.MdotMActionListener;
@@ -46,8 +40,7 @@ public class MdotMAdapter extends AdViewAdapter implements MdotMActionListener {
 	@Override
 	public void handle() {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into MdotM");
+		AdViewUtil.logInfo("Into MdotM");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 			return;
@@ -75,9 +68,7 @@ public class MdotMAdapter extends AdViewAdapter implements MdotMActionListener {
 	@Override
 	public void adRequestCompletedSuccessfully(MdotMView adView) {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "MdotM success");
-
+		AdViewUtil.logInfo("MdotM success");
 		 adView.setListener(null);
 		 
 		  AdViewLayout adViewLayout = adViewLayoutReference.get();
@@ -95,9 +86,7 @@ public class MdotMAdapter extends AdViewAdapter implements MdotMActionListener {
 	@Override
 	public void adRequestFailed(MdotMView adView) {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "MdotM failure");
-	    
+		AdViewUtil.logInfo("MdotM failure");
 		  adView.setListener(null);
 
 		  AdViewLayout adViewLayout = adViewLayoutReference.get();

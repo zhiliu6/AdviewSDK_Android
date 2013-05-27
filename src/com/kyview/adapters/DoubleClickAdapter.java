@@ -1,7 +1,6 @@
 package com.kyview.adapters;
 
 import android.app.Activity;
-import android.util.Log;
 
 import com.google.ads.Ad;
 import com.google.ads.AdListener;
@@ -10,14 +9,11 @@ import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.AdSize;
 import com.google.ads.AdView;
 import com.google.ads.doubleclick.DfpAdView;
-
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
 import com.kyview.AdViewLayout.ViewAdRunnable;
-import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
 
 public class DoubleClickAdapter extends AdViewAdapter implements AdListener{
 
@@ -43,9 +39,7 @@ public class DoubleClickAdapter extends AdViewAdapter implements AdListener{
 
 	@Override
 	public void handle() {
-		 if(AdViewTargeting.getRunMode()==RunMode.TEST){
-			 Log.i(AdViewUtil.ADVIEW, "model is test");
-		 }
+		 AdViewUtil.logInfo("model is test");
 		 AdViewLayout adViewLayout=adViewLayoutReference.get();
 		 if(adViewLayout==null){
 			 return ;
@@ -68,14 +62,12 @@ public class DoubleClickAdapter extends AdViewAdapter implements AdListener{
 
 	@Override
 	public void onDismissScreen(Ad arg0) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "DoubleClick onDismissScreen");
+		AdViewUtil.logInfo("DoubleClick onDismissScreen");
 	}
 
 	@Override
 	public void onFailedToReceiveAd(Ad arg0, ErrorCode arg1) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "DoubleClick fail");
+		AdViewUtil.logInfo("DoubleClick fail");
 		arg0.setAdListener(null);
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if (adViewLayout == null) {
@@ -88,16 +80,12 @@ public class DoubleClickAdapter extends AdViewAdapter implements AdListener{
 
 	@Override
 	public void onLeaveApplication(Ad arg0) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "DoubleClick onLeaveApplication");
-		
+		AdViewUtil.logInfo("DoubleClick onLeaveApplication");
 	}
 
 	@Override
 	public void onPresentScreen(Ad arg0) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "AdMob onPresentScreen");
-
+		AdViewUtil.logInfo("AdMob onPresentScreen");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 			return;
@@ -107,9 +95,7 @@ public class DoubleClickAdapter extends AdViewAdapter implements AdListener{
 
 	@Override
 	public void onReceiveAd(Ad arg0) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "AdMob success");
-
+		AdViewUtil.logInfo("AdMob success");
 		arg0.setAdListener(null);	
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if (adViewLayout == null) {

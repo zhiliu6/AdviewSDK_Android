@@ -1,15 +1,12 @@
 package com.kyview.adapters;
 
 import android.app.Activity;
-import android.util.Log;
 
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
 import com.kyview.AdViewLayout.ViewAdRunnable;
-import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
 import com.smaato.SOMA.AdDownloader;
 import com.smaato.SOMA.AdListener;
 import com.smaato.SOMA.ErrorCode;
@@ -71,8 +68,7 @@ public class SmaatoAdapter extends AdViewAdapter implements AdListener{
 	@Override
 	public void onFailedToReceiveAd(AdDownloader arg0, ErrorCode arg1) {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Smaato fail");
+		AdViewUtil.logInfo("Smaato fail");
 		banner.removeAdListener(this);
 	    AdViewLayout adViewLayout = adViewLayoutReference.get();
 	    if (adViewLayout == null) {
@@ -86,8 +82,7 @@ public class SmaatoAdapter extends AdViewAdapter implements AdListener{
 	@Override
 	public void onReceiveAd(AdDownloader arg0, SOMAReceivedBanner arg1) {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Smaato success");
+		AdViewUtil.logInfo("Smaato success");
 		banner.removeAdListener(this);
 		
 	    AdViewLayout adViewLayout = adViewLayoutReference.get();

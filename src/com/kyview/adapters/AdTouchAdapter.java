@@ -1,20 +1,17 @@
 package com.kyview.adapters;
 
 import android.app.Activity;
-import android.util.Log;
 
-
-
+import com.energysource.szj.embeded.AdListener;
+import com.energysource.szj.embeded.AdManager;
+import com.energysource.szj.embeded.AdView;
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
 import com.kyview.AdViewTargeting;
 import com.kyview.AdViewTargeting.AdArea;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
-import com.energysource.szj.embeded.AdListener;
-import com.energysource.szj.embeded.AdManager;
-import com.energysource.szj.embeded.AdView;
 
 
 
@@ -47,8 +44,7 @@ public class AdTouchAdapter extends AdViewAdapter implements AdListener{
 	public void handle() {
 		// TODO Auto-generated method stub
 		
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into AdTouch");
+		AdViewUtil.logInfo("Into AdTouch");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if (adViewLayout == null) {
 			return;
@@ -81,18 +77,14 @@ public class AdTouchAdapter extends AdViewAdapter implements AdListener{
 	@Override
 	public void failedReceiveAd(AdView arg0) {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "AdTouch fail");
-		
+		AdViewUtil.logInfo("AdTouch fail");
 		AdManager.setAdListener(null);
 	}
 
 	@Override
 	public void receiveAd(AdView arg0) {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "AdTouch success");
-
+		AdViewUtil.logInfo("AdTouch success");
 		AdManager.setAdListener(null);
 
 		AdViewLayout adViewLayout = adViewLayoutReference.get();

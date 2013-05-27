@@ -1,20 +1,18 @@
 package com.kyview.adapters;
 
 import android.graphics.Color;
-import android.util.Log;
+import android.widget.RelativeLayout;
 
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
 import com.kyview.AdViewTargeting;
-//import com.kyview.AdViewLayout.ViewAdRunnable;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
-
 import com.wiyun.ad.AdView;
 import com.wiyun.ad.AdView.AdListener;
-import android.widget.RelativeLayout;
+//import com.kyview.AdViewLayout.ViewAdRunnable;
 
 
 public class WiyunAdapter extends AdViewAdapter implements AdListener{
@@ -43,8 +41,7 @@ public class WiyunAdapter extends AdViewAdapter implements AdListener{
 	
 	@Override
 	public void handle() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into Wiyun");
+		AdViewUtil.logInfo("Into Wiyun");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 			return;
@@ -82,9 +79,7 @@ public class WiyunAdapter extends AdViewAdapter implements AdListener{
 
 public void onAdClicked()
 {
-	if(AdViewTargeting.getRunMode()==RunMode.TEST)
-		Log.d(AdViewUtil.ADVIEW, "Wiyun onAdClicked");
-
+	AdViewUtil.logInfo("Wiyun onAdClicked");
 	AdViewLayout adViewLayout = adViewLayoutReference.get();
 	if(adViewLayout == null) {
 		return;
@@ -95,9 +90,7 @@ public void onAdClicked()
 
 public void onAdLoadFailed()
 {
-	if(AdViewTargeting.getRunMode()==RunMode.TEST)
-		Log.d(AdViewUtil.ADVIEW, "Wiyun onAdLoadFailed");	
-
+	AdViewUtil.logInfo("Wiyun onAdLoadFailed");
 	ad.setListener(null);
 
 	AdViewLayout adViewLayout = adViewLayoutReference.get();
@@ -110,9 +103,7 @@ public void onAdLoadFailed()
 
 public void onAdLoaded()
 {
-	if(AdViewTargeting.getRunMode()==RunMode.TEST)
-		Log.d(AdViewUtil.ADVIEW, "Wiyun onAdLoaded");
-
+	AdViewUtil.logInfo("Wiyun onAdLoaded");
 	ad.setListener(null);
 	
 	AdViewLayout adViewLayout = adViewLayoutReference.get();
@@ -129,27 +120,23 @@ public void onAdLoaded()
 
 public void onExitButtonClicked()
 {
-	if(AdViewTargeting.getRunMode()==RunMode.TEST)
-		 Log.d(AdViewUtil.ADVIEW, "Wiyun onExitButtonClicked");	
+	AdViewUtil.logInfo("Wiyun onExitButtonClicked");
 }
 
 
 public void onAppDownloadFailed()
 {
-	if(AdViewTargeting.getRunMode()==RunMode.TEST)
-		Log.d(AdViewUtil.ADVIEW, "Wiyun onAppDownloadFailed");	
+	AdViewUtil.logInfo("Wiyun onAppDownloadFailed");
 }
 
 public void onAppDownloaded()
 {
-	if(AdViewTargeting.getRunMode()==RunMode.TEST)
-		Log.d(AdViewUtil.ADVIEW, "Wiyun onAppDownloaded");	
+	AdViewUtil.logInfo("Wiyun onAppDownloaded");
 }
  
 public void onMiniSiteClosed()
 {
-	if(AdViewTargeting.getRunMode()==RunMode.TEST)
-		Log.d(AdViewUtil.ADVIEW, "Wiyun onMiniSiteClosed");	
+	AdViewUtil.logInfo("Wiyun onMiniSiteClosed");
 }
 
 

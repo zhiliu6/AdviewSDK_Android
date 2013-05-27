@@ -1,21 +1,17 @@
 package com.kyview.adapters;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
-
-import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
-import com.kyview.AdViewTargeting.RunMode;
-import com.kyview.obj.Ration;
-import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
 
 import com.greystripe.sdk.GSAd;
 import com.greystripe.sdk.GSAdErrorCode;
+import com.greystripe.sdk.GSAdListener;
 import com.greystripe.sdk.GSFullscreenAd;
 import com.greystripe.sdk.GSMobileBannerAdView;
-import com.greystripe.sdk.GSAdListener;
+import com.kyview.AdViewAdRegistry;
+import com.kyview.AdViewLayout;
+import com.kyview.obj.Ration;
+import com.kyview.util.AdViewUtil;
 
 
 
@@ -50,8 +46,7 @@ public class GreystripeAdapter extends AdViewAdapter implements GSAdListener,GSA
 	@Override
 	public void handle() {
 		// TODO Auto-generated method stub
-		 if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "Into Greystripe");
+		 AdViewUtil.logInfo("Into Greystripe");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 			return;
@@ -90,8 +85,7 @@ public class GreystripeAdapter extends AdViewAdapter implements GSAdListener,GSA
 
 	@Override
 	public void onFailedToFetchAd(GSAd arg0, GSAdErrorCode arg1) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Greystripe fail");
+		AdViewUtil.logInfo("Greystripe fail");
 		arg0.removeListener(this);
 	    AdViewLayout adViewLayout = adViewLayoutReference.get();
 	    if (adViewLayout == null) {
@@ -106,8 +100,7 @@ public class GreystripeAdapter extends AdViewAdapter implements GSAdListener,GSA
 
 	@Override
 	public void onFetchedAd(GSAd arg0) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-		Log.d(AdViewUtil.ADVIEW, "Greystripe success");
+		AdViewUtil.logInfo("Greystripe success");
 		arg0.removeListener(this);
 		
 	    AdViewLayout adViewLayout = adViewLayoutReference.get();
@@ -144,19 +137,17 @@ public class GreystripeAdapter extends AdViewAdapter implements GSAdListener,GSA
 		
 	}
 	  public void fetchFullscreenClicked(View v) {
-	        Log.d("log.d", "Fetch fullscreen clicked.");
+		  AdViewUtil.logInfo("Fetch fullscreen clicked.");
 	        if (!myFullscreenAd.isAdReady()) {
 	            myFullscreenAd.fetch();
 	        } else {
-	        	  Log.d("log.d", "Ad ready!  Display it");
-	            
+	        	  AdViewUtil.logInfo("Ad ready!  Display it");
 	        }
 	    }
 	    
 	    
 	    public void displayFullscreenClicked(View v) {
-	        Log.d("log.d", "Fullscreen display clicked.");
-	        
+	        AdViewUtil.logInfo("Fullscreen display clicked.");
 	        if (!myFullscreenAd.isAdReady()) {
 	           
 	        } else {

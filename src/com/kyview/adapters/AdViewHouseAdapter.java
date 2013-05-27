@@ -1,19 +1,17 @@
 package com.kyview.adapters;
 
 import android.graphics.Color;
-import android.util.Log;
 
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
 import com.kyview.AdViewLayout.ViewAdRunnable;
+import com.kyview.AdViewTargeting;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.ad.KyAdView;
 import com.kyview.ad.KyAdView.onAdListener;
 import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-
-import com.kyview.AdViewAdRegistry;
 
 
 public class AdViewHouseAdapter extends AdViewAdapter implements onAdListener
@@ -35,9 +33,7 @@ public class AdViewHouseAdapter extends AdViewAdapter implements onAdListener
 	
 	@Override
 	public void handle() {
-		//Log.d(AdViewUtil.ADVIEW, "Into AdViewHouse");
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into AdViewHouse");
+		AdViewUtil.logInfo("Into AdViewHouse");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 	 	if(adViewLayout == null) {
 	 		 return;
@@ -62,9 +58,7 @@ public class AdViewHouseAdapter extends AdViewAdapter implements onAdListener
 	@Override
 	public void onConnectFailed(KyAdView view) {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "AdViewHouse failure");
-	    
+		AdViewUtil.logInfo("AdViewHouse failure");
 		view.setAdListener(null);
 
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
@@ -80,9 +74,7 @@ public class AdViewHouseAdapter extends AdViewAdapter implements onAdListener
 	@Override
 	public void onReceivedAd(KyAdView view) {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "AdViewHouse success");
-
+		AdViewUtil.logInfo("AdViewHouse success");
 		view.setAdListener(null);
 		
 		AdViewLayout adViewLayout = adViewLayoutReference.get();

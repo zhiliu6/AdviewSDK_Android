@@ -100,7 +100,6 @@ public class AdViewAdRegistry {
 		try {YoumiAdapter.load(this);}catch(Error e){}
 		try {ZestADZAdapter.load(this);}catch(Error e){}	
 		try {YunYunAdapter.load(this);}catch(Error e){}	
-	
 	}
 	
 	public void registerClass(int adType, Class<? extends AdViewAdapter> adapterClass) {

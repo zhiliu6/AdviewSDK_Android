@@ -17,7 +17,6 @@ import com.suizong.mobile.ads.AdSize;
 import com.suizong.mobile.ads.AdView;
 
 public class YunYunAdapter extends AdViewAdapter implements AdListener {
-	AdView adView;
 	private static int networkType() {
 		return AdViewUtil.NETWORK_TYPE_YUNYUN;
 	}
@@ -44,21 +43,20 @@ public class YunYunAdapter extends AdViewAdapter implements AdListener {
 			return;
 		}
 		AdRequest request = new AdRequest();
+		AdViewUtil.logInfo("Into YunYun");
 		if (AdViewTargeting.getRunMode() == RunMode.TEST) {
-			Log.d(AdViewUtil.ADVIEW, "Into YunYun");
+
 			request.setTesting(true);
-		}else{
+		} else {
 			request.setTesting(false);
 		}
-		request.setRefreshTime(0); 
-		AdView adView = new AdView(activity, AdSize.BANNER,
-				ration.key);
+		request.setRefreshTime(0);
+		AdView adView = new AdView(activity, AdSize.BANNER, ration.key);
 		adViewLayout.AddSubView(adView);
 
 		adView.loadAd(request);
-		// 璁剧疆鐩戝惉鍣�
+		// 设置监听器
 		adView.setAdListener(this);
-
 	}
 
 	@Override
@@ -75,22 +73,22 @@ public class YunYunAdapter extends AdViewAdapter implements AdListener {
 
 	@Override
 	public void onFailedToReceiveAd(Ad arg0, AdError arg1) {
-		if(!arg1.toString().equals("[3]There was an internal error.")){
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "YunYun onAdLoadFailed");	
-		AdViewLayout adViewLayout = adViewLayoutReference.get();
-		if(adViewLayout == null) {
-			return;
-		}
-		adViewLayout.adViewManager.resetRollover_pri();
-		adViewLayout.rotateThreadedPri();	
+		if (!arg1.toString().equals("[3]There was an internal error.")) {
+			AdViewUtil.logInfo("YunYun onAdLoadFailed");
+			AdViewLayout adViewLayout = adViewLayoutReference.get();
+			if (adViewLayout == null) {
+				return;
+			}
+			 ((AdView)arg0).destroy();
+			adViewLayout.adViewManager.resetRollover_pri();
+			adViewLayout.rotateThreadedPri();
 		}
 	}
 
 	@Override
 	public void onLeaveApplication(Ad arg0) {
 		// TODO Auto-generated method stub
-
+		Log.i("onLeaveApplication", "onLeaveApplication");
 	}
 
 	@Override
@@ -101,20 +99,16 @@ public class YunYunAdapter extends AdViewAdapter implements AdListener {
 
 	@Override
 	public void onReceiveAd(Ad arg0, long arg1) {
-//		if (AdViewTargeting.getRunMode() == RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "onReceiveAd");
-
+		AdViewUtil.logInfo("onReceiveAd");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if (adViewLayout == null) {
 			return;
 		}
-//		adView.setAdListener(null);
-		
+		arg0.setAdListener(null);
+
 		adViewLayout.adViewManager.resetRollover();
 		adViewLayout.rotateThreadedDelayed();
 		adViewLayout.reportImpression();
-
 	}
-
 
 }

@@ -1,7 +1,6 @@
 package com.kyview.adapters;
 
 import android.app.Activity;
-import android.util.Log;
 
 import com.adwo.adsdk.AdListener;
 import com.adwo.adsdk.AdwoAdView;
@@ -40,8 +39,7 @@ public class AdwoAdapter extends AdViewAdapter implements AdListener{
 	public void handle() {
 		// TODO Auto-generated method stub
 		
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into Adwo");
+		AdViewUtil.logInfo("Into Adwo");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if (adViewLayout == null) {
 			return;
@@ -72,9 +70,7 @@ public class AdwoAdapter extends AdViewAdapter implements AdListener{
 	//@Override
 	public void onFailedToReceiveAd(AdwoAdView adView) {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "onFailedToReceiveAd");
-	    
+		AdViewUtil.logInfo("onFailedToReceiveAd");
 		  adView.setListener(null);
 		  //adView.finalize();
 
@@ -89,9 +85,7 @@ public class AdwoAdapter extends AdViewAdapter implements AdListener{
 	@Override
 	public void onFailedToReceiveAd(AdwoAdView adView, ErrorCode arg1) {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "onFailedToReceiveAd, arg1="+arg1);
-
+		AdViewUtil.logInfo("onFailedToReceiveAd, arg1="+arg1);
 		  adView.setListener(null);
 		  //adView.finalize();
 
@@ -106,15 +100,13 @@ public class AdwoAdapter extends AdViewAdapter implements AdListener{
 	//@Override
 	public void onFailedToReceiveRefreshedAd(AdwoAdView paramAdView) {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "onFailedToReceiveRefreshedAd");
+		AdViewUtil.logInfo("onFailedToReceiveRefreshedAd");
 	}
 
 	@Override
 	public void onReceiveAd(AdwoAdView adView) {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "onReceiveAd");
+		AdViewUtil.logInfo("onReceiveAd");
 
 		adView.setListener(null);
 		  //adView.finalize();

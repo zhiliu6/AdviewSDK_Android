@@ -1,20 +1,5 @@
 package com.kyview.adapters;
 
-import android.app.Activity;
-import android.util.Log;
-import java.util.HashMap;
-
-import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
-import com.kyview.AdViewTargeting.RunMode;
-import com.kyview.obj.Ration;
-import com.kyview.util.AdViewUtil;
-import com.kyview.DownloadService;
-import com.kyview.AdViewAdRegistry;
-
-import com.kyview.util.MD5;
-import com.kyview.util.SHA1;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -28,22 +13,32 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
-import android.text.TextUtils;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
-import android.view.View;
 
-import android.content.Context;
-import android.content.Intent;
-
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import com.kyview.AdViewAdRegistry;
+import com.kyview.AdViewLayout;
+import com.kyview.AdViewTargeting;
+import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.AdviewWebView;
-import android.os.Bundle;
+import com.kyview.DownloadService;
+import com.kyview.obj.Ration;
+import com.kyview.util.AdViewUtil;
+import com.kyview.util.MD5;
+import com.kyview.util.SHA1;
 
 class SuizongAD
 {
@@ -148,9 +143,7 @@ public class SuizongInterfaceAdapter extends AdViewAdapter{
 
 	@Override
 	public void handle() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into SuizongInterfaceAdapter");
-		
+		AdViewUtil.logInfo("Into SuizongInterfaceAdapter");
 		adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 			return;
@@ -196,8 +189,7 @@ public class SuizongInterfaceAdapter extends AdViewAdapter{
 	 
 	     new Thread() {
 	       public void run() {
-			Log.d(AdViewUtil.ADVIEW, "click");
-			
+			AdViewUtil.logInfo("click");
 			HashMap<String, String> map2 = new HashMap<String, String>();
 			map2.put("adid", suizongAD.adid);
 			map2.put("updatetime", suizongAD.updateTime);
@@ -286,9 +278,7 @@ public class SuizongInterfaceAdapter extends AdViewAdapter{
 					}
 
 					suizongAD.msg = httpurlconnection.getHeaderField("msg");
-					if(AdViewTargeting.getRunMode()==RunMode.TEST)
-						Log.d(AdViewUtil.ADVIEW, "erro msg:" + this.suizongAD.msg);
-
+					AdViewUtil.logInfo("erro msg:" + this.suizongAD.msg);
 					return;
 				}
 
@@ -335,7 +325,7 @@ public class SuizongInterfaceAdapter extends AdViewAdapter{
 		} catch (Exception e)
 		{
 			this.suizongAD.status = "2";
-			Log.e(AdViewUtil.ADVIEW, "httpRequest", e);
+			AdViewUtil.logError("httpRequest", e);
 		} finally {
 			if (bufferReader != null)
 				try {
@@ -383,7 +373,7 @@ public class SuizongInterfaceAdapter extends AdViewAdapter{
 				}
 			}
 		} catch (SocketException ex) {
-		Log.e("Error", ex.toString());
+		AdViewUtil.logError("error", ex);
 		}
 		return "";
 	}
@@ -555,9 +545,7 @@ public class SuizongInterfaceAdapter extends AdViewAdapter{
 			return;
 		}
 
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "displaySuizongAD");
-
+		AdViewUtil.logInfo("displaySuizongAD");
 		WebView bannerView = new WebView(activity);
 
 		bannerView.getSettings().setJavaScriptEnabled(true);
@@ -593,16 +581,15 @@ public boolean shouldOverrideUrlLoading(WebView view, String url)
 	url2 = url;
 	AdViewLayout adViewLayout = (AdViewLayout)SuizongInterfaceAdapter.this.adViewLayoutReference.get();
 	if (adViewLayout == null) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "adViewLayout is null");
+		AdViewUtil.logInfo("adViewLayout is null");
 	} else {
-		Log.d(AdViewUtil.ADVIEW, "shouldOverrideUrlLoading url="+url);
+		AdViewUtil.logInfo("shouldOverrideUrlLoading url="+url);
 		 if (url.toLowerCase().endsWith(".apk"))
 		{
-			String title = "下载提示";
-			String message = "确定要下载应用吗?";
-			String yesBtn = "确定";
-			String noBtn = "取消";
+            String title = "涓嬭浇鎻愮ず";
+            String message = "纭畾瑕佷笅杞藉簲鐢ㄥ悧?";
+            String yesBtn = "纭畾";
+            String noBtn = "鍙栨秷";
 
 	           	AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 			builder.setMessage(message)
@@ -659,9 +646,7 @@ class DisplaySuizongADRunnable implements Runnable
 	}
 
 	public void run() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "DisplaySuizongADRunnable");
-		
+		AdViewUtil.logInfo("DisplaySuizongADRunnable");
 		this.suizongADAdapter.displaySuizongAD();
 	}
 }
@@ -677,9 +662,7 @@ class FetchSuizongADRunnable implements Runnable {
 	}
 	 
 	public void run() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "FetchSuizongADRunnable");
-		
+		AdViewUtil.logInfo("FetchSuizongADRunnable");
 	       AdViewLayout adViewLayout = this.suizongADAdapter.adViewLayoutReference.get();
 	       if (adViewLayout == null) {
 			return;
@@ -692,9 +675,7 @@ class FetchSuizongADRunnable implements Runnable {
 	       }
 		else
 		{
-			if(AdViewTargeting.getRunMode()==RunMode.TEST)
-				Log.d(AdViewUtil.ADVIEW, "FetchSuizongAD failure");
-			
+			AdViewUtil.logInfo("FetchSuizongAD failure");
 	       	adViewLayout.adViewManager.resetRollover_pri();
 			adViewLayout.rotateThreadedPri();
 	       }	

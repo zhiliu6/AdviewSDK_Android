@@ -9,7 +9,7 @@
 平台版本（AdView和各家广告平台的SDK均在libs目录下）：
 	库名				广告平台					版本
 
-AdViewSDK_Android.jar			AdView (原生聚合：随踪)				1.9.1
+AdViewSDK_Android.jar			AdView (原生聚合：随踪)				1.9.2
 adlantis.jar				Adlantis					1.3.7
 adchina_android_sdk.jar			易传媒						2.6.4
 adlib_android.jar			哇棒						2.3.0
@@ -20,18 +20,18 @@ ad-fractalist-sdk-android.jar		飞云						2.0
 airAD_sdk.jar				AirAD						1.3.3
 Baidu_MobAds_SDK_Agg_3.2.jar		百度						3.2
 AppMediaAdAndroidSdk-1.1.0.jar		AppMedia					1.1.0
-domob_android_sdk.jar			多盟						3.2.1
+domob_android_sdk.jar			多盟						3.3.1
 GoogleAdMobAdsSdk-6.4.1.jar		AdMob						6.4.1
 gssdk_2.0.2.jar				GreyStripe					2.0.2
 IZPView.jar				亿赞普						1.0.3
 immobSDK.jar				力美						2.2
 
 InMobiAdNetwork_3.6.2.jar
-InMobiCommons_3.6.2.jar			InMobi						3.6.2
+InMobiCommons_3.6.2.jar			InMobi						3.7.0
 
 mdotm-sdk-android.jar			MdotM						3.0.0
-MMSDK.jar				MillennialMedia					4.6.0
-mobisageSDK.jar				艾德思奇					5.1.5
+MMSDK.jar				MillennialMedia					5.0.1
+mobisageSDK.jar				艾德思奇					5.2.1
 momark_sdk_v1.4.1.jar			Momark						1.4.1
 smartmad-sdk-android.jar		亿动智道					3.0.0
 SOMAAndroidSDK2.5.4.jar			Smaato						2.5.4
@@ -43,7 +43,7 @@ WiAd.jar
 WiCommon.jar				微云						4.0.0
 
 wqmobile_android_sdk.jar		帷千						3.0.4
-youmi-android.jar			有米						4.0
+youmi-android.jar			有米						4.0.2
 zestadz_sdk_androidv1.2.jar		ZestADZ						1.2
 l_android_adsdk.jar			Lsense						2.2
 yunyun-ads-sdk-4-Adview-V3.0.jar	云云						3.0

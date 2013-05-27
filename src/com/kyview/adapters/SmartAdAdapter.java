@@ -2,20 +2,18 @@ package com.kyview.adapters;
 
 
 import android.app.Activity;
-import android.util.Log;
-
-
-import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
-import com.kyview.AdViewLayout.ViewAdRunnable;
-import com.kyview.AdViewTargeting.RunMode;
-import com.kyview.obj.Ration;
-import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
 import cn.smartmad.ads.android.SMAdBannerListener;
 import cn.smartmad.ads.android.SMAdBannerView;
 import cn.smartmad.ads.android.SMAdManager;
 import cn.smartmad.ads.android.SMRequestEventCode;
+
+import com.kyview.AdViewAdRegistry;
+import com.kyview.AdViewLayout;
+import com.kyview.AdViewLayout.ViewAdRunnable;
+import com.kyview.AdViewTargeting;
+import com.kyview.AdViewTargeting.RunMode;
+import com.kyview.obj.Ration;
+import com.kyview.util.AdViewUtil;
 
 public class SmartAdAdapter extends AdViewAdapter implements SMAdBannerListener{
 	private SMAdBannerView smAdBannerView;
@@ -44,8 +42,7 @@ public class SmartAdAdapter extends AdViewAdapter implements SMAdBannerListener{
 	public void handle() {
 		// TODO Auto-generated method stub
 		
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into SmartAd");
+		AdViewUtil.logInfo("Into SmartAd");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 			return;
@@ -68,29 +65,21 @@ public class SmartAdAdapter extends AdViewAdapter implements SMAdBannerListener{
 
 	@Override
 	public void onAppResumeFromAd(SMAdBannerView arg0) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-	 		Log.d(AdViewUtil.ADVIEW, "onAppResumeFromAd");
-
+		AdViewUtil.logInfo("onAppResumeFromAd");
 	}
 
 	@Override
 	public void onAppSuspendForAd(SMAdBannerView arg0) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-	 		Log.d(AdViewUtil.ADVIEW, "onAppSuspendForAd");
-
+		AdViewUtil.logInfo("onAppSuspendForAd");
 	}
 
 	public void onAttachedToScreen(SMAdBannerView arg0) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-	 		Log.d(AdViewUtil.ADVIEW, "onAttachedToScreen");
-
+		AdViewUtil.logInfo("onAttachedToScreen");
 	}
 
 	@Override
 	public void onClickedAd() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-	 		Log.d(AdViewUtil.ADVIEW, "smartmad onClickedAd");
-
+		AdViewUtil.logInfo("smartmad onClickedAd");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if(adViewLayout == null) {
 			return;
@@ -100,37 +89,27 @@ public class SmartAdAdapter extends AdViewAdapter implements SMAdBannerListener{
 
 	@Override
 	public void onClosedAdExpand(SMAdBannerView arg0) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-	 		Log.d(AdViewUtil.ADVIEW, "onClosedAdExpand");
-
+		AdViewUtil.logInfo("onClosedAdExpand");
 	}
 
 	@Override
 	public void onDetachedFromScreen(SMAdBannerView arg0) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-	 		Log.d(AdViewUtil.ADVIEW, "onDetachedFromScreen");
-
+		AdViewUtil.logInfo("onDetachedFromScreen");
 	}
 
 	@Override
 	public void onExpandedAd(SMAdBannerView arg0) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-	 		Log.d(AdViewUtil.ADVIEW, "onExpandedAd");
-
+		AdViewUtil.logInfo("onExpandedAd");
 	}
 
 	@Override
 	public void onLeaveApplication(SMAdBannerView arg0) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-	 		Log.d(AdViewUtil.ADVIEW, "onLeaveApplication");
-
+		AdViewUtil.logInfo("onLeaveApplication");
 	}
 
 	@Override
 	public void onReceivedAd(SMAdBannerView arg0) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-	 		Log.d(AdViewUtil.ADVIEW, "onReceivedAd");
-		
+		AdViewUtil.logInfo("onReceivedAd");
 		  AdViewLayout adViewLayout = adViewLayoutReference.get();
 		  if(adViewLayout == null) {
 			  return;
@@ -144,19 +123,13 @@ public class SmartAdAdapter extends AdViewAdapter implements SMAdBannerListener{
 
 	@Override
 	public void onAttachedToScreen(SMAdBannerView arg0, SMRequestEventCode arg1) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-	 		Log.d(AdViewUtil.ADVIEW, "onAttachedToScreen");
-		
+		AdViewUtil.logInfo("onAttachedToScreen");
 	}
 
 	@Override
 	public void onFailedToReceiveAd(SMAdBannerView arg0, SMRequestEventCode arg1) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-	 		Log.d(AdViewUtil.ADVIEW, "onFailedToReceiveAd");
-
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "smartmad failure, SMRequestEventCode="+arg1);
-
+		AdViewUtil.logInfo("onFailedToReceiveAd");
+		AdViewUtil.logInfo("smartmad failure, SMRequestEventCode="+arg1);
 		  AdViewLayout adViewLayout = adViewLayoutReference.get();
 		  if(adViewLayout == null) {
 			 return;

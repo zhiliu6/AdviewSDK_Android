@@ -1,20 +1,16 @@
 package com.kyview.adapters;
 
 import android.app.Activity;
-import android.util.Log;
-
-import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
-//import com.kyview.AdViewLayout.ViewAdRunnable;
-import com.kyview.AdViewTargeting.RunMode;
-import com.kyview.obj.Ration;
-import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
-
 import cn.aduu.android.AdListener;
+import cn.aduu.android.AdManager;
 import cn.aduu.android.AdView;
 import cn.aduu.android.AdViewSize;
-import cn.aduu.android.AdManager;
+
+import com.kyview.AdViewAdRegistry;
+import com.kyview.AdViewLayout;
+import com.kyview.obj.Ration;
+import com.kyview.util.AdViewUtil;
+//import com.kyview.AdViewLayout.ViewAdRunnable;
 
 public class AduuAdapter extends AdViewAdapter implements AdListener{
 	private AdView adView = null;
@@ -42,8 +38,7 @@ public class AduuAdapter extends AdViewAdapter implements AdListener{
 		// TODO Auto-generated method stub	
 		
 
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into Aduu new"); 
+		AdViewUtil.logInfo("Into Aduu new");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if (adViewLayout == null) {
 			return;
@@ -65,9 +60,7 @@ public class AduuAdapter extends AdViewAdapter implements AdListener{
 	}
 
 	public void onReceiveSuccess() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "aduu--onReceiveAd");
-
+		AdViewUtil.logInfo("aduu--onReceiveAd");
 		adView.setAdViewListener(null);
 		  
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
@@ -81,9 +74,7 @@ public class AduuAdapter extends AdViewAdapter implements AdListener{
 
 	//@Override
 	public void onReceiveFail(int code) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "aduu--onReceiveFail, code="+code);
-	    
+		AdViewUtil.logInfo("aduu--onReceiveFail, code="+code);
 		adView.setAdViewListener(null);
 
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
@@ -95,20 +86,17 @@ public class AduuAdapter extends AdViewAdapter implements AdListener{
 	}	
 	
 	public void onAdSwitch() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "aduu--onAdSwitch");
+		AdViewUtil.logInfo("aduu--onAdSwitch");
 	}	
 	
 	@Override
 	public void onPresentScreen() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "aduu--onPresentScreen");
+		AdViewUtil.logInfo("aduu--onPresentScreen");
 	}
 
 	@Override
 	public void onDismissScreen() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "aduu--onDismissScreen");
+		AdViewUtil.logInfo("aduu--onDismissScreen");
 	}
 			
 }

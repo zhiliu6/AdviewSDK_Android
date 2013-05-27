@@ -1,16 +1,15 @@
 package com.kyview.adapters;
 
 import android.graphics.Color;
-import android.util.Log;
 
+import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
 import com.kyview.AdViewLayout.ViewAdRunnable;
+import com.kyview.AdViewTargeting;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
 import com.wooboo.adlib_android.AdListener;
 import com.wooboo.adlib_android.WoobooAdView;
 
@@ -39,8 +38,7 @@ public class WoobooAdapter extends AdViewAdapter implements AdListener {
 
 	
 	public void handle() {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into Wooboo");
+		AdViewUtil.logInfo("Into Wooboo");
 	 	 AdViewLayout adViewLayout = adViewLayoutReference.get();
 	 	 if(adViewLayout == null) {
 	 		 return;
@@ -70,8 +68,7 @@ public class WoobooAdapter extends AdViewAdapter implements AdListener {
 	public void onFailedToReceiveAd(Object arg0) {
 		// TODO Auto-generated method stub
 		WoobooAdView adView=(WoobooAdView)arg0;
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "Woboo failure");
+		AdViewUtil.logInfo("Woboo failure");
 	    
 		  adView.setAdListener(null);
 	
@@ -88,8 +85,7 @@ public class WoobooAdapter extends AdViewAdapter implements AdListener {
 	public void onReceiveAd(Object arg0) {
 		// TODO Auto-generated method stub
 		WoobooAdView adView=(WoobooAdView)arg0;
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "Wooboo success");
+		AdViewUtil.logInfo("Wooboo success");
 		adView.setAdListener(null);
 		
 		  AdViewLayout adViewLayout = adViewLayoutReference.get();
@@ -104,9 +100,7 @@ public class WoobooAdapter extends AdViewAdapter implements AdListener {
 	}
 
 	public void onPlayFinish() {
-
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			  Log.d(AdViewUtil.ADVIEW, "Wooboo onPlayFinish");
+		AdViewUtil.logInfo("Wooboo onPlayFinish");
 	}
 
 
