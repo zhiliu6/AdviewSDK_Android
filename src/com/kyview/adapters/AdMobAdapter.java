@@ -92,7 +92,6 @@ public class AdMobAdapter extends AdViewAdapter implements AdListener {
 		return result;
 	}
 
-	@Override
 	public void onDismissScreen(Ad arg0) {
 		// TODO Auto-generated method stub
 		if (AdViewTargeting.getRunMode() == RunMode.TEST)
@@ -100,7 +99,6 @@ public class AdMobAdapter extends AdViewAdapter implements AdListener {
 
 	}
 
-	@Override
 	public void onFailedToReceiveAd(Ad arg0, ErrorCode arg1) {
 		// TODO Auto-generated method stub
 		if (AdViewTargeting.getRunMode() == RunMode.TEST)
@@ -114,7 +112,6 @@ public class AdMobAdapter extends AdViewAdapter implements AdListener {
 		adViewLayout.rotateThreadedPri();
 	}
 
-	@Override
 	public void onLeaveApplication(Ad arg0) {
 		// TODO Auto-generated method stub
 		if (AdViewTargeting.getRunMode() == RunMode.TEST)
@@ -122,7 +119,6 @@ public class AdMobAdapter extends AdViewAdapter implements AdListener {
 
 	}
 
-	@Override
 	public void onPresentScreen(Ad arg0) {
 		// TODO Auto-generated method stub
 		if (AdViewTargeting.getRunMode() == RunMode.TEST)
@@ -135,7 +131,6 @@ public class AdMobAdapter extends AdViewAdapter implements AdListener {
 		// adViewLayout.reportImpression();
 	}
 
-	@Override
 	public void onReceiveAd(Ad arg0) {
 		// TODO Auto-generated method stub
 		if (AdViewTargeting.getRunMode() == RunMode.TEST)

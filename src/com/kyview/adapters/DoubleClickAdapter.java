@@ -66,13 +66,11 @@ public class DoubleClickAdapter extends AdViewAdapter implements AdListener{
 		 return result;
 	}
 
-	@Override
 	public void onDismissScreen(Ad arg0) {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.d(AdViewUtil.ADVIEW, "DoubleClick onDismissScreen");
 	}
 
-	@Override
 	public void onFailedToReceiveAd(Ad arg0, ErrorCode arg1) {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.d(AdViewUtil.ADVIEW, "DoubleClick fail");
@@ -86,14 +84,12 @@ public class DoubleClickAdapter extends AdViewAdapter implements AdListener{
 		
 	}
 
-	@Override
 	public void onLeaveApplication(Ad arg0) {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.d(AdViewUtil.ADVIEW, "DoubleClick onLeaveApplication");
 		
 	}
 
-	@Override
 	public void onPresentScreen(Ad arg0) {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.d(AdViewUtil.ADVIEW, "AdMob onPresentScreen");
@@ -105,7 +101,6 @@ public class DoubleClickAdapter extends AdViewAdapter implements AdListener{
 		
 	}
 
-	@Override
 	public void onReceiveAd(Ad arg0) {
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.d(AdViewUtil.ADVIEW, "AdMob success");

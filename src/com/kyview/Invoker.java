@@ -36,13 +36,11 @@ public class Invoker extends Activity implements AdViewInterface {
 
 	
 
-	@Override
 	public void onClickAd() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void onDisplayAd() {
 		// TODO Auto-generated method stub
 		

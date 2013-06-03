@@ -47,7 +47,7 @@ public class AdViewAdRegistry {
 		try {EventAdapter.load(this);}catch(Error e){}
 //		try {FractalAdapter.load(this);}catch(Error e){}
 //		try {GreystripeAdapter.load(this);}catch(Error e){}
-		try {InmobiAdapter.load(this);}catch(Error e){}
+//		try {InmobiAdapter.load(this);}catch(Error e){}
 //		try {IzpAdapter.load(this);}catch(Error e){}
 //		try {LmMobAdapter.load(this);}catch(Error e){}
 //		try {LsenseAdapter.load(this);}catch(Error e){}

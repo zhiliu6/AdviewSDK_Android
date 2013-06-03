@@ -1010,7 +1010,6 @@ public class KyAdView extends ViewGroup{
 			builder.setTitle("������ʾ");
 			builder.setPositiveButton("ȷ��", new DialogInterface.OnClickListener() {
 				
-				@Override 
 				public void onClick(DialogInterface dialog, int which) {
 //					 i=new Intent(context,DownloadService.class);
 //						i.putExtra("adview_url",url);

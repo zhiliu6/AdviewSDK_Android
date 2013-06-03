@@ -89,26 +89,22 @@ public class InmobiAdapter extends AdViewAdapter {
 	}
 	private IMAdListener mIMAdListener = new IMAdListener() {
 
-		@Override
 		public void onShowAdScreen(IMAdView adView) {
 			if(AdViewTargeting.getRunMode()==RunMode.TEST)
 				Log.i(AdViewUtil.ADVIEW, "ImMobi, onShowAdScreen");
  
 		}
 
-		@Override
 		public void onDismissAdScreen(IMAdView adView) {
 			if(AdViewTargeting.getRunMode()==RunMode.TEST)
 				Log.i(AdViewUtil.ADVIEW, "ImMobi, onShowAdScreen");
 		}
 
-		@Override
 		public void onLeaveApplication(IMAdView adView) {
 			if(AdViewTargeting.getRunMode()==RunMode.TEST)
 				Log.i(AdViewUtil.ADVIEW, "ImMobi, onShowAdScreen");
 		}
 		
-		@Override
 		public void onAdRequestFailed(IMAdView adView, ErrorCode errorCode) {
 			if(AdViewTargeting.getRunMode()==RunMode.TEST)
 				  Log.d(AdViewUtil.ADVIEW, "ImMobi failure, errorCode="+errorCode);
@@ -124,7 +120,6 @@ public class InmobiAdapter extends AdViewAdapter {
 
 		} 
 
-		@Override
 		public void onAdRequestCompleted(IMAdView adView) {
 			if(AdViewTargeting.getRunMode()==RunMode.TEST)
 				  Log.d(AdViewUtil.ADVIEW, "InMobi success");

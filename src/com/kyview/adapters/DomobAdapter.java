@@ -98,7 +98,6 @@ public class DomobAdapter extends AdViewAdapter implements DomobAdEventListener{
 		
 	}
 
-	@Override
 	public void onDomobAdReturned(DomobAdView adView) {
 		// TODO Auto-generated method stub
 	
@@ -139,14 +138,12 @@ public class DomobAdapter extends AdViewAdapter implements DomobAdEventListener{
 		
 	}
 	
-	@Override
 	public void onDomobAdOverlayPresented(DomobAdView adView) {
 		// TODO Auto-generated method stub
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
 			Log.i(AdViewUtil.ADVIEW, "overlayPresented");
 	}
 
-	@Override
 	public void onDomobAdOverlayDismissed(DomobAdView adView) {
 		// TODO Auto-generated method stub
 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
@@ -154,7 +151,6 @@ public class DomobAdapter extends AdViewAdapter implements DomobAdEventListener{
 		
 	}
 
-	@Override
 	public Context onDomobAdRequiresCurrentContext() {
 		// TODO Auto-generated method stub
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
