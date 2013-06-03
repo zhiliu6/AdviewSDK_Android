@@ -1,21 +1,21 @@
 package com.kyview.adapters;
 
 import java.text.SimpleDateFormat;
+
 import android.app.Activity;
-import android.util.Log;
-import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
-import com.kyview.AdViewLayout.ViewAdRunnable;
-import com.kyview.AdViewTargeting.RunMode;
-import com.kyview.obj.Ration;
-import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
+
 import com.google.ads.Ad;
 import com.google.ads.AdListener;
 import com.google.ads.AdRequest;
+import com.google.ads.AdRequest.ErrorCode;
 import com.google.ads.AdSize;
 import com.google.ads.AdView;
-import com.google.ads.AdRequest.ErrorCode;
+import com.kyview.AdViewAdRegistry;
+import com.kyview.AdViewLayout;
+import com.kyview.AdViewLayout.ViewAdRunnable;
+import com.kyview.AdViewTargeting;
+import com.kyview.obj.Ration;
+import com.kyview.util.AdViewUtil;
 
 public class AdMobAdapter extends AdViewAdapter implements AdListener {
 	private AdView adView;
@@ -60,8 +60,7 @@ public class AdMobAdapter extends AdViewAdapter implements AdListener {
 
 	@Override
 	public void handle() {
-		if (AdViewTargeting.getRunMode() == RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into AdMob");
+		AdViewUtil.logInfo("Into AdMob");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if (adViewLayout == null) {
 			return;
@@ -94,15 +93,12 @@ public class AdMobAdapter extends AdViewAdapter implements AdListener {
 
 	public void onDismissScreen(Ad arg0) {
 		// TODO Auto-generated method stub
-		if (AdViewTargeting.getRunMode() == RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "AdMob onDismissScreen");
-
+		AdViewUtil.logInfo("AdMob onDismissScreen");
 	}
 
 	public void onFailedToReceiveAd(Ad arg0, ErrorCode arg1) {
 		// TODO Auto-generated method stub
-		if (AdViewTargeting.getRunMode() == RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "AdMob fail");
+		AdViewUtil.logInfo("AdMob fail");
 		arg0.setAdListener(null);
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if (adViewLayout == null) {
@@ -114,15 +110,12 @@ public class AdMobAdapter extends AdViewAdapter implements AdListener {
 
 	public void onLeaveApplication(Ad arg0) {
 		// TODO Auto-generated method stub
-		if (AdViewTargeting.getRunMode() == RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "AdMob onLeaveApplication");
-
+		AdViewUtil.logInfo("AdMob onLeaveApplication");
 	}
 
 	public void onPresentScreen(Ad arg0) {
 		// TODO Auto-generated method stub
-		if (AdViewTargeting.getRunMode() == RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "AdMob onPresentScreen");
+		AdViewUtil.logInfo("AdMob onPresentScreen");
 
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if (adViewLayout == null) {
@@ -132,10 +125,7 @@ public class AdMobAdapter extends AdViewAdapter implements AdListener {
 	}
 
 	public void onReceiveAd(Ad arg0) {
-		// TODO Auto-generated method stub
-		if (AdViewTargeting.getRunMode() == RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "AdMob success");
-
+		AdViewUtil.logInfo("AdMob success");
 		arg0.setAdListener(null);
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if (adViewLayout == null) {
@@ -151,16 +141,16 @@ public class AdMobAdapter extends AdViewAdapter implements AdListener {
 
 	}
 
-@Override
-public void release(AdViewLayout adViewLayout) {
-	if (adViewLayout == null) {
-		return;
+	@Override
+	public void release(AdViewLayout adViewLayout) {
+		if (adViewLayout == null) {
+			return;
+		}
+		AdViewUtil.logInfo("onRelease");
+		if (null != adView) {
+			adView.destroy();
+		}
 	}
-	if (null != adView) {
-		adView.destroy();
-		adViewLayout.removeAllViews();
-	}
-}
 
 	/*******************************************************************/
 	// End of AdMob listeners

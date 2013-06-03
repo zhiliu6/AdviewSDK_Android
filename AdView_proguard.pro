@@ -74,8 +74,9 @@
     public <methods>;
 }
 
--keep public class com.kyview.adapters.AdViewAdapter {
-    public <methods>;
+-keep class com.kyview.adapters.** {
+    <fields>;
+    <methods>;
 }
 
 -keep public class com.kyview.AdviewWebView {

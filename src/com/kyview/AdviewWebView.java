@@ -167,7 +167,7 @@ public class AdviewWebView extends Activity
 			}
 			return barbgBitmapDrawable; 
 		} catch (Exception e) {
-			Log.i(AdViewUtil.ADVIEW, e.toString());
+			AdViewUtil.logError("", e);
 		}
 		
 		return null;
@@ -250,7 +250,7 @@ public class AdviewWebView extends Activity
 				Intent callIntent = new Intent("android.intent.action.DIAL", Uri.parse(url));
 				startActivity(callIntent);
 			} catch (Exception e) {
-				Log.i(AdViewUtil.ADVIEW, e.toString());
+				AdViewUtil.logError("", e);
 			}
 			
 			return 0;
@@ -352,8 +352,7 @@ public class AdviewWebView extends Activity
 
 			Message msg = new Message();
 			msg.arg1 = (int)(AdviewWebView.this.screenWidth * 1.0F / width * 100.0F);
-			if (AdviewWebView.this.screenWidth < width - 100)
-				Log.d(AdViewUtil.ADVIEW, "sedWinth, "+(width - 100));
+			AdViewUtil.logInfo("sedWinth, "+(width - 100));
 		}
 	}
 
@@ -564,7 +563,7 @@ public class AdviewWebView extends Activity
 			this.currProgress = progress;
 
 			if (!this.isInit) {
-				Log.i(AdViewUtil.ADVIEW, "setProgress, not init");
+				AdViewUtil.logInfo("setProgress, not init");
 				setVisibility(0);
 				return;
 			}
@@ -581,7 +580,7 @@ public class AdviewWebView extends Activity
 				this.barBg = toRoundCorner(this.barBg, 5);
 				invalidate();
 			} else {
-				Log.i(AdViewUtil.ADVIEW, "setProgress, bg is null");
+				AdViewUtil.logInfo("setProgress, bg is null");
 				setVisibility(8);
 			}
 			if (progress >= 100)

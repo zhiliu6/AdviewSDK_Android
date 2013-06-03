@@ -1,25 +1,21 @@
 package com.kyview.adapters;
 
-import android.app.Activity;
-import android.util.Log;
-//import android.view.ViewGroup.LayoutParams;
-//import android.widget.RelativeLayout;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
-import com.kyview.AdViewLayout.ViewAdRunnable;
-import com.kyview.AdViewTargeting.RunMode;
-import com.kyview.obj.Ration;
-import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
+import android.app.Activity;
+
 import com.inmobi.androidsdk.IMAdListener;
 import com.inmobi.androidsdk.IMAdRequest;
-import com.inmobi.androidsdk.IMAdView;
 import com.inmobi.androidsdk.IMAdRequest.ErrorCode;
-
-
-import java.util.Map;
-import java.util.HashMap;
+import com.inmobi.androidsdk.IMAdView;
+import com.kyview.AdViewAdRegistry;
+import com.kyview.AdViewLayout;
+import com.kyview.AdViewLayout.ViewAdRunnable;
+import com.kyview.obj.Ration;
+import com.kyview.util.AdViewUtil;
+//import android.view.ViewGroup.LayoutParams;
+//import android.widget.RelativeLayout;
 
 public class InmobiAdapter extends AdViewAdapter {
 	private IMAdView mIMAdView = null;
@@ -50,8 +46,7 @@ public class InmobiAdapter extends AdViewAdapter {
 	@Override
 	public void handle() {
 		// TODO Auto-generated method stub
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Into Inmobi");
+		AdViewUtil.logInfo("Into Inmobi");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if (adViewLayout == null) {
 			return;
@@ -65,13 +60,6 @@ public class InmobiAdapter extends AdViewAdapter {
 		// when distributing to the users)
 		mIMAdView = new IMAdView(activity, IMAdView.INMOBI_AD_UNIT_320X50, ration.key);
 		mAdRequest = new IMAdRequest();
-	    if(AdViewTargeting.getRunMode()==RunMode.TEST)
-	    	mAdRequest.setTestMode(true); 
-	    else if(AdViewTargeting.getRunMode()==RunMode.NORMAL)
-	    	mAdRequest.setTestMode(false);
-	    else{
-	    	mAdRequest.setTestMode(false);
-	    } 
 		Map<String,String> reqParams = new HashMap<String,String>();
 		reqParams.put("tp","c_adview");
 		mAdRequest.setRequestParams(reqParams);
@@ -90,25 +78,19 @@ public class InmobiAdapter extends AdViewAdapter {
 	private IMAdListener mIMAdListener = new IMAdListener() {
 
 		public void onShowAdScreen(IMAdView adView) {
-			if(AdViewTargeting.getRunMode()==RunMode.TEST)
-				Log.i(AdViewUtil.ADVIEW, "ImMobi, onShowAdScreen");
- 
+			AdViewUtil.logInfo("ImMobi, onShowAdScreen");
 		}
 
 		public void onDismissAdScreen(IMAdView adView) {
-			if(AdViewTargeting.getRunMode()==RunMode.TEST)
-				Log.i(AdViewUtil.ADVIEW, "ImMobi, onShowAdScreen");
+			AdViewUtil.logInfo("ImMobi, onShowAdScreen");
 		}
 
 		public void onLeaveApplication(IMAdView adView) {
-			if(AdViewTargeting.getRunMode()==RunMode.TEST)
-				Log.i(AdViewUtil.ADVIEW, "ImMobi, onShowAdScreen");
+			AdViewUtil.logInfo("ImMobi, onShowAdScreen");
 		}
 		
 		public void onAdRequestFailed(IMAdView adView, ErrorCode errorCode) {
-			if(AdViewTargeting.getRunMode()==RunMode.TEST)
-				  Log.d(AdViewUtil.ADVIEW, "ImMobi failure, errorCode="+errorCode);
-		    
+			AdViewUtil.logInfo("ImMobi failure, errorCode="+errorCode);
 			adView.setIMAdListener(null);
 
 			AdViewLayout adViewLayout = adViewLayoutReference.get();
@@ -121,9 +103,7 @@ public class InmobiAdapter extends AdViewAdapter {
 		} 
 
 		public void onAdRequestCompleted(IMAdView adView) {
-			if(AdViewTargeting.getRunMode()==RunMode.TEST)
-				  Log.d(AdViewUtil.ADVIEW, "InMobi success");
-
+			AdViewUtil.logInfo("InMobi success");
 			adView.setIMAdListener(null);
 			
 			  AdViewLayout adViewLayout = adViewLayoutReference.get();

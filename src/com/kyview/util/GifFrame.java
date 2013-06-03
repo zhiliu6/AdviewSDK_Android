@@ -6,10 +6,10 @@ import android.graphics.Bitmap.Config;
 import java.util.Vector;
 
 public class GifFrame {
-	//±£´ægifÖĞËùÓĞÖ¡µÄÏòÁ¿
+	//ä¿å­˜gifä¸­æ‰€æœ‰å¸§çš„å‘é‡
 	private Vector<Bitmap> frames;
 	
-	//µ±Ç°²¥·ÅÖ¡µÄË÷Òı
+	//å½“å‰æ’­æ”¾å¸§çš„ç´¢å¼•
 	private int index;
 	
 	public GifFrame(){
@@ -17,16 +17,16 @@ public class GifFrame {
 		index = 0;
 	}
 	
-	//Ìí¼ÓÒ»Ö¡
+	//æ·»åŠ ä¸€å¸§
 	public void addImage(Bitmap image){
 		frames.addElement(image);
 	}
-	//·µ»ØÖ¡Êı
+	//è¿”å›å¸§æ•°
 	public int size(){
 		return frames.size();
 	}
 	
-	//µÃµ½µ±Ç°Ö¡µÄÍ¼Æ¬
+	//å¾—åˆ°å½“å‰å¸§çš„å›¾ç‰‡
 	public Bitmap getImage(){
 		if (size() == 0) {
 			return null;
@@ -35,7 +35,7 @@ public class GifFrame {
 		}
 	}
 	
-	//ÏÂÒ»Ö¡
+	//ä¸‹ä¸€å¸§
 	public void nextFrame(){
 		if (index  + 1 < size()) {
 			index ++ ;
@@ -44,7 +44,7 @@ public class GifFrame {
 		}
 	}
 	
-	//´´½¨GifFrame
+	//åˆ›å»ºGifFrame
 	
 	public static GifFrame GreateGifImage(byte abyte0[]){
 		try {

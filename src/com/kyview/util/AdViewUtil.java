@@ -3,6 +3,9 @@
 package com.kyview.util;
 
 
+import com.kyview.AdViewTargeting;
+import com.kyview.AdViewTargeting.RunMode;
+
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
@@ -31,11 +34,11 @@ public class AdViewUtil {
 	// Don't change anything below this line
 	/***********************************************/ 
 	 
-	public static final int VERSION = 191;
+	public static final int VERSION = 192;
 
-	public static final String ADVIEW = "AdView SDK v1.9.1";
+	public static final String ADVIEW = "AdView SDK v1.9.2";
 
-	public static final String ADVIEW_VER = "1.9.1";
+	public static final String ADVIEW_VER = "1.9.2";
 	
 	// Could be an enum, but this gives us a slight performance improvement
 	//abroad
@@ -78,6 +81,7 @@ public class AdViewUtil {
 //	public static final int NETWORK_TYPE_YINGGAO=40;
 	public static final int NETWORK_TYPE_YUNYUN=53;
 //	public static final int NETWORK_TYPE_YJF=54;
+	
 	
 	public static final int NETWORK_TYPE_CUSTOMIZE=999;
 	
@@ -247,4 +251,24 @@ public class AdViewUtil {
 		Log.i(AdViewUtil.class.getSimpleName(), "static");
 	}
 
+	/******************Android的五种logcat输出的其中四种*****************************/
+	public static void logWarn(String info, Throwable r) {
+		if (AdViewTargeting.getRunMode() == RunMode.TEST)
+			Log.w(AdViewUtil.ADVIEW, info, r);
+	}
+
+	public static void logDebug(String info) {
+		if (AdViewTargeting.getRunMode() == RunMode.TEST)
+			Log.d(AdViewUtil.ADVIEW, info);
+	}
+
+	public static void logError(String info, Throwable r) {
+		if (AdViewTargeting.getRunMode() == RunMode.TEST)
+			Log.e(AdViewUtil.ADVIEW, info, r);
+	}
+
+	public static void logInfo(String info) {
+		if (AdViewTargeting.getRunMode() == RunMode.TEST)
+		Log.i(AdViewUtil.ADVIEW, info);
+	}
 }

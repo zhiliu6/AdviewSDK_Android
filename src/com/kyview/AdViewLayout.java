@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -55,6 +56,7 @@ public class AdViewLayout extends RelativeLayout {
 	public final Handler handler;
 
 	public ScheduledExecutorService scheduler;
+	public static boolean isTest;
 
 	private String keyAdView;
 	public String keyDev = new String("000000000000000");
@@ -128,6 +130,15 @@ public class AdViewLayout extends RelativeLayout {
 		this.maxHeight = 0;
 	}
 
+	@Override
+	protected void onFocusChanged(boolean gainFocus, int direction,
+			Rect previouslyFocusedRect) {
+		// TODO Auto-generated method stub
+		super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
+		Log.i("onFocusChanged", gainFocus+"");
+	}
+	
+	
 	public AdViewLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		String key = getAdViewSDKKey(context);
@@ -216,11 +227,13 @@ public class AdViewLayout extends RelativeLayout {
 			}
 		} else {
 			this.hasWindow = false;
-/*			if (visibility != 4) {
-				AdViewAdapter.onRelease();
-				this.isScheduled = false;
-				firstScheduled = false;
-			}*/
+		if (visibility != 4) {
+//				Log.i("onWindowVisibilityChanged", activity.isFinishing()+"");
+			
+		//				AdViewAdapter.onRelease();
+//				this.isScheduled = false;
+//				firstScheduled = false;
+			}
 		}
 	}
 
@@ -249,8 +262,7 @@ public class AdViewLayout extends RelativeLayout {
 			this.isScheduled = false;
 			return;
 		}
-		if (AdViewTargeting.getRunMode() == RunMode.TEST)
-			Log.i(AdViewUtil.ADVIEW, "Rotating Ad");
+		AdViewUtil.logInfo("Rotating Ad");
 		nextRation = adViewManager.getRation();
 
 		handler.post(new HandleAdRunnable(this));
@@ -261,8 +273,7 @@ public class AdViewLayout extends RelativeLayout {
 			this.isScheduled = false;
 			return;
 		}
-		if (AdViewTargeting.getRunMode() == RunMode.TEST)
-			Log.i(AdViewUtil.ADVIEW, "Rotating Pri Ad");
+		AdViewUtil.logInfo("Rotating Pri Ad");
 		nextRation = adViewManager.getRollover();// adViewManager.getRollover_pri();
 		handler.post(new HandleAdRunnable(this));
 	}
@@ -283,8 +294,7 @@ public class AdViewLayout extends RelativeLayout {
 		// We shouldn't ever get to a state where nextRation is null unless all
 		// networks fail
 		if (nextRation == null) {
-			if (AdViewTargeting.getRunMode() == RunMode.TEST)
-				Log.e(AdViewUtil.ADVIEW, "nextRation is null!");
+			AdViewUtil.logInfo("nextRation is null!");
 			rotateThreadedDelayed();
 			return;
 		}
@@ -298,8 +308,7 @@ public class AdViewLayout extends RelativeLayout {
 
 		String rationInfo = String.format("Showing ad:\nname: %s",
 				nextRation.name);
-		if (AdViewTargeting.getRunMode() == RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, rationInfo);
+		AdViewUtil.logInfo(rationInfo);
 
 		try {
 			AdViewAdapter.handleOne(this, nextRation);
@@ -323,8 +332,7 @@ public class AdViewLayout extends RelativeLayout {
 	// Rotate in extra.cycleTime seconds
 	public void rotateThreadedDelayed() {
 	///	if (firstScheduled) {
-			if (AdViewTargeting.getRunMode() == RunMode.TEST)
-				Log.d(AdViewUtil.ADVIEW, "Will call rotateAd() in "
+			AdViewUtil.logInfo("Will call rotateAd() in "
 						+ extra.cycleTime + " seconds");
 			scheduler.schedule(new RotateAdRunnable(this), extra.cycleTime,
 					TimeUnit.SECONDS);
@@ -378,8 +386,7 @@ public class AdViewLayout extends RelativeLayout {
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		superView.addView(subView, layoutParams);
-		if (AdViewTargeting.getRunMode() == RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Added subview");
+		AdViewUtil.logInfo("Added subview");
 		this.activeRation = nextRation;
 		countImpression();
 	}
@@ -394,8 +401,7 @@ public class AdViewLayout extends RelativeLayout {
 				320, 48);
 		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		superView.addView(subView, layoutParams);
-		if (AdViewTargeting.getRunMode() == RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "Added subview");
+		AdViewUtil.logInfo("Added subview");
 		this.activeRation = nextRation;
 		countImpression();
 	}
@@ -411,8 +417,7 @@ public class AdViewLayout extends RelativeLayout {
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		superView.addView(subView, layoutParams);
-		if (AdViewTargeting.getRunMode() == RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "AddSubView");
+		AdViewUtil.logInfo("AddSubView");
 		this.activeRation = nextRation;
 		// countImpression();
 	}
@@ -612,8 +617,7 @@ public class AdViewLayout extends RelativeLayout {
 	public boolean onInterceptTouchEvent(MotionEvent event) {
 		switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
-			if (AdViewTargeting.getRunMode() == RunMode.TEST)
-				Log.d(AdViewUtil.ADVIEW, "Intercepted ACTION_DOWN event");
+			AdViewUtil.logInfo("Intercepted ACTION_DOWN event");
 			if (activeRation != null) {
 
 				if (activeRation.type == AdViewUtil.NETWORK_TYPE_BAIDU
@@ -622,9 +626,7 @@ public class AdViewLayout extends RelativeLayout {
 						|| activeRation.type == AdViewUtil.NETWORK_TYPE_SMARTAD)
 					return false;
 
-				if (AdViewTargeting.getRunMode() == RunMode.TEST)
-					Log.d(AdViewUtil.ADVIEW,
-							"Intercepted ACTION_DOWN event 2, activeRation.type="
+				AdViewUtil.logInfo("Intercepted ACTION_DOWN event 2, activeRation.type="
 									+ activeRation.type);
 				if (activeRation.type == AdViewUtil.NETWORK_TYPE_SUIZONG)// ||
 																			// activeRation.type
@@ -634,7 +636,7 @@ public class AdViewLayout extends RelativeLayout {
 					try {
 						AdViewAdapter.onClickAd();
 					} catch (Throwable e) {
-						Log.e(AdViewUtil.ADVIEW, "onClick", e);
+						AdViewUtil.logError("onClick", e);
 					}
 					// return true;
 				}
@@ -698,6 +700,7 @@ public class AdViewLayout extends RelativeLayout {
 										.getConfigExpiereTimeout());
 
 					adViewLayout.appReport();
+					if(!isTest)
 					adViewLayout.rotateAd();
 				}
 			}
@@ -779,8 +782,7 @@ public class AdViewLayout extends RelativeLayout {
 		}
 
 		public void run() {
-			if (AdViewTargeting.getRunMode() == RunMode.TEST)
-				Log.i(AdViewUtil.ADVIEW, "GetConfigFromServer");
+			AdViewUtil.logInfo("GetConfigFromServer");
 			AdViewLayout adViewLayout = adViewLayoutReference.get();
 			if (adViewLayout != null) {
 				if (adViewLayout.adViewManager != null) {
@@ -812,13 +814,9 @@ public class AdViewLayout extends RelativeLayout {
 
 			} catch (ClientProtocolException e) {
 				if (AdViewTargeting.getRunMode() == RunMode.TEST)
-					Log.e(AdViewUtil.ADVIEW,
-							"Caught ClientProtocolException in PingUrlRunnable",
-							e);
-			} catch (IOException e) {
-				if (AdViewTargeting.getRunMode() == RunMode.TEST)
-					Log.e(AdViewUtil.ADVIEW,
-							"Caught IOException in PingUrlRunnable", e);
+				AdViewUtil.logError("Caught ClientProtocolException in PingUrlRunnable", e);
+			} catch (IOException e) {	
+				AdViewUtil.logError("Caught IOException in PingUrlRunnable", e);			
 			}
 
 			httpClient.getConnectionManager().shutdown();
@@ -867,7 +865,16 @@ public class AdViewLayout extends RelativeLayout {
 			} finally {
 				httpClient.getConnectionManager().shutdown();
 			}
+			
 
 		}
+	}
+	public void release(){
+		this.removeAllViewsInLayout();
+		this.requestLayout();
+		this.invalidate();
+		AdViewAdapter.onRelease();
+
+		
 	}
 }

@@ -8,12 +8,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import android.util.Log;
-
 import com.kyview.AdViewAdRegistry;
 import com.kyview.AdViewLayout;
-import com.kyview.AdViewTargeting;
-import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
 
@@ -55,29 +51,27 @@ public abstract class AdViewAdapter {
 		try {
 			switch(ration.type) {
 				case AdViewUtil.NETWORK_TYPE_ADMOB:
-//					if(Class.forName("com.google.ads.AdView") != null) {
-//						return getNetworkAdapter("com.kyview.adapters.AdMobAdapter", adViewLayout, ration);
-//					}
-//					else {
-//						return unknownAdNetwork(adViewLayout, ration);
-//					}  
-					return new AdMobAdapter(adViewLayout, ration);
-					
-//				case AdViewUtil.NETWORK_TYPE_ADLANTIS:
-//					 if(Class.forName("jp.adlantis.android.AdlantisView") != null) {
-//							return getNetworkAdapter("com.kyview.adapters.AdlantisAdapter", adViewLayout, ration);
-//						}
-//						else  
-//						{
-//							return unknownAdNetwork(adViewLayout, ration);
-//						}
+					if(Class.forName("com.google.ads.AdView") != null) {
+						return getNetworkAdapter("com.kyview.adapters.AdMobAdapter", adViewLayout, ration);
+					}
+					else {
+						return unknownAdNetwork(adViewLayout, ration);
+					}  
+				
+				case AdViewUtil.NETWORK_TYPE_ADLANTIS:
+					 if(Class.forName("jp.adlantis.android.AdlantisView") != null) {
+							return getNetworkAdapter("com.kyview.adapters.AdlantisAdapter", adViewLayout, ration);
+						}
+						else  
+						{
+							return unknownAdNetwork(adViewLayout, ration);
+						}
 				case AdViewUtil.NETWORK_TYPE_DoubleClick:
 					if(Class.forName("com.google.ads.AdView")!=null ){
 						return getNetworkAdapter("com.kyview.adapters.DoubleClickAdapter",adViewLayout,ration);
 					}else{
 						return unknownAdNetwork(adViewLayout,ration);
 					}	
-
 				case AdViewUtil.NETWORK_TYPE_MILLENNIAL:
 					if(Class.forName("com.millennialmedia.android.MMAdView") != null) {
                         return getNetworkAdapter("com.kyview.adapters.MillennialAdapter", adViewLayout, ration);
@@ -123,7 +117,6 @@ public abstract class AdViewAdapter {
 					else {
 						return unknownAdNetwork(adViewLayout, ration);
 					}
-
 				case AdViewUtil.NETWORK_TYPE_ADVIEWAD:
 					if(Class.forName("com.kyview.ad.KyAdView") != null) {
 						return getNetworkAdapter("com.kyview.adapters.AdViewHouseAdapter", adViewLayout, ration);
@@ -243,7 +236,6 @@ public abstract class AdViewAdapter {
 					else {
 						return unknownAdNetwork(adViewLayout, ration);
 					}		
-
 				case AdViewUtil.NETWORK_TYPE_INMOBI:
 					if(Class.forName("com.inmobi.androidsdk.IMAdView") != null) {
 						return getNetworkAdapter("com.kyview.adapters.InmobiAdapter", adViewLayout, ration);
@@ -254,72 +246,70 @@ public abstract class AdViewAdapter {
 					else {
 						return unknownAdNetwork(adViewLayout, ration);
 					}	
-//				case AdViewUtil.NETWORK_TYPE_ADSAGE:
-//					if(Class.forName("com.mobisage.android.MobiSageAdBanner") != null) {
-//						return getNetworkAdapter("com.kyview.adapters.MobiSageAdapter", adViewLayout, ration);
-//					}
-//					else {
-//						return unknownAdNetwork(adViewLayout, ration);
-//					}
-////					return new MobiSageAdapter(adViewLayout, ration);
-//
-//				case AdViewUtil.NETWORK_TYPE_IZPTEC:
-//					if(Class.forName("com.izp.views.IZPView") != null) {
-//						return getNetworkAdapter("com.kyview.adapters.IzpAdapter", adViewLayout, ration);
-//					}
-//					else {
-//						return unknownAdNetwork(adViewLayout, ration);
-//					}	
-//				case AdViewUtil.NETWORK_TYPE_UMENG:
-//					if(Class.forName("com.umengAd.android.AdView") != null) {
-//						return getNetworkAdapter("com.kyview.adapters.UmengAdapter", adViewLayout, ration);
-//					}
-//					else {
-//						return unknownAdNetwork(adViewLayout, ration);
-//					}	
-//				case AdViewUtil.NETWORK_TYPE_FRACTAL:
-//					if(Class.forName("com.fractalist.android.ads.ADView") != null) {
-//						return getNetworkAdapter("com.kyview.adapters.FractalAdapter", adViewLayout, ration);
-//					}
-//					else {
-//						return unknownAdNetwork(adViewLayout, ration);
-//					}
-//				case AdViewUtil.NETWORK_TYPE_LMMOB:
-//					if(Class.forName("cn.immob.sdk.ImmobView") != null) {
-//						return getNetworkAdapter("com.kyview.adapters.LmMobAdapter", adViewLayout, ration);
-//					}
-//					else {
-//						return unknownAdNetwork(adViewLayout, ration);
-//					}	
-//				case AdViewUtil.NETWORK_TYPE_MOBWIN:
-//					if(Class.forName("com.tencent.exmobwin.MobWINManager") != null) {
-//                        			return getNetworkAdapter("com.kyview.adapters.MobWinAdapter", adViewLayout, ration);
-//					}
-//					else {
-//						return unknownAdNetwork(adViewLayout, ration);
-//					}
-//				case AdViewUtil.NETWORK_TYPE_SUIZONG:
-//					//if(Class.forName("com.suizong.mobplate.ads.AdView") != null) {
-//					if(Class.forName("com.kyview.adapters.SuizongInterfaceAdapter") != null) {	
-//						return getNetworkAdapter("com.kyview.adapters.SuizongInterfaceAdapter", adViewLayout, ration);
-//					}
-//					else {
-//						return unknownAdNetwork(adViewLayout, ration);
-//					}
-//				case AdViewUtil.NETWORK_TYPE_ADUU:
-//					if(Class.forName("com.kyview.adapters.AduuInterfaceAdapter") != null) {
-//						return getNetworkAdapter("com.kyview.adapters.AduuInterfaceAdapter", adViewLayout, ration);
-//					}
-//					else {
-//						return unknownAdNetwork(adViewLayout, ration);
-//					}
-//				case AdViewUtil.NETWORK_TYPE_MOMARK:
-//					if(Class.forName("com.donson.momark.view.view.AdView") != null) {
-//						return getNetworkAdapter("com.kyview.adapters.MomarkAdapter", adViewLayout, ration);
-//					}
-//					else {
-//						return unknownAdNetwork(adViewLayout, ration);
-//					}
+				case AdViewUtil.NETWORK_TYPE_ADSAGE:
+					if(Class.forName("com.mobisage.android.MobiSageAdBanner") != null) {
+						return getNetworkAdapter("com.kyview.adapters.MobiSageAdapter", adViewLayout, ration);
+					}
+					else {
+						return unknownAdNetwork(adViewLayout, ration);
+					}
+				case AdViewUtil.NETWORK_TYPE_IZPTEC:
+					if(Class.forName("com.izp.views.IZPView") != null) {
+						return getNetworkAdapter("com.kyview.adapters.IzpAdapter", adViewLayout, ration);
+					}
+					else {
+						return unknownAdNetwork(adViewLayout, ration);
+					}	
+				case AdViewUtil.NETWORK_TYPE_UMENG:
+					if(Class.forName("com.umengAd.android.AdView") != null) {
+						return getNetworkAdapter("com.kyview.adapters.UmengAdapter", adViewLayout, ration);
+					}
+					else {
+						return unknownAdNetwork(adViewLayout, ration);
+					}	
+				case AdViewUtil.NETWORK_TYPE_FRACTAL:
+					if(Class.forName("com.fractalist.android.ads.ADView") != null) {
+						return getNetworkAdapter("com.kyview.adapters.FractalAdapter", adViewLayout, ration);
+					}
+					else {
+						return unknownAdNetwork(adViewLayout, ration);
+					}
+				case AdViewUtil.NETWORK_TYPE_LMMOB:
+					if(Class.forName("cn.immob.sdk.ImmobView") != null) {
+						return getNetworkAdapter("com.kyview.adapters.LmMobAdapter", adViewLayout, ration);
+					}
+					else {
+						return unknownAdNetwork(adViewLayout, ration);
+					}	
+				case AdViewUtil.NETWORK_TYPE_MOBWIN:
+					if(Class.forName("com.tencent.exmobwin.MobWINManager") != null) {
+                        			return getNetworkAdapter("com.kyview.adapters.MobWinAdapter", adViewLayout, ration);
+					}
+					else {
+						return unknownAdNetwork(adViewLayout, ration);
+					}
+				case AdViewUtil.NETWORK_TYPE_SUIZONG:
+					//if(Class.forName("com.suizong.mobplate.ads.AdView") != null) {
+					if(Class.forName("com.kyview.adapters.SuizongInterfaceAdapter") != null) {	
+						return getNetworkAdapter("com.kyview.adapters.SuizongInterfaceAdapter", adViewLayout, ration);
+					}
+					else {
+						return unknownAdNetwork(adViewLayout, ration);
+					}
+				case AdViewUtil.NETWORK_TYPE_ADUU:
+					if(Class.forName("com.kyview.adapters.AduuInterfaceAdapter") != null) {
+						return getNetworkAdapter("com.kyview.adapters.AduuInterfaceAdapter", adViewLayout, ration);
+					}
+					else {
+						return unknownAdNetwork(adViewLayout, ration);
+					}
+				case AdViewUtil.NETWORK_TYPE_MOMARK:
+					if(Class.forName("com.donson.momark.view.view.AdView") != null) {
+						return getNetworkAdapter("com.kyview.adapters.MomarkAdapter", adViewLayout, ration);
+					}
+					else {
+						return unknownAdNetwork(adViewLayout, ration);
+					}
 				case AdViewUtil.NETWORK_TYPE_CUSTOMIZE:
 					//here, developer may add self-code
 					return getNetworkAdapter("com.kyview.adapters.EventAdapter", adViewLayout, ration);
@@ -383,16 +373,14 @@ public abstract class AdViewAdapter {
 	}
 */	
 	private static AdViewAdapter unknownAdNetwork(AdViewLayout adViewLayout, Ration ration) {
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.w(AdViewUtil.ADVIEW, "Unsupported ration type: " + ration.type);
+		AdViewUtil.logInfo("Unsupported ration type: " + ration.type);
 		return null;
 	}
 	
 	public static void handleOne(AdViewLayout adViewLayout,Ration ration)  {
       adapter = AdViewAdapter.getAdapter(adViewLayout, ration);
       if(adapter != null) {
-    	  if(AdViewTargeting.getRunMode()==RunMode.TEST)
-    		  Log.d(AdViewUtil.ADVIEW, "Valid adapter, calling handle()");
+    		AdViewUtil.logInfo("Valid adapter, calling handle()");
          adapter.handle();
       }
       else {

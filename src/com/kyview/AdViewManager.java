@@ -41,620 +41,595 @@ import android.view.WindowManager;
 
 public class AdViewManager {
 	public String keyAdView;
-	
+
 	private Extra extra;
 	private List<Ration> rationsList;
-	//private List<Ration> rationsList_pri;
+	// private List<Ration> rationsList_pri;
 	private double totalWeight = 0;
 	private WeakReference<Context> contextReference;
-	
+
 	// Default config expire timeout is 30 minutes.
 	public static int configExpireTimeout = 1800;
 	private boolean needFetchEveryTime = false;
-	
+
 	Iterator<Ration> rollovers;
 	Iterator<Ration> rollover_pri;
-	
-	public int mSimulator=0;
-	
+
+	public int mSimulator = 0;
+
 	private final static String PREFS_STRING_TIMESTAMP = "timestamp";
 	private final static String PREFS_STRING_CONFIG = "config";
-	private  boolean youmiInit=true;
-	public  boolean bGetConfig=false;
+	private boolean youmiInit = true;
+	public boolean bGetConfig = false;
 
-	public boolean bLocationForeign=false;
-	public String mLocation="";
-	
+	public boolean bLocationForeign = false;
+	public String mLocation = "";
+
 	public int width;
 	public int height;
-	public String mDeviceid="";
+	public String mDeviceid = "";
 
-	public AdViewManager(WeakReference<Context> contextReference, String keyAdView) {
+	public AdViewManager(WeakReference<Context> contextReference,
+			String keyAdView) {
 		Log.i("Android", "Creating weivda reganam...");
 		this.contextReference = contextReference;
 		this.keyAdView = keyAdView;
-		
-		if(AdViewTargeting.getUpdateMode()==AdViewTargeting.UpdateMode.DEFAULT){
+
+		if (AdViewTargeting.getUpdateMode() == AdViewTargeting.UpdateMode.DEFAULT) {
 			needFetchEveryTime = false;
-		}
-		else if(AdViewTargeting.getUpdateMode()==AdViewTargeting.UpdateMode.EVERYTIME)
+		} else if (AdViewTargeting.getUpdateMode() == AdViewTargeting.UpdateMode.EVERYTIME)
 			needFetchEveryTime = true;
-		else
-		{
-		
+		else {
+
 		}
 
-		mDeviceid = getDeviceID((Context)contextReference.get());
-		WindowManager WM = (WindowManager)((Context)contextReference.get())
-			.getSystemService("window");
+		mDeviceid = getDeviceID((Context) contextReference.get());
+		WindowManager WM = (WindowManager) ((Context) contextReference.get())
+				.getSystemService("window");
 		width = WM.getDefaultDisplay().getWidth();
 		height = WM.getDefaultDisplay().getHeight();
-		if (width>height)
-		{
-			int temp=width;
-			width=height;
-			height=temp;
+		if (width > height) {
+			int temp = width;
+			width = height;
+			height = temp;
 		}
-		
+
 		mSimulator = isSimulator();
 
 		bLocationForeign = isLocateForeign();
-		if (bLocationForeign==false)
+		if (bLocationForeign == false)
 			mLocation = "china";
 		else
 			mLocation = "foreign";
 	}
-	
-	
+
 	public void setYoumiInit(boolean flag) {
-		youmiInit=flag;
+		youmiInit = flag;
 	}
+
 	public boolean getYoumiInit() {
 		return youmiInit;
 	}
+
 	/*
-	public static void setConfigExpireTimeout(int expireTimeout) {
-		configExpireTimeout = expireTimeout;
-	}
-	*/
-	
+	 * public static void setConfigExpireTimeout(int expireTimeout) {
+	 * configExpireTimeout = expireTimeout; }
+	 */
+
 	public Extra getExtra() {
-		if(totalWeight <= 0) {
-		//	Log.i(AdViewUtil.ADVIEW, "Sum of ration weights is 0 - no ads to be shown");
+		if (totalWeight <= 0) {
+			// Log.i(AdViewUtil.ADVIEW,
+			// "Sum of ration weights is 0 - no ads to be shown");
 			return null;
-		}
-		else {
+		} else {
 			return this.extra;
 		}
 	}
-	
-	public int getConfigExpiereTimeout(){
+
+	public int getConfigExpiereTimeout() {
 		return configExpireTimeout;
 	}
-	
+
 	public Ration getRation() {
 		Random random = new Random();
-		
+
 		double r = random.nextDouble() * totalWeight;
 		double s = 0;
-		
-				
+
 		Iterator<Ration> it = this.rationsList.iterator();
 		Ration ration = null;
-		while(it.hasNext()) {
+		while (it.hasNext()) {
 			ration = it.next();
 			s += ration.weight;
-			
-			if(s >= r) {
+
+			if (s >= r) {
 				break;
 			}
 		}
-		
+
 		return ration;
 	}
-	
+
 	public Ration getRollover() {
-		if(this.rollovers == null) {
+		if (this.rollovers == null) {
 			return null;
 		}
-		
+
 		Ration ration = null;
-		if(this.rollovers.hasNext()) {
+		if (this.rollovers.hasNext()) {
 			ration = this.rollovers.next();
+		} else {
+			// ration = getRation();
 		}
-		else
-		{
-			//ration = getRation();
-		}
-		
+
 		return ration;
 	}
-	
+
 	public Ration getRollover_pri() {
-		int max=100000000;
-		if(this.rollover_pri == null) {
+		int max = 100000000;
+		if (this.rollover_pri == null) {
 			return null;
 		}
-		
+
 		Ration ration = null;
-		Ration ration_pri=null;
-		while(this.rollover_pri.hasNext())
-		{
-		
+		Ration ration_pri = null;
+		while (this.rollover_pri.hasNext()) {
+
 			ration = this.rollover_pri.next();
-			if(ration.priority<max)
-			{
-				ration_pri=ration;
-				max=ration.priority;
+			if (ration.priority < max) {
+				ration_pri = ration;
+				max = ration.priority;
 			}
-		
+
 		}
-		
+
 		return ration_pri;
 	}
-	
+
 	public void resetRollover_pri() {
-		//this.rollovers = this.rationsList.iterator();
-		//this.rollover_pri=this.rationsList_pri.iterator();
+		// this.rollovers = this.rationsList.iterator();
+		// this.rollover_pri=this.rationsList_pri.iterator();
 	}
+
 	public void resetRollover() {
 		this.rollovers = this.rationsList.iterator();
 	}
-	
 
 	private String getLocalConfig(String sdkkey) {
-		if (sdkkey == null || sdkkey.length() == 0)
-		{
+		if (sdkkey == null || sdkkey.length() == 0) {
 			return null;
 		}
 
 		Context context = contextReference.get();
 		InputStream is;
-		String filename=sdkkey+".txt";
-		String localconfig=null;
-		
+		String filename = sdkkey + ".txt";
+		String localconfig = null;
+
 		try {
 			is = context.getAssets().open(filename);
-			localconfig=convertStreamToString(is);
+			localconfig = convertStreamToString(is);
 			is.close();
 		} catch (Exception e) {
-			if(AdViewTargeting.getRunMode()==RunMode.TEST)
-				Log.i(AdViewUtil.ADVIEW, e.toString());
-
+			AdViewUtil.logError("", e);
 			return null;
 		}
 
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.i(AdViewUtil.ADVIEW, "localconfig="+localconfig);
-		
+		AdViewUtil.logInfo("localconfig=" + localconfig);
 		return localconfig;
 	}
-	
-    public void fetchConfig() {
-    	Context context = contextReference.get();
-    	
+
+	public void fetchConfig() {
+		Context context = contextReference.get();
+
 		// If the context is null here something went wrong with initialization.
-    	if(context == null) {
-    		return;
-    	}
-    	
-	    SharedPreferences adViewPrefs = context.getSharedPreferences(keyAdView, Context.MODE_PRIVATE);
-	    String jsonString = adViewPrefs.getString(PREFS_STRING_CONFIG, null);
-
-	    if((jsonString == null) || (needFetchEveryTime == true)) {
-	
-	        HttpClient httpClient = new DefaultHttpClient();
-	        String url = String.format(AdViewUtil.urlConfig, this.keyAdView, AdViewUtil.VERSION, mSimulator, mLocation);
-	        HttpGet httpGet = new HttpGet(url); 
-	        HttpResponse httpResponse;
-	        try {
-	            httpResponse = httpClient.execute(httpGet);
-	     
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			;//Log.i(AdViewUtil.ADVIEW, "getStatusCode="+httpResponse.getStatusLine().getStatusCode());
-		
-	            if(httpResponse.getStatusLine().getStatusCode()==200){
-	            HttpEntity entity = httpResponse.getEntity();
-	 
-	            if (entity != null) {
-	                InputStream inputStream = entity.getContent();
-	                String jsonStringHttp = "";
-	                jsonStringHttp = convertStreamToString(inputStream); 		
-	                if(jsonStringHttp.length() > 0){
-				if (checkConfigurationString(jsonStringHttp)==true)	
-				{
-					jsonString = jsonStringHttp;
-					SharedPreferences.Editor editor = adViewPrefs.edit();
-					editor.putString(PREFS_STRING_CONFIG, jsonString);
-					editor.putLong(PREFS_STRING_TIMESTAMP, System.currentTimeMillis());
-					editor.commit();
-					bGetConfig=true;
-				}
-	                }
-	                	
-	            }
-	            
-	            }
-	        } catch (ClientProtocolException e) {
-			if(AdViewTargeting.getRunMode()==RunMode.TEST)
-				Log.i(AdViewUtil.ADVIEW, e.toString());	  
-	        } catch (IOException e) {
-	    		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-				Log.i(AdViewUtil.ADVIEW, e.toString());
-	        }
-
-		httpClient.getConnectionManager().shutdown();
-
-		if(jsonString == null)
-	 	{
-	 		jsonString = getLocalConfig(this.keyAdView);
-			parseOfflineConfigurationString(jsonString);
+		if (context == null) {
 			return;
-	 	}
-	    }
-	    else {
-	 
-	    }
-        
-        parseConfigurationString(jsonString);
-    }
-    
-    public void fetchConfigFromServer() {
-    	Context context = contextReference.get();
-	    SharedPreferences adViewPrefs = context.getSharedPreferences(keyAdView, Context.MODE_PRIVATE);    	
-	    String jsonString = "";
-        HttpClient httpClient = new DefaultHttpClient();
-        
-        String url = String.format(AdViewUtil.urlConfig, this.keyAdView, AdViewUtil.VERSION, mSimulator, mLocation);
-        HttpGet httpGet = new HttpGet(url); 
- 
-        HttpResponse httpResponse;
-        try {
-            httpResponse = httpClient.execute(httpGet);
-     
-       
-            if(httpResponse.getStatusLine().getStatusCode()==200){
-	            HttpEntity entity = httpResponse.getEntity();
-	 
-	            if (entity != null) {
-	                InputStream inputStream = entity.getContent();
-	                jsonString = convertStreamToString(inputStream); 
-	            }
-            }
-        } catch (ClientProtocolException e) {
-  		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.i(AdViewUtil.ADVIEW, e.toString());
-        } catch (IOException e) {
- 		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.i(AdViewUtil.ADVIEW, e.toString());   
-        }finally{
-        	httpClient.getConnectionManager().shutdown();	
-        }
-        if(jsonString.length() > 0 && checkConfigurationString(jsonString) == true){
-        	//parseConfigurationString(jsonString);
-        	//if(this.rationsList.size() > 0)
-		{
-                SharedPreferences.Editor editor = adViewPrefs.edit();
-                editor.putString(PREFS_STRING_CONFIG, jsonString);
-                editor.commit();       		
-        	}
-        }
-    }
-    
-	private String convertStreamToString(InputStream is) {
-	    BufferedReader reader = new BufferedReader(new InputStreamReader(is), 8192);
-	    StringBuilder sb = new StringBuilder();
-	
-	    String line = null;
-	    try {
-	        while ((line = reader.readLine()) != null) {
-	            sb.append(line + "\n");
-	        }
-	    } 
-	    catch (IOException e) {
-        
-        	return null;
-	    } 
-	    finally {
-	        try {
-	            is.close();
-	        } catch (IOException e) {
-	    
-	            return null;
-	        }
-	    }
-	    
-	    return sb.toString();
+		}
+
+		SharedPreferences adViewPrefs = context.getSharedPreferences(keyAdView,
+				Context.MODE_PRIVATE);
+		String jsonString = adViewPrefs.getString(PREFS_STRING_CONFIG, null);
+
+		if ((jsonString == null) || (needFetchEveryTime == true)) {
+
+			HttpClient httpClient = new DefaultHttpClient();
+			String url = String.format(AdViewUtil.urlConfig, this.keyAdView,
+					AdViewUtil.VERSION, mSimulator, mLocation);
+			HttpGet httpGet = new HttpGet(url);
+			HttpResponse httpResponse;
+			try {
+				httpResponse = httpClient.execute(httpGet);
+
+				// if (AdViewTargeting.getRunMode() == RunMode.TEST)
+				// Log.i(AdViewUtil.ADVIEW,
+				// "getStatusCode="+httpResponse.getStatusLine().getStatusCode());
+
+				if (httpResponse.getStatusLine().getStatusCode() == 200) {
+					HttpEntity entity = httpResponse.getEntity();
+
+					if (entity != null) {
+						InputStream inputStream = entity.getContent();
+						String jsonStringHttp = "";
+						jsonStringHttp = convertStreamToString(inputStream);
+						if (jsonStringHttp.length() > 0) {
+							if (checkConfigurationString(jsonStringHttp) == true) {
+								jsonString = jsonStringHttp;
+								SharedPreferences.Editor editor = adViewPrefs
+										.edit();
+								editor.putString(PREFS_STRING_CONFIG,
+										jsonString);
+								editor.putLong(PREFS_STRING_TIMESTAMP,
+										System.currentTimeMillis());
+								editor.commit();
+								bGetConfig = true;
+							}
+						}
+
+					}
+
+				}
+			} catch (ClientProtocolException e) {
+				AdViewUtil.logError("", e);
+			} catch (IOException e) {
+				AdViewUtil.logError("", e);
+			}
+
+			httpClient.getConnectionManager().shutdown();
+
+			if (jsonString == null) {
+				jsonString = getLocalConfig(this.keyAdView);
+				parseOfflineConfigurationString(jsonString);
+				return;
+			}
+		} else {
+
+		}
+
+		parseConfigurationString(jsonString);
 	}
 
-    private boolean checkConfigurationString(String jsonString) {
-	boolean ret=false;
-	
-    	if(AdViewTargeting.getRunMode()==RunMode.TEST)
-    		;//Log.d(AdViewUtil.ADVIEW, "checkConfigurationString, Received jsonString=" + jsonString);
-    	
-    	try {    
-	        JSONObject json = new JSONObject(jsonString);
-		 if (json.has("extra") && json.has("rations")) 
-	        	ret=true;
-    	}
-    	catch (JSONException e) {
-    		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.i(AdViewUtil.ADVIEW, e.toString());
-			
-    		ret=false;
-    	}
-    	catch (NullPointerException e) {
-    		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.i(AdViewUtil.ADVIEW, e.toString());
-			
-    		ret=false;
-    	}
+	public void fetchConfigFromServer() {
+		Context context = contextReference.get();
+		SharedPreferences adViewPrefs = context.getSharedPreferences(keyAdView,
+				Context.MODE_PRIVATE);
+		String jsonString = "";
+		HttpClient httpClient = new DefaultHttpClient();
 
-	if(AdViewTargeting.getRunMode()==RunMode.TEST)
-    		Log.d(AdViewUtil.ADVIEW, "ret=" + ret);
-	
-	return ret;	
-    }
-	
-    private void parseConfigurationString(String jsonString) {
-    	//*
-    	if(AdViewTargeting.getRunMode()==RunMode.TEST)
-    		Log.d(AdViewUtil.ADVIEW, "Received jsonString: " + jsonString);
-    	//*/
-    	try {    
-	        JSONObject json = new JSONObject(jsonString);
-	
-	        parseExtraJson(json.getJSONObject("extra"));
-	        parseRationsJson(json.getJSONArray("rations"));
-    	}
-    	catch (JSONException e) {
-    	
-    		this.extra = new Extra();
-    	}
-    	catch (NullPointerException e) {
-    	
-    		this.extra = new Extra();
-    	}
-    }
+		String url = String.format(AdViewUtil.urlConfig, this.keyAdView,
+				AdViewUtil.VERSION, mSimulator, mLocation);
+		HttpGet httpGet = new HttpGet(url);
 
-    private void parseOfflineConfigurationString(String jsonString) {
-    	if(AdViewTargeting.getRunMode()==RunMode.TEST)
-    		Log.d(AdViewUtil.ADVIEW, "Received jsonString: " + jsonString);
-	
-    	try {    
-	        JSONObject json = new JSONObject(jsonString);
+		HttpResponse httpResponse;
+		try {
+			httpResponse = httpClient.execute(httpGet);
 
-		if (bLocationForeign==false)
-		{
-			json = json.getJSONObject("china_cfg");
+			if (httpResponse.getStatusLine().getStatusCode() == 200) {
+				HttpEntity entity = httpResponse.getEntity();
+
+				if (entity != null) {
+					InputStream inputStream = entity.getContent();
+					jsonString = convertStreamToString(inputStream);
+				}
+			}
+		} catch (ClientProtocolException e) {
+			AdViewUtil.logError("", e);
+		} catch (IOException e) {
+			AdViewUtil.logError("", e);
+		} finally {
+			httpClient.getConnectionManager().shutdown();
 		}
-		else
-		{
-			json = json.getJSONObject("foreign_cfg");
+		if (jsonString.length() > 0
+				&& checkConfigurationString(jsonString) == true) {
+			// parseConfigurationString(jsonString);
+			// if(this.rationsList.size() > 0)
+			{
+				SharedPreferences.Editor editor = adViewPrefs.edit();
+				editor.putString(PREFS_STRING_CONFIG, jsonString);
+				editor.commit();
+			}
 		}
-		
-	        parseExtraJson(json.getJSONObject("extra"));
-	        parseRationsJson(json.getJSONArray("rations"));
-    	}
-    	catch (JSONException e) {
+	}
 
-		//location is off
-	    	try {    
-		        JSONObject json = new JSONObject(jsonString);
-			
-		        parseExtraJson(json.getJSONObject("extra"));
-		        parseRationsJson(json.getJSONArray("rations"));
-	    	}
-	    	catch (JSONException e2) {
-	    	
-	    		this.extra = new Extra();
-	    	}
-		catch (NullPointerException e2) {
-    	
-	    		this.extra = new Extra(); 
-    		}	
-    	}
-    	catch (NullPointerException e) {
-    	
-    		this.extra = new Extra(); 
-    	}
-    }
-	
-    private void parseExtraJson(JSONObject json) {
-    	Extra extra = new Extra();
-    	
-    	try {    
-	        extra.cycleTime = json.getInt("cycle_time");
-	        extra.locationOn = json.getInt("loacation_on");
-	        extra.transition = json.getInt("transition");
-	        extra.report=json.getString("report");
-	        AdViewUtil.urlImpression="http://"+extra.report+"/agent/agent2.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d&keydev=%s";
-	        AdViewUtil.urlClick="http://"+extra.report+"/agent/agent3.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d&keydev=%s";
-		 AdViewUtil.appReport="http://"+extra.report+"/agent/appReport.php?keyAdView=%s&keyDev=%s&typeDev=%s&osVer=%s&resolution=%s&servicePro=%s&netType=%s&channel=%s&platform=%s";
-		 
-	        JSONObject backgroundColor = json.getJSONObject("background_color_rgb");
-	        extra.bgRed = backgroundColor.getInt("red");
-	        extra.bgGreen = backgroundColor.getInt("green");
-	        extra.bgBlue = backgroundColor.getInt("blue");
-	        extra.bgAlpha = backgroundColor.getInt("alpha") * 255;
-	        
-	        JSONObject textColor = json.getJSONObject("text_color_rgb");
-	        extra.fgRed = textColor.getInt("red");
-	        extra.fgGreen = textColor.getInt("green");
-	        extra.fgBlue = textColor.getInt("blue");
-	        extra.fgAlpha = textColor.getInt("alpha") * 255;
-    	}
-    	
-    	catch (JSONException e) {
-    	
-    	}
-      	this.extra = extra;
-    }
-    
-    private void parseRationsJson(JSONArray json) {
-    	List<Ration> rationsList = new ArrayList<Ration>();
-    	//List<Ration> rationsList_pri =new ArrayList<Ration>();
-    	List<Ration> rationsList_ex = new ArrayList<Ration>();
-    	//List<Ration> rationsList_pri_ex =new ArrayList<Ration>();
-    	double totalweight = 0;
-    	double totalweight_ex = 0;
-    	
-    	//this.totalWeight = 0;
-    	
-    	
-    	try {
-	    	int i;
-	    	for(i=0; i<json.length(); i++) {
-				JSONObject jsonRation = json.getJSONObject(i); 
-				if(jsonRation == null) {
+	private String convertStreamToString(InputStream is) {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is),
+				8192);
+		StringBuilder sb = new StringBuilder();
+
+		String line = null;
+		try {
+			while ((line = reader.readLine()) != null) {
+				sb.append(line + "\n");
+			}
+		} catch (IOException e) {
+
+			return null;
+		} finally {
+			try {
+				is.close();
+			} catch (IOException e) {
+
+				return null;
+			}
+		}
+
+		return sb.toString();
+	}
+
+	private boolean checkConfigurationString(String jsonString) {
+		boolean ret = false;
+
+		// if (AdViewTargeting.getRunMode() == RunMode.TEST)
+		// Log.d(AdViewUtil.ADVIEW,
+		// "checkConfigurationString, Received jsonString=" +
+		// jsonString);
+
+		try {
+			JSONObject json = new JSONObject(jsonString);
+			if (json.has("extra") && json.has("rations"))
+				ret = true;
+		} catch (JSONException e) {
+			AdViewUtil.logError("", e);
+			ret = false;
+		} catch (NullPointerException e) {
+			AdViewUtil.logError("", e);
+			ret = false;
+		}
+
+		AdViewUtil.logInfo("ret=" + ret);
+		return ret;
+	}
+
+	private void parseConfigurationString(String jsonString) {
+		// *
+		if (AdViewTargeting.getRunMode() == RunMode.TEST)
+			Log.d(AdViewUtil.ADVIEW, "Received jsonString: " + jsonString);
+		// */
+		try {
+			JSONObject json = new JSONObject(jsonString);
+
+			parseExtraJson(json.getJSONObject("extra"));
+			parseRationsJson(json.getJSONArray("rations"));
+		} catch (JSONException e) {
+
+			this.extra = new Extra();
+		} catch (NullPointerException e) {
+
+			this.extra = new Extra();
+		}
+	}
+
+	private void parseOfflineConfigurationString(String jsonString) {
+		AdViewUtil.logInfo("Received jsonString: " + jsonString);
+		try {
+			JSONObject json = new JSONObject(jsonString);
+
+			if (bLocationForeign == false) {
+				json = json.getJSONObject("china_cfg");
+			} else {
+				json = json.getJSONObject("foreign_cfg");
+			}
+
+			parseExtraJson(json.getJSONObject("extra"));
+			parseRationsJson(json.getJSONArray("rations"));
+		} catch (JSONException e) {
+
+			// location is off
+			try {
+				JSONObject json = new JSONObject(jsonString);
+
+				parseExtraJson(json.getJSONObject("extra"));
+				parseRationsJson(json.getJSONArray("rations"));
+			} catch (JSONException e2) {
+
+				this.extra = new Extra();
+			} catch (NullPointerException e2) {
+
+				this.extra = new Extra();
+			}
+		} catch (NullPointerException e) {
+
+			this.extra = new Extra();
+		}
+	}
+
+	private void parseExtraJson(JSONObject json) {
+		Extra extra = new Extra();
+
+		try {
+			extra.cycleTime = json.getInt("cycle_time");
+			extra.locationOn = json.getInt("loacation_on");
+			extra.transition = json.getInt("transition");
+			extra.report = json.getString("report");
+			AdViewUtil.urlImpression = "http://"
+					+ extra.report
+					+ "/agent/agent2.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d&keydev=%s";
+			AdViewUtil.urlClick = "http://"
+					+ extra.report
+					+ "/agent/agent3.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d&keydev=%s";
+			AdViewUtil.appReport = "http://"
+					+ extra.report
+					+ "/agent/appReport.php?keyAdView=%s&keyDev=%s&typeDev=%s&osVer=%s&resolution=%s&servicePro=%s&netType=%s&channel=%s&platform=%s";
+
+			JSONObject backgroundColor = json
+					.getJSONObject("background_color_rgb");
+			extra.bgRed = backgroundColor.getInt("red");
+			extra.bgGreen = backgroundColor.getInt("green");
+			extra.bgBlue = backgroundColor.getInt("blue");
+			extra.bgAlpha = backgroundColor.getInt("alpha") * 255;
+
+			JSONObject textColor = json.getJSONObject("text_color_rgb");
+			extra.fgRed = textColor.getInt("red");
+			extra.fgGreen = textColor.getInt("green");
+			extra.fgBlue = textColor.getInt("blue");
+			extra.fgAlpha = textColor.getInt("alpha") * 255;
+		}
+
+		catch (JSONException e) {
+
+		}
+		this.extra = extra;
+	}
+
+	public List<Ration> getRationList() {
+		return this.rationsList;
+	}
+
+	public void setTestRationsList(Ration ration) {
+
+		this.rationsList.clear();
+		this.rationsList.add(ration);
+	}
+
+	private void parseRationsJson(JSONArray json) {
+		List<Ration> rationsList = new ArrayList<Ration>();
+		// List<Ration> rationsList_pri =new ArrayList<Ration>();
+		List<Ration> rationsList_ex = new ArrayList<Ration>();
+		// List<Ration> rationsList_pri_ex =new ArrayList<Ration>();
+		double totalweight = 0;
+		double totalweight_ex = 0;
+
+		// this.totalWeight = 0;
+
+		try {
+			int i;
+			for (i = 0; i < json.length(); i++) {
+				JSONObject jsonRation = json.getJSONObject(i);
+				if (jsonRation == null) {
 					continue;
 				}
 
-				Class<? extends AdViewAdapter> adapterClass = AdViewAdRegistry.getInstance().adapterClassForAdType(jsonRation.getInt("type"));
-		
+				Class<? extends AdViewAdapter> adapterClass = AdViewAdRegistry
+						.getInstance().adapterClassForAdType(
+								jsonRation.getInt("type"));
+
 				if (null == adapterClass) {
-					if(AdViewTargeting.getRunMode()==RunMode.TEST)
-						Log.d(AdViewUtil.ADVIEW, "don't include ad="+jsonRation.getInt("type"));
+					AdViewUtil.logInfo("don't include ad="
+							+ jsonRation.getInt("type"));
 					continue;
 				}
-		
+
 				Ration ration = new Ration();
 
-			    ration.nid = jsonRation.getString("nid");
-			    ration.type = jsonRation.getInt("type");
-			    ration.name = jsonRation.getString("nname");
-			    ration.weight = jsonRation.getInt("weight");
-			    ration.priority = jsonRation.getInt("priority");
-		    	ration.key = jsonRation.getString("key");
-		    	ration.key2 = jsonRation.optString("key2");
-		    	ration.key3 = jsonRation.optString("key3");
-		    	ration.type2=jsonRation.optInt("type2");
-		    	ration.logo=jsonRation.optString("logo");
-			    
-//			    switch(ration.type) {
-//			    case AdViewUtil.NETWORK_TYPE_YOUMI:
-//			    case AdViewUtil.NETWORK_TYPE_SMARTAD:
-//			    case AdViewUtil.NETWORK_TYPE_WQ:
-//			    case AdViewUtil.NETWORK_TYPE_SMAATO:
-//			    case AdViewUtil.NETWORK_TYPE_UMENG:	
-//			    case AdViewUtil.NETWORK_TYPE_ADUU:
-//			    case AdViewUtil.NETWORK_TYPE_MOMARK:
-//			    case AdViewUtil.NETWORK_TYPE_CUSTOMIZE:		
-//			    	ration.key = jsonRation.getString("key");
-//			    	ration.key2 = jsonRation.getString("key2");
-//			    	break;
-//			    case AdViewUtil.NETWORK_TYPE_ADVIEWAD:
-//			    	
-//			    	ration.key = jsonRation.getString("key");
-//			    	ration.key2 = jsonRation.getString("key2");
-//			    	ration.type2=jsonRation.getInt("type2");
-//			    	ration.logo=jsonRation.getString("logo");
-//			    	break;
-//			    case AdViewUtil.NETWORK_TYPE_BAIDU:
-//				ration.key = jsonRation.getString("key");
-//			    	ration.key2 = jsonRation.getString("key2");	
-//			    	//ration.key3=jsonRation.getString("key3");
-//			    default:
-//				    ration.key = jsonRation.getString("key");
-//				    break;
-//			    }
-				
-	    		rationsList.add(ration);
-	    		totalweight += ration.weight;
-	    	}
-    	}
-    	catch (JSONException e) {
-    	
+				ration.nid = jsonRation.getString("nid");
+				ration.type = jsonRation.getInt("type");
+				ration.name = jsonRation.getString("nname");
+				ration.weight = jsonRation.getInt("weight");
+				ration.priority = jsonRation.getInt("priority");
+				ration.key = jsonRation.getString("key");
+				ration.key2 = jsonRation.optString("key2");
+				ration.key3 = jsonRation.optString("key3");
+				ration.type2 = jsonRation.optInt("type2");
+				ration.logo = jsonRation.optString("logo");
+
+				// switch(ration.type) {
+				// case AdViewUtil.NETWORK_TYPE_YOUMI:
+				// case AdViewUtil.NETWORK_TYPE_SMARTAD:
+				// case AdViewUtil.NETWORK_TYPE_WQ:
+				// case AdViewUtil.NETWORK_TYPE_SMAATO:
+				// case AdViewUtil.NETWORK_TYPE_UMENG:
+				// case AdViewUtil.NETWORK_TYPE_ADUU:
+				// case AdViewUtil.NETWORK_TYPE_MOMARK:
+				// case AdViewUtil.NETWORK_TYPE_CUSTOMIZE:
+				// ration.key = jsonRation.getString("key");
+				// ration.key2 = jsonRation.getString("key2");
+				// break;
+				// case AdViewUtil.NETWORK_TYPE_ADVIEWAD:
+				//
+				// ration.key = jsonRation.getString("key");
+				// ration.key2 = jsonRation.getString("key2");
+				// ration.type2=jsonRation.getInt("type2");
+				// ration.logo=jsonRation.getString("logo");
+				// break;
+				// case AdViewUtil.NETWORK_TYPE_BAIDU:
+				// ration.key = jsonRation.getString("key");
+				// ration.key2 = jsonRation.getString("key2");
+				// //ration.key3=jsonRation.getString("key3");
+				// default:
+				// ration.key = jsonRation.getString("key");
+				// break;
+				// }
+
+				rationsList.add(ration);
+				totalweight += ration.weight;
+			}
+		} catch (JSONException e) {
+
 		}
-    	//if set the location optimizing 
-  /*  	if(this.extra.locationOn == 0){
-    		//if the location is in China
-    		if(isLocateForeign() == false){
-    			if(rationsList.size() <= 0){
-    				rationsList = rationsList_ex;
-    				totalweight = totalweight_ex;
-    			}
-//    			if(rationsList_pri.size() <= 0){
-//    				rationsList_pri = rationsList_pri_ex;
- //   			}
-    		}else{
-    			if(rationsList_ex.size() > 0){
-    				rationsList = rationsList_ex;
-    				totalweight = totalweight_ex;
-    				//rationsList_pri = rationsList_pri_ex;
-    			}
-    		}
-    	}else
-*/
-    	{
-    		rationsList.addAll(rationsList_ex);
-    		totalweight += totalweight_ex;
-    		//rationsList_pri.addAll(rationsList_pri_ex);
-    	}
-    	
-    	Collections.sort(rationsList);
-    	this.rationsList = rationsList;
-    	this.rollovers = this.rationsList.iterator();
-    	this.totalWeight = totalweight;
-/*    	
-    	Collections.sort(rationsList_pri);
-    	this.rationsList_pri=rationsList_pri;
-    	this.rollover_pri=rationsList_pri.iterator();
-*/    	
-    	
-    }    
+		// if set the location optimizing
+		/*
+		 * if(this.extra.locationOn == 0){ //if the location is in China
+		 * if(isLocateForeign() == false){ if(rationsList.size() <= 0){
+		 * rationsList = rationsList_ex; totalweight = totalweight_ex; } //
+		 * if(rationsList_pri.size() <= 0){ // rationsList_pri =
+		 * rationsList_pri_ex; // } }else{ if(rationsList_ex.size() > 0){
+		 * rationsList = rationsList_ex; totalweight = totalweight_ex;
+		 * //rationsList_pri = rationsList_pri_ex; } } }else
+		 */
+		{
+			rationsList.addAll(rationsList_ex);
+			totalweight += totalweight_ex;
+			// rationsList_pri.addAll(rationsList_pri_ex);
+		}
+
+		Collections.sort(rationsList);
+		this.rationsList = rationsList;
+		this.rollovers = this.rationsList.iterator();
+		this.totalWeight = totalweight;
+		/*
+		 * Collections.sort(rationsList_pri);
+		 * this.rationsList_pri=rationsList_pri;
+		 * this.rollover_pri=rationsList_pri.iterator();
+		 */
+
+	}
 
 	public boolean isLocateForeign() {
 		Context context = contextReference.get();
-	    	if(context == null) {
-	    		return false;
-	    	}
-	    
-		TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-		
-		String imei = tm.getDeviceId();
-		if ((imei == null) || (imei.equals("000000000000000"))) {
-			if(AdViewTargeting.getRunMode()==RunMode.TEST)
-				Log.d(AdViewUtil.ADVIEW, "There is no imei, or run in emulator");
+		if (context == null) {
 			return false;
 		}
-		else {
-			//Log.d(AdViewUtil.ADVIEW, "run in device, imei="+imei);
+
+		TelephonyManager tm = (TelephonyManager) context
+				.getSystemService(Context.TELEPHONY_SERVICE);
+
+		String imei = tm.getDeviceId();
+		if ((imei == null) || (imei.equals("000000000000000"))) {
+			AdViewUtil.logInfo("There is no imei, or run in emulator");
+			return false;
+		} else {
+			// Log.d(AdViewUtil.ADVIEW, "run in device, imei="+imei);
 		}
 
-		String countryCodeDefault = Locale.getDefault().getCountry().toLowerCase();
+		String countryCodeDefault = Locale.getDefault().getCountry()
+				.toLowerCase();
 		String countryCodeNetwork = tm.getNetworkCountryIso().toLowerCase();
 		String locale = Locale.getDefault().toString();
 
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-		{
-			Log.d(AdViewUtil.ADVIEW, "run in device, imei="+imei);
-			Log.d(AdViewUtil.ADVIEW, "countryCodeDefault="+countryCodeDefault);
-			Log.d(AdViewUtil.ADVIEW, "countryCodeNetwork="+countryCodeNetwork);
-			Log.d(AdViewUtil.ADVIEW, "locale="+locale);
+		if (AdViewTargeting.getRunMode() == RunMode.TEST) {
+			AdViewUtil.logInfo("run in device, imei=" + imei + "\n"
+					+ "countryCodeDefault=" + countryCodeDefault + "\n"
+					+ "countryCodeNetwork=" + countryCodeNetwork + "\n'"
+					+ "locale=" + locale);
 		}
-		
-		if (countryCodeNetwork != null && countryCodeNetwork.length()>0)
-		{
-			if (countryCodeNetwork.compareTo("cn")==0)
+
+		if (countryCodeNetwork != null && countryCodeNetwork.length() > 0) {
+			if (countryCodeNetwork.compareTo("cn") == 0)
 				return false;
 			else
 				return true;
 		}
 
-		if (countryCodeDefault != null && countryCodeDefault.length()>0)
-		{
-			if (countryCodeDefault.compareTo("cn")==0)
+		if (countryCodeDefault != null && countryCodeDefault.length() > 0) {
+			if (countryCodeDefault.compareTo("cn") == 0)
 				return false;
 			else
 				return true;
 		}
 
-		try
-		{
+		try {
 			String serviceName = "location";
-			LocationManager locationManager = (LocationManager)context.getSystemService(serviceName);
+			LocationManager locationManager = (LocationManager) context
+					.getSystemService(serviceName);
 			Criteria criteria = new Criteria();
 			criteria.setAccuracy(1);
 			criteria.setAltitudeRequired(false);
@@ -663,88 +638,75 @@ public class AdViewManager {
 			criteria.setPowerRequirement(1);
 
 			String provider = locationManager.getBestProvider(criteria, true);
-			Location location=null;
+			Location location = null;
 
-			if (provider != null && provider.length()>0)
-			{
-				Log.d(AdViewUtil.ADVIEW, "provider="+provider);
-				Log.d(AdViewUtil.ADVIEW, provider+" enable ="+locationManager.isProviderEnabled(provider));
+			if (provider != null && provider.length() > 0) {
+				AdViewUtil.logInfo("provider=" + provider+"\n"+provider + " enable ="
+						+ locationManager.isProviderEnabled(provider));
 				location = locationManager.getLastKnownLocation(provider);
 			}
-			
+
 			if (location != null) {
-				Log.d(AdViewUtil.ADVIEW, "location != null");
-				
+				AdViewUtil.logInfo("location != null");
 				double lat = location.getLatitude();
 				double lng = location.getLongitude();
 				String locationString = (lat + "," + lng);
-				Log.d(AdViewUtil.ADVIEW, "locationString="+locationString);
-				
-			} 
-			else 
-				Log.d(AdViewUtil.ADVIEW, "location == null");
-		}
-		catch (Exception e) {
+				AdViewUtil.logInfo("locationString=" + locationString);
+			} else
+			AdViewUtil.logInfo("location == null");
+		} catch (Exception e) {
 			Log.i(AdViewUtil.ADVIEW, e.toString());
 		}
-		
+
 		return false;
 	}
-	
+
 	private int isSimulator() {
 		Context context = contextReference.get();
-	    	if(context == null) {
-	    		return 0;
-	    	}
-			
-		TelephonyManager tm = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+		if (context == null) {
+			return 0;
+		}
+
+		TelephonyManager tm = (TelephonyManager) context
+				.getSystemService(Context.TELEPHONY_SERVICE);
 		int ret;
-		
+
 		String imei = tm.getDeviceId();
 		if ((imei == null) || (imei.equals("000000000000000"))) {
-			ret =  1;
-		}
-		else {
+			ret = 1;
+		} else {
 			ret = 0;
 		}
 
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			Log.d(AdViewUtil.ADVIEW, "isSimulator, ret="+ret);
-		
+		AdViewUtil.logInfo("isSimulator, ret=" + ret);
 		return ret;
-	}	
-	
-	public static String getIDByMAC(Context context)
-	{
+	}
+
+	public static String getIDByMAC(Context context) {
 		String str = null;
 		try {
-			WifiManager localWifiManager = (WifiManager)context
-				.getSystemService("wifi");
+			WifiManager localWifiManager = (WifiManager) context
+					.getSystemService("wifi");
 			WifiInfo localWifiInfo = localWifiManager.getConnectionInfo();
 			str = localWifiInfo.getMacAddress();
 		} catch (Exception localException) {
-			Log.d(AdViewUtil.ADVIEW, 
-				"Could not read MAC, forget to include ACCESS_WIFI_STATE permission?", 
-				localException);
+				AdViewUtil.logError("Could not read MAC, forget to include ACCESS_WIFI_STATE permission?",localException);
 		}
 		return str;
 	}
 
-	public static String getDeviceID(Context context)
-	{
-		TelephonyManager tm = (TelephonyManager)context
-			.getSystemService("phone");
+	public static String getDeviceID(Context context) {
+		TelephonyManager tm = (TelephonyManager) context
+				.getSystemService("phone");
 		StringBuffer tmDevice = new StringBuffer();
-		try
-		{
+		try {
 			String imei = tm.getDeviceId();
 			if (imei == null) {
 				tmDevice.append("000000000000000");
-			}
-			else {
+			} else {
 				tmDevice.append(imei);
 			}
-		
+
 			while (tmDevice.length() < 15) {
 				tmDevice.append("0");
 			}
@@ -760,10 +722,9 @@ public class AdViewManager {
 			tmDevice.append(":");
 			while (tmDevice.length() < 32)
 				tmDevice.append("0");
-		}
-		catch (Exception localException) {
+		} catch (Exception localException) {
 			localException.printStackTrace();
-			Log.d(AdViewUtil.ADVIEW, "Failed to take mac as IMEI");
+			AdViewUtil.logInfo("Failed to take mac as IMEI");
 		}
 		return tmDevice.toString();
 	}
