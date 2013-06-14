@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -19,25 +21,24 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
-import com.kyview.AdViewTargeting.RunMode;
-import com.kyview.obj.Extra;
-import com.kyview.obj.Ration;
-import com.kyview.util.AdViewUtil;
-import com.kyview.AdViewAdRegistry;
-import com.kyview.adapters.AdViewAdapter;
-import android.telephony.TelephonyManager;
-import java.util.Locale;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.WindowManager;
+
+import com.kyview.AdViewTargeting.RunMode;
+import com.kyview.adapters.AdViewAdapter;
+import com.kyview.obj.Extra;
+import com.kyview.obj.Ration;
+import com.kyview.util.AdViewUtil;
 
 public class AdViewManager {
 	public String keyAdView;
@@ -235,6 +236,8 @@ public class AdViewManager {
 			HttpClient httpClient = new DefaultHttpClient();
 			String url = String.format(AdViewUtil.urlConfig, this.keyAdView,
 					AdViewUtil.VERSION, mSimulator, mLocation);
+//			String url = String.format(AdViewUtil.urlConfig, this.keyAdView,
+//					AdViewUtil.VERSION, mSimulator, mLocation, new Date().getTime()/1000);
 			HttpGet httpGet = new HttpGet(url);
 			HttpResponse httpResponse;
 			try {
@@ -294,9 +297,10 @@ public class AdViewManager {
 				Context.MODE_PRIVATE);
 		String jsonString = "";
 		HttpClient httpClient = new DefaultHttpClient();
-
 		String url = String.format(AdViewUtil.urlConfig, this.keyAdView,
 				AdViewUtil.VERSION, mSimulator, mLocation);
+//		String url = String.format(AdViewUtil.urlConfig, this.keyAdView,
+//				AdViewUtil.VERSION, mSimulator, mLocation, new Date().getTime()/1000);
 		HttpGet httpGet = new HttpGet(url);
 
 		HttpResponse httpResponse;
@@ -442,13 +446,13 @@ public class AdViewManager {
 			extra.report = json.getString("report");
 			AdViewUtil.urlImpression = "http://"
 					+ extra.report
-					+ "/agent/agent2.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d&keydev=%s";
+					+ "/agent/agent2.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d&keydev=%s&time=%s";
 			AdViewUtil.urlClick = "http://"
 					+ extra.report
-					+ "/agent/agent3.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d&keydev=%s";
+					+ "/agent/agent3.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d&keydev=%s&time=%s";
 			AdViewUtil.appReport = "http://"
 					+ extra.report
-					+ "/agent/appReport.php?keyAdView=%s&keyDev=%s&typeDev=%s&osVer=%s&resolution=%s&servicePro=%s&netType=%s&channel=%s&platform=%s";
+					+ "/agent/appReport.php?keyAdView=%s&keyDev=%s&typeDev=%s&osVer=%s&resolution=%s&servicePro=%s&netType=%s&channel=%s&platform=%s&time=%s";
 
 			JSONObject backgroundColor = json
 					.getJSONObject("background_color_rgb");

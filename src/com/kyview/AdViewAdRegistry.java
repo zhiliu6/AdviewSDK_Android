@@ -1,15 +1,14 @@
 package com.kyview;
 
-import 	java.util.HashMap;
+import android.util.SparseArray;
 
 import com.kyview.adapters.AdBaiduAdapter;
-import com.kyview.adapters.AdViewAdapter;
-import com.kyview.adapters.AdViewHouseAdapter;
 import com.kyview.adapters.AdChinaAdapter;
-import com.kyview.adapters.AdlantisAdapter;
 import com.kyview.adapters.AdMobAdapter;
 import com.kyview.adapters.AdTouchAdapter;
-//import com.kyview.adapters.AduuInterfaceAdapter;
+import com.kyview.adapters.AdViewAdapter;
+import com.kyview.adapters.AdViewHouseAdapter;
+import com.kyview.adapters.AdlantisAdapter;
 import com.kyview.adapters.AduuAdapter;
 import com.kyview.adapters.AdwoAdapter;
 import com.kyview.adapters.AirAdAdapter;
@@ -25,8 +24,8 @@ import com.kyview.adapters.LmMobAdapter;
 import com.kyview.adapters.LsenseAdapter;
 import com.kyview.adapters.MdotMAdapter;
 import com.kyview.adapters.MillennialAdapter;
-import com.kyview.adapters.MobiSageAdapter;
 import com.kyview.adapters.MobWinAdapter;
+import com.kyview.adapters.MobiSageAdapter;
 import com.kyview.adapters.MomarkAdapter;
 import com.kyview.adapters.SmaatoAdapter;
 import com.kyview.adapters.SmartAdAdapter;
@@ -40,16 +39,18 @@ import com.kyview.adapters.WqAdapter;
 import com.kyview.adapters.YoumiAdapter;
 import com.kyview.adapters.YunYunAdapter;
 import com.kyview.adapters.ZestADZAdapter;
+//import com.kyview.adapters.AduuInterfaceAdapter;
 
 
 public class AdViewAdRegistry {
 	
 	private static AdViewAdRegistry mInstance = null;
 	
-	private HashMap<Integer, Class<? extends AdViewAdapter>> mAdapterMap = null;
-	
+//	private HashMap<Integer, Class<? extends AdViewAdapter>> mAdapterMap = null;
+	private SparseArray<Class<? extends AdViewAdapter>> sparseArray=null;
 	private AdViewAdRegistry() {
-		mAdapterMap = new HashMap<Integer, Class<? extends AdViewAdapter>>();
+		sparseArray=new SparseArray<Class<? extends AdViewAdapter>>();
+//		mAdapterMap = new HashMap<Integer, Class<? extends AdViewAdapter>>();
 	}
 	
 	public static AdViewAdRegistry getInstance() {
@@ -95,7 +96,7 @@ public class AdViewAdRegistry {
 		try {UmengAdapter.load(this);}catch(Error e){}
 		try {VponAdapter.load(this);}catch(Error e){}
 		try {WiyunAdapter.load(this);}catch(Error e){}
-		try {WoobooAdapter.load(this);	}catch(Error e){}
+		try {WoobooAdapter.load(this);}catch(Error e){}
 		try {WqAdapter.load(this);}catch(Error e){}
 		try {YoumiAdapter.load(this);}catch(Error e){}
 		try {ZestADZAdapter.load(this);}catch(Error e){}	
@@ -103,11 +104,14 @@ public class AdViewAdRegistry {
 	}
 	
 	public void registerClass(int adType, Class<? extends AdViewAdapter> adapterClass) {
-		mAdapterMap.put(Integer.valueOf(adType), adapterClass);
+//		mAdapterMap.put(Integer.valueOf(adType), adapterClass);
+		sparseArray.put(adType, adapterClass);
+		
 	}
 	
 	public Class<? extends AdViewAdapter> adapterClassForAdType(int adType) {
-		return mAdapterMap.get(Integer.valueOf(adType));
+		return sparseArray.get(adType);
+//		return mAdapterMap.get(Integer.valueOf(adType));
 	}
 	
 }

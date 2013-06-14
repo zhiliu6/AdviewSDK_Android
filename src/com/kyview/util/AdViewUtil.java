@@ -3,6 +3,13 @@
 package com.kyview.util;
 
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.kyview.AdViewTargeting;
 import com.kyview.AdViewTargeting.RunMode;
 
@@ -23,22 +30,24 @@ public class AdViewUtil {
 	
 	public static final String SERVER_HEADER="http://www.adview.cn/";	
 	public static final String urlConfig = "http://config.adview.cn/agent/agent1_android.php?appid=%s&appver=%d&client=0&simulator=%d&location=%s";
+
+//	public static final String urlConfig = "http://config.adview.cn/agent/agent1_android.php?appid=%s&appver=%d&client=0&simulator=%d&location=%s&time=%ld";
 //	public static final String SERVER_HEADER="http://test2012.adview.cn/";
 //	public static final String urlConfig = "http://test2012.adview.cn/agent/agent1_android.php?appid=%s&appver=%d&client=0&simulator=%d&location=%s";
 
-	public static  String urlImpression = SERVER_HEADER+"agent/agent2.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d&keydev=%s";
+	public static  String urlImpression = SERVER_HEADER+"agent/agent2.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d&keydev=%s&time=%s";
 	
-	public static  String urlClick = SERVER_HEADER+"agent/agent3.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d&keydev=%s";
-	public static  String appReport = SERVER_HEADER+"agent/appReport.php?keyAdView=%s&keyDev=%s&typeDev=%s&osVer=%s&resolution=%s&servicePro=%s&netType=%s&channel=%s&platform=%s";
+	public static  String urlClick = SERVER_HEADER+"agent/agent3.php?appid=%s&nid=%s&type=%d&uuid=%s&country_code=%s&appver=%d&client=0&simulator=%d&keydev=%s&time=%s";
+	public static  String appReport = SERVER_HEADER+"agent/appReport.php?keyAdView=%s&keyDev=%s&typeDev=%s&osVer=%s&resolution=%s&servicePro=%s&netType=%s&channel=%s&platform=%s&time=%s";
 		
 	// Don't change anything below this line
 	/***********************************************/ 
 	 
-	public static final int VERSION = 192;
+	public static final int VERSION = 193;
 
-	public static final String ADVIEW = "AdView SDK v1.9.2";
+	public static final String ADVIEW = "AdView SDK v1.9.3";
 
-	public static final String ADVIEW_VER = "1.9.2";
+	public static final String ADVIEW_VER = "1.9.3";
 	
 	// Could be an enum, but this gives us a slight performance improvement
 	//abroad
@@ -271,4 +280,32 @@ public class AdViewUtil {
 		if (AdViewTargeting.getRunMode() == RunMode.TEST)
 		Log.i(AdViewUtil.ADVIEW, info);
 	}
+	
+	public static void writeLogtoFile(String logName, String text) {  
+        Date nowtime = new Date();  
+        SimpleDateFormat dateformat1=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        String needWriteFiel = dateformat1.format(nowtime);
+        String needWriteMessage = needWriteFiel+" "+text;  
+        
+        File file = new File("/mnt/sdcard/Adview_SmartMad/");  
+        if(!file.exists())
+        	file.mkdirs();
+
+
+        try { 
+            File files = new File("/mnt/sdcard/Adview_SmartMad/"+logName+".txt"); 
+            if(!files.exists())
+            	files.createNewFile();
+        	//后面这个参数代表是不是要接上文件中原来的数据，不进行覆盖  
+            FileWriter filerWriter = new FileWriter(files, true);
+            BufferedWriter bufWriter = new BufferedWriter(filerWriter);  
+            bufWriter.write(needWriteMessage);  
+            bufWriter.newLine();  
+            bufWriter.close();  
+            filerWriter.close();  
+        } catch (IOException e) {  
+            // TODO Auto-generated catch block  
+            e.printStackTrace();  
+        }  
+    }  
 }

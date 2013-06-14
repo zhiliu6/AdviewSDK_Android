@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import com.baidu.mobads.AdService;
@@ -112,6 +113,7 @@ public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener {
 		}
 		if(!isFailed){
 		adViewLayout.adViewManager.resetRollover();
+		Log.i("count", arg0.getChildCount()+"");
 		adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, arg0));
 		adViewLayout.rotateThreadedDelayed();
 		isFailed=false;
@@ -120,6 +122,7 @@ public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener {
 
 	@Override
 	public void onAdShow(JSONObject arg0) {
+		Log.i("sssssssss", arg0.toString());
 		AdViewUtil.logInfo("onAdShow");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if (adViewLayout == null) {

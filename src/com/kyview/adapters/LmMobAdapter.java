@@ -55,10 +55,10 @@ public class LmMobAdapter extends AdViewAdapter implements LMAdListener{
 		}
 		
 		 Hashtable<String, String> ht = new Hashtable<String, String>();
-		 ht.put("channelID", "adview_1.9.2");
+		 ht.put("channelID", "adview_1.9.3");
 
 		 if(AdViewTargeting.getRunMode()==RunMode.TEST) 
-			adView = new ImmobView(activity, "6ae20a7ba74216c36d7270ebafcc3bc3", ht);
+			adView = new ImmobView(activity, "dc483fd9e819fbc9ecc06594ddc3d96a", ht);
 		 else
 		 	adView = new ImmobView(activity, ration.key, ht);
 		adView.setAdListener(this);
