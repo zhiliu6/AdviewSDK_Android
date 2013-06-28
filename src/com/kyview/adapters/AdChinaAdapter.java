@@ -58,8 +58,7 @@ public class AdChinaAdapter extends AdViewAdapter implements AdBannerListener{
 		if(adViewLayout == null) {
 			return;
 		}
-		adViewLayout.adViewManager.resetRollover_pri();
-		adViewLayout.rotateThreadedPri(); 
+		adViewLayout.rotateThreadedPri(1); 
 	}
 
 	public void onReceiveAd(AdView adView) {

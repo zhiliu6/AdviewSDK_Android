@@ -9,7 +9,7 @@
 平台版本（AdView和各家广告平台的SDK均在libs目录下）：
 	库名				广告平台					版本
 
-AdViewSDK_Android.jar			AdView (原生聚合：随踪)				1.9.3
+AdViewSDK_Android.jar			AdView (原生聚合：随踪)				1.9.4
 adlantis.jar				Adlantis					1.3.7
 adchina_android_sdk.jar			易传媒						2.6.4
 adlib_android.jar			哇棒						2.3.0
@@ -46,7 +46,7 @@ wqmobile_android_sdk.jar		帷千						3.0.4
 youmi-android.jar			有米						4.0.3
 zestadz_sdk_androidv1.2.jar		ZestADZ						1.2
 l_android_adsdk.jar			Lsense						2.2
-yunyun-ads-sdk-4-Adview-V3.0.jar	云云						3.0
+yunyun-ads-sdk-4-Adview-V3.0.jar	云云						3.1
 aduu-sdk.jar				aduu						3.2.1
 
 

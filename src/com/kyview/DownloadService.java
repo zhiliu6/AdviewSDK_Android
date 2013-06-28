@@ -123,7 +123,6 @@ public class DownloadService extends Service {
 		updateNotificationManager.notify(index, this.updateNotification);
 	}
 
-	// downloadUrl�������� saveFile
 	public long downloadFile(String downloadUrl, File saveFile)
 			throws Exception {
 		int downloadCount = 0;

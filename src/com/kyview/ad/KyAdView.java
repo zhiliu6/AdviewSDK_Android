@@ -135,23 +135,13 @@ public class KyAdView extends ViewGroup {
 		}
 
 		public void run() {
-
-			// Log.d(TAG, "ClientReport, url="+url);
-			// Log.d(TAG, "ClientReport, content="+content);
-
-			// String strResult=null;
 			HttpPost httpRequest = new HttpPost(url);
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("name", content));
 			HttpClient httpClient = new DefaultHttpClient();
-
 			try {
-
-				// 锟斤拷锟斤拷HTTP request
 				httpRequest.setEntity(new UrlEncodedFormEntity(params,
 						HTTP.UTF_8));
-
-				// 取锟斤拷HTTP response
 				HttpResponse httpResponse = httpClient.execute(httpRequest);
 				if (httpResponse.getStatusLine().getStatusCode() == 200) {
 
@@ -183,44 +173,32 @@ public class KyAdView extends ViewGroup {
 		}
 
 		public void run() {
-
 			writeString = writeApplyAdXml();
-
 			if (writeString != null) {
-				if (applyAdBean.getTestMode() == 1) {
+				if (applyAdBean.getTestMode() == 1)
 					getString = getResponse(writeString, agent1test);
-				} else {
+				else
 					getString = getResponse(writeString, agent1);
-				}
+
 			}
-			if (getString != null)
-
-			{
+			if (getString != null) {
 				String xml = getString.replaceAll("\\n", "");
-
 				xmlCp = xml.replaceAll("\\r", "");
 				xmlCp = xmlCp.replace("&amp;", "#$amp;");
 
 			} else {
 				notifyConncetFail();
 			}
-			if (xmlCp != null) {
+			if (xmlCp != null)
 				retAdBean = readXML(xmlCp);
-
-			} else {
+			else
 				retAdBean = null;
-			}
 			if (retAdBean != null) {
-
-				{
-					initPanal(logo);
-					display();
-					frushAd();
-					if (applyAdBean.getTestMode() == 0) {
-
-						reportServer(0, 1, 0, agent2);
-					}
-				}
+				initPanal(logo);
+				display();
+				frushAd();
+				if (applyAdBean.getTestMode() == 0)
+					reportServer(0, 1, 0, agent2);
 			} else {
 				if (xmlCp != null) {
 					// if(mOnAdListener != null)
@@ -259,54 +237,11 @@ public class KyAdView extends ViewGroup {
 
 		private void reportServer(int type, int display, int click, String agent) {
 			String writeString = displayReport(type, display, click);
-
 			getResponse(writeString, agent);
 		}
 
 		private String displayReport(int type, int display, int click) {
-			XmlSerializer serializer = Xml.newSerializer();
-			StringWriter writer = new StringWriter();
-			String buffer = "";
-			try {
-				serializer.setOutput(writer);
-				serializer.startDocument(null, true);
-
-				serializer.startTag("", "application");
-				serializer.startTag("", "idApp");
-				serializer.text(applyAdBean.getAppId());
-				serializer.endTag("", "idApp");
-
-				serializer.startTag("", "idAd");
-				serializer.text(retAdBean.getIdAd());
-				serializer.endTag("", "idAd");
-
-				serializer.startTag("", "system");
-				serializer.text(Integer.toString(applyAdBean.getSystem()));
-				serializer.endTag("", "system");
-
-				serializer.startTag("", "reportType");
-				serializer.text(Integer.toString(type));
-				serializer.endTag("", "reportType");
-
-				serializer.startTag("", "display");
-				serializer.text(Integer.toString(display));
-				serializer.endTag("", "display");
-
-				serializer.startTag("", "click");
-				serializer.text(Integer.toString(click));
-				serializer.endTag("", "click");
-
-				serializer.startTag("", "keyDev");
-				serializer.text(keyDev);
-				serializer.endTag("", "keyDev");
-
-				serializer.endTag("", "application");
-				serializer.endDocument();
-				buffer = writer.toString();
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
-			return buffer;
+			return getBuffer(type, display, click);
 		}
 
 		private void display() {
@@ -377,7 +312,6 @@ public class KyAdView extends ViewGroup {
 					}
 				}
 
-				// Log.d(TAG, "modifysince="+modifysince);
 
 				HttpURLConnection conn = (HttpURLConnection) myFileUrl
 						.openConnection();
@@ -388,11 +322,9 @@ public class KyAdView extends ViewGroup {
 
 				int respCode;
 				respCode = conn.getResponseCode();
-				// Log.d(TAG, "respCode="+respCode);
 
 				long lastModify;
 				lastModify = conn.getLastModified();
-				// Log.d(TAG, "lastModify="+lastModify);
 
 				InputStream is = null;
 
@@ -469,7 +401,7 @@ public class KyAdView extends ViewGroup {
 			try {
 				db = dbf.newDocumentBuilder();
 			} catch (ParserConfigurationException pce) {
-				System.err.println(pce); // 锟斤拷锟届常时锟斤拷锟斤拷斐ｏ拷锟较拷锟饺伙拷锟斤拷顺锟斤拷锟斤拷锟酵��
+				System.err.println(pce); 
 				System.exit(1);
 			}
 			Document doc = null;
@@ -481,7 +413,6 @@ public class KyAdView extends ViewGroup {
 						return null;
 					}
 				} catch (SAXException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 					AdViewUtil.logDebug("readXML, xmlStr=" + xmlStr);
 					return null;
@@ -493,82 +424,37 @@ public class KyAdView extends ViewGroup {
 				System.err.println(ioe);
 				System.exit(1);
 			}
-
 			// org.w3c.dom.Element root = doc.getDocumentElement();
 			NodeList applications = doc.getElementsByTagName("application");
 			for (int i = 0; i < applications.getLength(); i++) {
 				org.w3c.dom.Element application = (org.w3c.dom.Element) applications
 						.item(i);
 				retAdBean.setIdApp(application.getAttribute("idApp"));
-
-				NodeList idAds = application.getElementsByTagName("idAd");
-				if (idAds.getLength() == 1) {
-					org.w3c.dom.Element e = (org.w3c.dom.Element) idAds.item(0);
-					Text t = (Text) e.getFirstChild();
-					if (t != null)
-						retAdBean.setIdAd(t.getNodeValue());
-				}
-
-				NodeList adShowTypes = application
-						.getElementsByTagName("adShowType");
-				if (adShowTypes.getLength() == 1) {
-					org.w3c.dom.Element e = (org.w3c.dom.Element) adShowTypes
-							.item(0);
-					Text t = (Text) e.getFirstChild();
-					if (t != null)
-						retAdBean.setAdShowType(Integer.parseInt(t
-								.getNodeValue()));
-				}
-
-				NodeList adShowTexts = application
-						.getElementsByTagName("adShowText");
-				if (adShowTexts.getLength() == 1) {
-					org.w3c.dom.Element e = (org.w3c.dom.Element) adShowTexts
-							.item(0);
-					Text t = (Text) e.getFirstChild();
-					if (t != null)
-						retAdBean.setAdShowText(t.getNodeValue());
-				}
-
-				NodeList adShowPics = application
-						.getElementsByTagName("adShowPic");
-				if (adShowPics.getLength() == 1) {
-					org.w3c.dom.Element e = (org.w3c.dom.Element) adShowPics
-							.item(0);
-					Text t = (Text) e.getFirstChild();
-					if (t != null)
-						retAdBean.setAdShowPic(t.getNodeValue());
-				}
-
-				NodeList adLinkTypes = application
-						.getElementsByTagName("adLinkType");
-				if (adLinkTypes.getLength() == 1) {
-					org.w3c.dom.Element e = (org.w3c.dom.Element) adLinkTypes
-							.item(0);
-					Text t = (Text) e.getFirstChild();
-					if (t != null)
-						retAdBean.setAdLinkType(Integer.parseInt(t
-								.getNodeValue()));
-				}
-
-				NodeList adLinks = application.getElementsByTagName("adLink");
-				if (adLinks.getLength() == 1) {
-					org.w3c.dom.Element e = (org.w3c.dom.Element) adLinks
-							.item(0);
-					Text t = (Text) e.getFirstChild();
-					if (t != null)
-						retAdBean.setAdLink((t.getNodeValue()));
-					String link = retAdBean.getAdLink();
-					if (link != null) {
-						link = link.replace("#$amp;", "&");
-
-					}
-					retAdBean.setAdLink(link);
-				}
-
+				retAdBean.setIdAd(getElement(application,"idAd"));
+				retAdBean.setAdShowType(Integer.parseInt(getElement(application,"adShowType")));
+				retAdBean.setAdShowText(getElement(application,"adShowText"));
+				retAdBean.setAdShowPic(getElement(application,"adShowPic"));
+				retAdBean.setAdLinkType(Integer.parseInt(getElement(application,"adLinkType")));
+				retAdBean.setAdLink(getElement(application,"adLink"));
+				String link = retAdBean.getAdLink();
+				if (link != null) 
+					link = link.replace("#$amp;", "&");		
+				retAdBean.setAdLink(link);
 			}
-
 			return retAdBean;
+		}
+		private String getElement(org.w3c.dom.Element element,String nodeString){
+			Text t=null;
+			String nodeValue="";
+			NodeList adLinkTypes = element
+					.getElementsByTagName(nodeString);
+			if (adLinkTypes.getLength() == 1) {
+				org.w3c.dom.Element e = (org.w3c.dom.Element) adLinkTypes.item(0);
+				t = (Text) e.getFirstChild();
+			}
+			if(t!=null)
+			nodeValue=t.getNodeValue();
+			return nodeValue;
 		}
 
 		private String getResponse(String writeStr, String agent) {
@@ -618,12 +504,10 @@ public class KyAdView extends ViewGroup {
 		textColor = textColorVal;
 		// backGroundTransparent = backgroundTransparent;
 		initAd(context, logo);
-
 	}
 
 	protected void onDetachedFromWindow() {
 		// Log.i(TAG, "onDetachedFromWindow");
-
 		if (mGifThread != null) {
 			mGifThread.interrupt();
 			mGifThread = null;
@@ -637,8 +521,6 @@ public class KyAdView extends ViewGroup {
 
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		// TODO Auto-generated method stub
-
 		if (retAdBean.getAdShowType() == 1) {
 			int picLayoutWidth = 0;
 			int picLayoutHeight = 0;
@@ -859,7 +741,6 @@ public class KyAdView extends ViewGroup {
 		} else {
 			applyAdBean.setTestMode(0);
 		}
-
 		agent1 = new String("http://" + address + "/nusoap/nusoap_agent1.php");
 		agent2 = new String("http://" + address + "/nusoap/nusoap_agent2.php");
 		agent1test = new String("http://" + address
@@ -894,11 +775,10 @@ public class KyAdView extends ViewGroup {
 	 * 
 	 * return strResult; }
 	 */
-	private String clickReport(int type, int display, int click) {
+	private  String getBuffer(int type, int display, int click){
 		XmlSerializer serializer = Xml.newSerializer();
 		StringWriter writer = new StringWriter();
 		String buffer;
-
 		try {
 			serializer.setOutput(writer);
 			serializer.startDocument(null, true);
@@ -935,11 +815,13 @@ public class KyAdView extends ViewGroup {
 			serializer.endTag("", "application");
 			serializer.endDocument();
 			buffer = writer.toString();
-
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 		return buffer;
+	}
+	private String clickReport(int type, int display, int click) {
+		return getBuffer(type, display, click);
 	}
 
 	private void clickServer(int type, int display, int click, String agent) {
@@ -976,13 +858,13 @@ public class KyAdView extends ViewGroup {
 	};
 
 	void openWebBrowser(final String url, final Context context) {
-		Locale language =Locale.getDefault();
-	
+		Locale language = Locale.getDefault();
+
 		String message = "";
 		String title = "";
 		String positiveButton = "";
 		String negativeButton = "";
-		if (language.equals( Locale.SIMPLIFIED_CHINESE)) {
+		if (language.equals(Locale.SIMPLIFIED_CHINESE)) {
 			message = "确定要下载么？";
 			title = "提示";
 			positiveButton = "确定";
@@ -1036,7 +918,6 @@ public class KyAdView extends ViewGroup {
 					context.getPackageName(), PackageManager.GET_META_DATA);
 			id = ai.metaData.getString("APP_ID");
 		} catch (NameNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return id;

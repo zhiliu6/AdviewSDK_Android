@@ -140,7 +140,6 @@ public class MillennialAdapter extends AdViewAdapter implements RequestListener 
 	 	}
 		adViewLayout.reportImpression();
  		adViewLayout.adViewManager.resetRollover();
-// 		adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
 		adViewLayout.rotateThreadedDelayed();
 
 	}
@@ -150,12 +149,9 @@ public class MillennialAdapter extends AdViewAdapter implements RequestListener 
 		AdViewUtil.logInfo("Millennial failure");
 		arg0.setListener(null);
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
-	 	if(adViewLayout == null) {
+	 	if(adViewLayout == null) 
 	 		return;
-	 	}
-	 	 
-	 	adViewLayout.adViewManager.resetRollover_pri();
-		adViewLayout.rotateThreadedPri();
+		adViewLayout.rotateThreadedPri(1);
 		
 	}
 	

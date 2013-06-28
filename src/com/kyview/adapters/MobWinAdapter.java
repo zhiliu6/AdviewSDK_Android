@@ -75,8 +75,7 @@ public class MobWinAdapter extends AdViewAdapter implements AdListener{
 		  if(adViewLayout == null) {
 			 return;
 		  }
-		 adViewLayout.adViewManager.resetRollover_pri();
-		  adViewLayout.rotateThreadedPri();
+		  adViewLayout.rotateThreadedPri(1);
 		
 	}
 
@@ -105,6 +104,13 @@ public class MobWinAdapter extends AdViewAdapter implements AdListener{
 	}
 
 
-	
+	@Override
+	public void clean() {
+		// TODO Auto-generated method stub
+		super.clean();
+		if(adView!=null)
+		MobWINManager.destroy();
+		AdViewUtil.logInfo("release MobWin");
+		}
 
 }

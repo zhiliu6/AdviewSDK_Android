@@ -24,9 +24,10 @@ import com.kyview.util.AdViewUtil;
 
 public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener {
 	private boolean isFailed=false;
+	
 	private static int networkType() {
 		return AdViewUtil.NETWORK_TYPE_BAIDU;
-	}
+	} 
 
 	public static void load(AdViewAdRegistry registry) {
 		try {
@@ -34,7 +35,7 @@ public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener {
 				registry.registerClass(networkType(), AdBaiduAdapter.class);
 			}
 		} catch (ClassNotFoundException e) {
-		}
+		} 
 	}
 
 	public AdBaiduAdapter() {
@@ -83,7 +84,6 @@ public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener {
 	public void onAdClick(JSONObject arg0) {
 
 		AdViewUtil.logInfo("onAdClick");
-
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if (adViewLayout == null) {
 			return;
@@ -100,8 +100,7 @@ public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener {
 		if (adViewLayout == null) {
 			return;
 		}
-		adViewLayout.adViewManager.resetRollover_pri();
-		adViewLayout.rotateThreadedPri();
+		adViewLayout.rotateThreadedPri(1);
 	}
 
 	@Override
@@ -122,7 +121,6 @@ public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener {
 
 	@Override
 	public void onAdShow(JSONObject arg0) {
-		Log.i("sssssssss", arg0.toString());
 		AdViewUtil.logInfo("onAdShow");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if (adViewLayout == null) {
@@ -175,7 +173,11 @@ public class AdBaiduAdapter extends AdViewAdapter implements AdViewListener {
 		// TODO Auto-generated method stub
 
 	}
-
+	@Override
+	public void clean() {
+		// TODO Auto-generated method stub
+		super.clean();
+	}
 
 
 }

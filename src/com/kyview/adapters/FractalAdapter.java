@@ -85,8 +85,7 @@ public class FractalAdapter extends AdViewAdapter implements AdStatusListener{
 		if(adViewLayout == null) {
 			return;
 		}
-		adViewLayout.adViewManager.resetRollover_pri();
-		adViewLayout.rotateThreadedPri();
+		adViewLayout.rotateThreadedPri(1);
 	}
 
 	@Override

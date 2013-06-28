@@ -35,13 +35,10 @@ public class SmartAdAdapter extends AdViewAdapter implements SMAdBannerListener 
 
 	@Override
 	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void handle() {
-		// TODO Auto-generated method stub
-
 		AdViewUtil.logInfo("Into SmartAd");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if (adViewLayout == null) {
@@ -79,9 +76,8 @@ public class SmartAdAdapter extends AdViewAdapter implements SMAdBannerListener 
 	public void onClickedAd() {
 		AdViewUtil.logInfo("smartmad onClickedAd");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
-		if (adViewLayout == null) {
+		if (adViewLayout == null) 
 			return;
-		}
 		adViewLayout.reportClick();
 		AdViewUtil.writeLogtoFile("adview_adclick_log", "adClick");
 	}
@@ -110,10 +106,8 @@ public class SmartAdAdapter extends AdViewAdapter implements SMAdBannerListener 
 	public void onReceivedAd(SMAdBannerView arg0) {
 		AdViewUtil.logInfo("onReceivedAd");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
-		if (adViewLayout == null) {
+		if (adViewLayout == null) 		
 			return;
-		}
-
 		adViewLayout.adViewManager.resetRollover();
 		adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, arg0));
 		adViewLayout.rotateThreadedDelayed();
@@ -128,14 +122,12 @@ public class SmartAdAdapter extends AdViewAdapter implements SMAdBannerListener 
 
 	@Override
 	public void onFailedToReceiveAd(SMAdBannerView arg0, SMRequestEventCode arg1) {
-		AdViewUtil.logInfo("onFailedToReceiveAd");
-		AdViewUtil.logInfo("smartmad failure, SMRequestEventCode=" + arg1);
+		AdViewUtil.logInfo("onFailedToReceiveAd smartmad failure, SMRequestEventCode=" + arg1);
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
 		if (adViewLayout == null) {
 			return;
 		}
-		adViewLayout.adViewManager.resetRollover_pri();
-		adViewLayout.rotateThreadedPri();
+		adViewLayout.rotateThreadedPri(1);
 		AdViewUtil.writeLogtoFile("adview_adfailed_log", "adonFailedToReceive");
 	}
 

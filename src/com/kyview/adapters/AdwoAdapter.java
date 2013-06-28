@@ -11,25 +11,27 @@ import com.kyview.AdViewTargeting;
 import com.kyview.AdViewTargeting.RunMode;
 import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
+
 //import com.kyview.AdViewLayout.ViewAdRunnable;
 
-public class AdwoAdapter extends AdViewAdapter implements AdListener{
+public class AdwoAdapter extends AdViewAdapter implements AdListener {
 
 	private static int networkType() {
 		return AdViewUtil.NETWORK_TYPE_ADWO;
 	}
-	
+
 	public static void load(AdViewAdRegistry registry) {
 		try {
-			if(Class.forName("com.adwo.adsdk.AdwoAdView") != null) {
+			if (Class.forName("com.adwo.adsdk.AdwoAdView") != null) {
 				registry.registerClass(networkType(), AdwoAdapter.class);
 			}
-		} catch (ClassNotFoundException e) {}
+		} catch (ClassNotFoundException e) {
+		}
 	}
 
 	public AdwoAdapter() {
 	}
-	
+
 	@Override
 	public void initAdapter(AdViewLayout adViewLayout, Ration ration) {
 		// TODO Auto-generated constructor stub
@@ -37,91 +39,48 @@ public class AdwoAdapter extends AdViewAdapter implements AdListener{
 
 	@Override
 	public void handle() {
-		// TODO Auto-generated method stub
-		
 		AdViewUtil.logInfo("Into Adwo");
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
-		if (adViewLayout == null) {
+		if (adViewLayout == null)
 			return;
-		}
-
 		Activity activity = adViewLayout.activityReference.get();
-		if (activity == null) {
+		if (activity == null)
 			return;
-		}
-		AdwoAdView adView=null;
-		if(AdViewTargeting.getRunMode()==RunMode.TEST)
-			adView=new AdwoAdView((Activity)adViewLayout.getContext(), ration.key,true,0);
-		else			
-			adView=new AdwoAdView((Activity)adViewLayout.getContext(), ration.key,false,0);
-		
-		byte id=2;	
+		AdwoAdView adView = null;
+		if (AdViewTargeting.getRunMode() == RunMode.TEST)
+			adView = new AdwoAdView((Activity) adViewLayout.getContext(),
+					ration.key, true, 0);
+		else
+			adView = new AdwoAdView((Activity) adViewLayout.getContext(),
+					ration.key, false, 0);
+
+		byte id = 2;
 		AdwoAdView.setAggChannelId(id);
 		adView.setListener(this);
 		adViewLayout.AddSubView(adView);
-		//*
-		//adViewLayout.adViewManager.resetRollover();
-		//adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
-		//adViewLayout.rotateThreadedDelayed();
-		//*/
-		//adView.finalize();
-	}
 
-	//@Override
-	public void onFailedToReceiveAd(AdwoAdView adView) {
-		// TODO Auto-generated method stub
-		AdViewUtil.logInfo("onFailedToReceiveAd");
-		  adView.setListener(null);
-		  //adView.finalize();
-
-		  AdViewLayout adViewLayout = adViewLayoutReference.get();
-		  if(adViewLayout == null) {
-			 return;
-		  }
-		 adViewLayout.adViewManager.resetRollover_pri();
-		 adViewLayout.rotateThreadedPri();
 	}
 
 	@Override
-	public void onFailedToReceiveAd(AdwoAdView adView, ErrorCode arg1) {
-		// TODO Auto-generated method stub
-		AdViewUtil.logInfo("onFailedToReceiveAd, arg1="+arg1);
-		  adView.setListener(null);
-		  //adView.finalize();
-
-		  AdViewLayout adViewLayout = adViewLayoutReference.get();
-		  if(adViewLayout == null) {
-			 return;
-		  }
-		 adViewLayout.adViewManager.resetRollover_pri();
-		 adViewLayout.rotateThreadedPri();
-	}
-	
-	//@Override
-	public void onFailedToReceiveRefreshedAd(AdwoAdView paramAdView) {
-		// TODO Auto-generated method stub
-		AdViewUtil.logInfo("onFailedToReceiveRefreshedAd");
+	public void onFailedToReceiveAd(AdwoAdView arg0, ErrorCode arg1) {
+		AdViewUtil.logInfo("onFailedToReceiveAd, arg1=" + arg1);
+		arg0.setListener(null);
+		AdViewLayout adViewLayout = adViewLayoutReference.get();
+		if (adViewLayout == null)
+			return;
+		adViewLayout.rotateThreadedPri(1);
 	}
 
 	@Override
-	public void onReceiveAd(AdwoAdView adView) {
-		// TODO Auto-generated method stub
+	public void onReceiveAd(AdwoAdView arg0) {
 		AdViewUtil.logInfo("onReceiveAd");
-
-		adView.setListener(null);
-		  //adView.finalize();
-		  
-		  AdViewLayout adViewLayout = adViewLayoutReference.get();
-		  if(adViewLayout == null) {
-			  return;
-		  }
-
-		adViewLayout.reportImpression();		
-		  adViewLayout.adViewManager.resetRollover();
-		  //adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
-		  adViewLayout.rotateThreadedDelayed();
+		arg0.setListener(null);
+		AdViewLayout adViewLayout = adViewLayoutReference.get();
+		if (adViewLayout == null) 
+			return;
+		adViewLayout.reportImpression();
+		adViewLayout.adViewManager.resetRollover();
+		adViewLayout.rotateThreadedDelayed();
 	}
 
-
-	
 }

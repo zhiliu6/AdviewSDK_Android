@@ -106,8 +106,7 @@ public class AdMobAdapter extends AdViewAdapter implements AdListener {
 		if (adViewLayout == null) {
 			return;
 		}
-		adViewLayout.adViewManager.resetRollover_pri();
-		adViewLayout.rotateThreadedPri();
+		adViewLayout.rotateThreadedPri(1);
 	}
 
 	@Override
@@ -147,14 +146,13 @@ public class AdMobAdapter extends AdViewAdapter implements AdListener {
 	}
 
 	@Override
-	public void release(AdViewLayout adViewLayout) {
-		if (adViewLayout == null) {
-			return;
-		}
-		AdViewUtil.logInfo("onRelease");
-		if (null != adView) {
-			adView.destroy();
-		}
+	public void clean() {
+		// TODO Auto-generated method stub
+		super.clean();
+		if(adView!=null)
+		adView.destroy();
+		adView=null;
+		AdViewUtil.logInfo("release AdMob");
 	}
 
 	/*******************************************************************/

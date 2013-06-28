@@ -11,11 +11,9 @@ import com.kyview.obj.Ration;
 import com.kyview.util.AdViewUtil;
 import com.l.adlib_android.AdListenerEx;
 import com.l.adlib_android.AdView;
-//import android.util.DisplayMetrics;
 
 
 public class LsenseAdapter extends AdViewAdapter implements AdListenerEx{
-	//static private AdView adView = null;
 	private AdView adView = null;
 
 	private static int networkType() {
@@ -57,27 +55,8 @@ public class LsenseAdapter extends AdViewAdapter implements AdListenerEx{
 			return;
 		}
 		try {
-			//adView = new AdView(activity);
 			adView = null;
-//			adView = new AdView(
-//					activity, 
-//					Integer.valueOf(ration.key), 
-//					Color.rgb(65, 65, 65), 
-//					bgColor, 
-//					fgColor, 
-//					255,5,
-//					true);	
 			adView = new AdView(activity, Integer.valueOf(ration.key), AdView.ROTATE3D);
-		/*	
-	        DisplayMetrics dm = new DisplayMetrics();
-	        dm = adViewLayout.getContext().getApplicationContext().getResources().getDisplayMetrics();
-	        int screenHeight = dm.heightPixels;	
-	        if(screenHeight > 320){
-	        	adView.setBannerSize(640, 96); 
-	        }else{
-	        	adView.setBannerSize(640, 76); 	        	
-	        }
-	   */     
 			adView.setOnAdListenerEx(this);		
 			adViewLayout.adViewManager.resetRollover();
 			adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
@@ -97,26 +76,16 @@ public class LsenseAdapter extends AdViewAdapter implements AdListenerEx{
 		if(adViewLayout == null) {
 			 return;
 		}
-		adViewLayout.adViewManager.resetRollover_pri();
-		//adViewLayout.rotateThreadedPri();
+		adViewLayout.rotateThreadedPri(1);
 	}
 	
 	@Override
 	public void OnAcceptAd(int arg0) {
-		// TODO Auto-generated method stub
 		AdViewUtil.logInfo("Lsense success");
-
 		adView.setOnAdListenerEx(null);
-		
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
-		if (adViewLayout == null) {
-			return;
-		}
-		
-		//adViewLayout.adViewManager.resetRollover();
-		//adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
-		//adViewLayout.rotateThreadedDelayed();
-		
+		if (adViewLayout == null) 
+			return;		
 	}
 
 

@@ -42,16 +42,16 @@ import com.kyview.adapters.ZestADZAdapter;
 //import com.kyview.adapters.AduuInterfaceAdapter;
 
 
-public class AdViewAdRegistry {
+public class AdViewAdRegistry { 
 	
 	private static AdViewAdRegistry mInstance = null;
-	
+	  
 //	private HashMap<Integer, Class<? extends AdViewAdapter>> mAdapterMap = null;
 	private SparseArray<Class<? extends AdViewAdapter>> sparseArray=null;
 	private AdViewAdRegistry() {
 		sparseArray=new SparseArray<Class<? extends AdViewAdapter>>();
 //		mAdapterMap = new HashMap<Integer, Class<? extends AdViewAdapter>>();
-	}
+	} 
 	
 	public static AdViewAdRegistry getInstance() {
 		if (null == mInstance) {
@@ -103,13 +103,13 @@ public class AdViewAdRegistry {
 		try {YunYunAdapter.load(this);}catch(Error e){}	
 	}
 	
-	public void registerClass(int adType, Class<? extends AdViewAdapter> adapterClass) {
+	public void registerClass(Integer adType, Class<? extends AdViewAdapter> adapterClass) {
 //		mAdapterMap.put(Integer.valueOf(adType), adapterClass);
 		sparseArray.put(adType, adapterClass);
 		
 	}
 	
-	public Class<? extends AdViewAdapter> adapterClassForAdType(int adType) {
+	public Class<? extends AdViewAdapter> adapterClassForAdType(Integer adType) {
 		return sparseArray.get(adType);
 //		return mAdapterMap.get(Integer.valueOf(adType));
 	}

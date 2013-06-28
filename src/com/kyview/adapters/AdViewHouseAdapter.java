@@ -65,8 +65,7 @@ public class AdViewHouseAdapter extends AdViewAdapter implements onAdListener
 		if(adViewLayout == null) {
 			return;
 		}
-		adViewLayout.adViewManager.resetRollover_pri();
-		adViewLayout.rotateThreadedPri();
+		adViewLayout.rotateThreadedPri(1);
 		
 		
 	}
@@ -81,7 +80,6 @@ public class AdViewHouseAdapter extends AdViewAdapter implements onAdListener
 		if(adViewLayout == null) {
 			return;
 		}
-
 		adViewLayout.adViewManager.resetRollover();
 		adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, view));
 		adViewLayout.rotateThreadedDelayed();

@@ -60,7 +60,7 @@ public class MobiSageAdapter extends AdViewAdapter implements
 		adv.setAnimeType(MobiSageAnimeType.Anime_LeftToRight);
 		adv.setMobiSageAdViewListener(this);
 		adViewLayout.activeRation = adViewLayout.nextRation;
-//		adViewLayout.removeAllViews();
+		// adViewLayout.removeAllViews();
 		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
@@ -77,7 +77,7 @@ public class MobiSageAdapter extends AdViewAdapter implements
 		adv.setMobiSageAdViewListener(null);
 		adViewLayout.adViewManager.resetRollover();
 		adViewLayout.rotateThreadedDelayed();
-		adViewLayout.reportImpression();
+		adViewLayout.reportImpression(); 
 	}
 
 	public void onMobiSageAdViewUpdate(Object adView) {
@@ -94,12 +94,9 @@ public class MobiSageAdapter extends AdViewAdapter implements
 		adv.setMobiSageAdViewListener(null);
 
 		AdViewLayout adViewLayout = adViewLayoutReference.get();
-		if (adViewLayout == null) {
+		if (adViewLayout == null)
 			return;
-		}
-
-		adViewLayout.adViewManager.resetRollover_pri();
-		adViewLayout.rotateThreadedPri();
+		adViewLayout.rotateThreadedPri(1);
 	}
 
 	@Override
@@ -111,6 +108,16 @@ public class MobiSageAdapter extends AdViewAdapter implements
 	public void onMobiSageAdViewClose(Object arg0) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void clean() {
+		// TODO Auto-generated method stub
+		super.clean();
+		if (adv != null) {
+			adv.destoryAdView();
+			adv = null;
+		}
 	}
 
 }

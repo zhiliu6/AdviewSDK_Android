@@ -100,8 +100,7 @@ public class VponAdapter extends AdViewAdapter implements AdListener{
 			return;
 		}
 
-		adViewLayout.adViewManager.resetRollover_pri();
-		  adViewLayout.rotateThreadedPri();
+		  adViewLayout.rotateThreadedPri(1);
 		
 	}
 

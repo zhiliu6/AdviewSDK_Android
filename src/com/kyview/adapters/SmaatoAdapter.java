@@ -74,8 +74,7 @@ public class SmaatoAdapter extends AdViewAdapter implements AdListener{
 	    if (adViewLayout == null) {
 	    	return;
 	    }
-	    adViewLayout.adViewManager.resetRollover_pri();
-		adViewLayout.rotateThreadedPri();
+		adViewLayout.rotateThreadedPri(1);
 		
 	}
 

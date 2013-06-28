@@ -70,8 +70,7 @@ public class MomarkAdapter extends AdViewAdapter implements AdViewListener{
 		  if(adViewLayout == null) {
 			 return;
 		  }
-		 adViewLayout.adViewManager.resetRollover_pri();
-		  adViewLayout.rotateThreadedPri();
+		  adViewLayout.rotateThreadedPri(1);
 		
 	}
 

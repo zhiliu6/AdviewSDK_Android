@@ -676,8 +676,7 @@ class FetchSuizongADRunnable implements Runnable {
 		else
 		{
 			AdViewUtil.logInfo("FetchSuizongAD failure");
-	       	adViewLayout.adViewManager.resetRollover_pri();
-			adViewLayout.rotateThreadedPri();
+			adViewLayout.rotateThreadedPri(1);
 	       }	
 	}
 }

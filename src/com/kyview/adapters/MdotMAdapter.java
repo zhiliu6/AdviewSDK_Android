@@ -93,8 +93,7 @@ public class MdotMAdapter extends AdViewAdapter implements MdotMActionListener {
 		  if(adViewLayout == null) {
 			 return;
 		  } 
-		 adViewLayout.adViewManager.resetRollover_pri();
-		 adViewLayout.rotateThreadedPri();
+		 adViewLayout.rotateThreadedPri(1);
 		
 	}
 

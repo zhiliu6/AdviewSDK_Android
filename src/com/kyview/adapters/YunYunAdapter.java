@@ -17,6 +17,7 @@ import com.suizong.mobile.ads.AdSize;
 import com.suizong.mobile.ads.AdView;
 
 public class YunYunAdapter extends AdViewAdapter implements AdListener {
+	private AdView adView;
 	private static int networkType() {
 		return AdViewUtil.NETWORK_TYPE_YUNYUN;
 	}
@@ -28,7 +29,7 @@ public class YunYunAdapter extends AdViewAdapter implements AdListener {
 			}
 		} catch (ClassNotFoundException e) {
 		}
-	}
+	} 
 
 	@Override
 	public void handle() {
@@ -51,12 +52,11 @@ public class YunYunAdapter extends AdViewAdapter implements AdListener {
 			request.setTesting(false);
 		}
 		request.setRefreshTime(0);
-		AdView adView = new AdView(activity, AdSize.BANNER, ration.key);
-		adViewLayout.AddSubView(adView);
-
+		adView = new AdView(activity, AdSize.BANNER, ration.key);
 		adView.loadAd(request);
 		// 设置监听器
 		adView.setAdListener(this);
+		adViewLayout.AddSubView(adView);
 	}
 
 	@Override
@@ -79,9 +79,8 @@ public class YunYunAdapter extends AdViewAdapter implements AdListener {
 			if (adViewLayout == null) {
 				return;
 			}
-			 ((AdView)arg0).destroy();
-			adViewLayout.adViewManager.resetRollover_pri();
-			adViewLayout.rotateThreadedPri();
+
+			adViewLayout.rotateThreadedPri(1);
 		}
 	}
 
@@ -110,5 +109,13 @@ public class YunYunAdapter extends AdViewAdapter implements AdListener {
 		adViewLayout.rotateThreadedDelayed();
 		adViewLayout.reportImpression();
 	}
-
+	@Override
+	public void clean() {
+		// TODO Auto-generated method stub
+		super.clean();
+		if(adView!=null)
+		adView.destroy();
+		adView=null;
+		AdViewUtil.logInfo("release YunYun");
+	}
 }

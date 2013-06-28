@@ -83,7 +83,6 @@ public class YoumiAdapter extends AdViewAdapter implements AdViewLinstener{
 
 		adViewLayout.reportImpression();
 		adViewLayout.adViewManager.resetRollover();
-		// adViewLayout.handler.post(new ViewAdRunnable(adViewLayout, adView));
 		adViewLayout.rotateThreadedDelayed();
 	}
 
@@ -104,8 +103,7 @@ public class YoumiAdapter extends AdViewAdapter implements AdViewLinstener{
 			return;
 		}
 
-		adViewLayout.adViewManager.resetRollover_pri();
-		adViewLayout.rotateThreadedPri();
+		adViewLayout.rotateThreadedPri(1);
 	}
 
 

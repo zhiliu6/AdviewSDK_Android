@@ -378,6 +378,8 @@ public abstract class AdViewAdapter {
 	}
 	
 	public static void handleOne(AdViewLayout adViewLayout,Ration ration)  {
+		//if(null!=adapter)
+		//adapter.clean();
       adapter = AdViewAdapter.getAdapter(adViewLayout, ration);
       if(adapter != null) {
     		AdViewUtil.logInfo("Valid adapter, calling handle()");
@@ -385,14 +387,14 @@ public abstract class AdViewAdapter {
       }
       else {
     	adViewLayout.adViewManager.resetRollover();
-    	adViewLayout.rotateThreadedNow();
+    	adViewLayout.rotateThreadedPri(0);
        
         
       }
 	}
 	public static void onRelease(){
-		if(null!=adapter)
-		adapter.release(adapter.adViewLayoutReference.get());
+		//if(null!=adapter)
+		//adapter.clean();
 	}
 	public static void onClickAd() throws Throwable {
 		if (adapter != null)
@@ -432,10 +434,9 @@ public abstract class AdViewAdapter {
 	{
 	}
 
-
+	public void clean(){};
 	public abstract void handle();
-	public void release(AdViewLayout adViewLayout) {
-	}
+	
 	public abstract void initAdapter(AdViewLayout adViewLayout, Ration ration);
 	
 	public void click()
