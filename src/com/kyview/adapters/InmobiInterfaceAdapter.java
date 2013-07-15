@@ -394,8 +394,8 @@ public class InmobiInterfaceAdapter extends AdViewAdapter{
 			if (inmobiAD.getAdImg() == null)
 			{
 				AdViewUtil.logInfo("image is null");
-				adViewLayout.adViewManager.resetRollover_pri();
-				adViewLayout.rotateThreadedPri();
+				adViewLayout.adViewManager.resetRollover();
+				adViewLayout.rotatePriAd();
 			
 				return;
 			}
@@ -422,8 +422,8 @@ public class InmobiInterfaceAdapter extends AdViewAdapter{
 			if (inmobiAD.getLinkText() == null)
 			{
 				AdViewUtil.logInfo("text is null");
-				adViewLayout.adViewManager.resetRollover_pri();
-				adViewLayout.rotateThreadedPri();
+				adViewLayout.adViewManager.resetRollover();
+				adViewLayout.rotatePriAd();
 			
 				return;
 			}
@@ -502,8 +502,8 @@ class FetchInmobiADRunnable implements Runnable {
 		else
 		{
 			AdViewUtil.logInfo("FetchInmobiAD failure");
-	       	adViewLayout.adViewManager.resetRollover_pri();
-			adViewLayout.rotateThreadedPri();
+	       	adViewLayout.adViewManager.resetRollover();
+			adViewLayout.rotatePriAd();
 	       }	
 	}
 }

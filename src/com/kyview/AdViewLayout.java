@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -23,11 +22,14 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import android.app.Activity;
+import android.app.KeyguardManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -42,7 +44,6 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.kyview.AdViewTargeting.RunMode;
-import com.kyview.AdViewTargeting.UpdateMode;
 import com.kyview.adapters.AdViewAdapter;
 import com.kyview.obj.Extra;
 import com.kyview.obj.Ration;
@@ -88,6 +89,8 @@ public class AdViewLayout extends RelativeLayout {
 	private boolean isScheduled;
 	//private boolean firstScheduled = true;
 
+	private String appVersion;
+	
 	private String mDefaultChannel[] = { "EOE", "GOOGLEMARKET", "APPCHINA",
 			"HIAPK", "GFAN", "GOAPK", "NDUOA", "91Store", "LIQUCN",
 			 "ANDROIDAI", "ANDROIDD",
@@ -204,50 +207,31 @@ public class AdViewLayout extends RelativeLayout {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}
 
-	@Override
-	protected void onWindowVisibilityChanged(int visibility) {
+	private void changeVisibility(int visibility){
 		if (visibility == VISIBLE) {
 			this.hasWindow = true;
 			if (!this.isScheduled) {
 				this.isScheduled = true;
 				if (this.extra != null) {
-					rotateThreadedNow();
+					rotateThreadedPri(0);
+					if (null!=adViewManager&&adViewManager.needUpdateConfig())
+						fetchConfigThreadedDelayed(10);
 				} else {
-
 					scheduler.schedule(new InitRunnable(this, keyAdView), 0,
 							TimeUnit.SECONDS);
-
 				}
 			}
 		} else {
 			this.hasWindow = false;
-		if (visibility != 4) {
-//				Log.i("onWindowVisibilityChanged", activity.isFinishing()+"");
-			
-		//				AdViewAdapter.onRelease();
-//				this.isScheduled = false;
-//				firstScheduled = false;
-			}
 		}
 	}
-
+	@Override
+	protected void onWindowVisibilityChanged(int visibility) {
+		changeVisibility(visibility);
+	}
 	@Override
 	public void setVisibility(int visibility) {
-		if (visibility == VISIBLE) {
-			this.hasWindow = true;
-			if (!this.isScheduled) {
-				this.isScheduled = true;
-
-				if (this.extra != null) {
-					rotateThreadedNow();
-				} else {
-					scheduler.schedule(new InitRunnable(this, keyAdView), 0,
-							TimeUnit.SECONDS);
-				}
-			}
-		} else {
-			this.hasWindow = false;
-		}
+		changeVisibility(visibility);
 		super.setVisibility(visibility);
 	}
 
@@ -258,7 +242,6 @@ public class AdViewLayout extends RelativeLayout {
 		}
 		AdViewUtil.logInfo("Rotating Ad");
 		nextRation = adViewManager.getRation();
-
 		handler.post(new HandleAdRunnable(this));
 	}
 
@@ -282,6 +265,11 @@ public class AdViewLayout extends RelativeLayout {
 		else
 			return false;
 	}
+	private boolean isScreenLocked(){
+		  KeyguardManager mKeyguardManager = (KeyguardManager)  getContext().getSystemService(Context.KEYGUARD_SERVICE);  	     
+		 return  mKeyguardManager.inKeyguardRestrictedInputMode()?true:false; 
+		    	
+	}
 
 	// Initialize the proper ad view from nextRation
 	private void handleAd() {
@@ -292,17 +280,19 @@ public class AdViewLayout extends RelativeLayout {
 			rotateThreadedDelayed();
 			return;
 		}
-
+		if(isScreenLocked()){
+			 AdViewUtil.logInfo("screen is locked");
+			scheduler.schedule(new RotateAdRunnable(this), 5,
+					TimeUnit.SECONDS);
+			return;
+		}		
 		if (isConnectInternet() == false) {
-			// Log.i(AdViewUtil.ADVIEW, "network is unavailable");
-			scheduler.schedule(new RotatePriAdRunnable(this), 5,
+			 AdViewUtil.logInfo("network is unavailable");
+			scheduler.schedule(new RotateAdRunnable(this), 5,
 					TimeUnit.SECONDS);
 			return;
 		}
-
-		String rationInfo = String.format("Showing ad:\nname: %s",
-				nextRation.name);
-		AdViewUtil.logInfo(rationInfo);
+		AdViewUtil.logInfo("Showing ad:\nname: "+nextRation.name);
 
 		try {
 			AdViewAdapter.handleOne(this, nextRation);
@@ -315,44 +305,27 @@ public class AdViewLayout extends RelativeLayout {
 	}
 
 	// Rotate immediately
-	public void rotateThreadedNow() {
-		scheduler.schedule(new RotateAdRunnable(this), 0, TimeUnit.SECONDS);
-	}
+//	public void rotateThreadedNow() {
+//		scheduler.schedule(new RotateAdRunnable(this), 0, TimeUnit.SECONDS);
+//	}
 
-	public void rotateThreadedPri() {
-		scheduler.schedule(new RotatePriAdRunnable(this), 1, TimeUnit.SECONDS);
+	public void rotateThreadedPri(int seconds) {
+		scheduler.schedule(new RotatePriAdRunnable(this), seconds, TimeUnit.SECONDS);
 	}
 
 	// Rotate in extra.cycleTime seconds
 	public void rotateThreadedDelayed() {
-	///	if (firstScheduled) {
 			AdViewUtil.logInfo("Will call rotateAd() in "
 						+ extra.cycleTime + " seconds");
 			scheduler.schedule(new RotateAdRunnable(this), extra.cycleTime,
 					TimeUnit.SECONDS);
-/*		} else {
-			scheduler.shutdown();
-			if (!scheduler.isTerminated()) {
-				new RotateAdRunnable(this);
-				scheduler = Executors.newScheduledThreadPool(1);
-			} else {
-				if (AdViewTargeting.getRunMode() == RunMode.TEST)
-					Log.d(AdViewUtil.ADVIEW, "Will call rotateAd() in "
-							+ extra.cycleTime + " seconds");
-				scheduler = Executors.newScheduledThreadPool(1);
-				scheduler.schedule(new RotateAdRunnable(this), extra.cycleTime,
-						TimeUnit.SECONDS);				
-			}
-			firstScheduled = true;
-		}*/
+
 	}
 
 	// Fetch config from server after defined time
 	public void fetchConfigThreadedDelayed(int seconds) {
-		if (AdViewTargeting.getUpdateMode() == UpdateMode.DEFAULT) {
 			scheduler.schedule(new GetConfigRunnable(this), seconds,
 					TimeUnit.SECONDS);
-		}
 	}
 
 	// Remove old views and push the new one
@@ -361,10 +334,8 @@ public class AdViewLayout extends RelativeLayout {
 		if (superView == null) {
 			return;
 		}
-		//Log.i("superview", ""+superView);
 		superView.removeAllViews();
 		RelativeLayout.LayoutParams layoutParams;
-
 		if (nextRation == null) {
 			return;
 		}
@@ -407,7 +378,6 @@ public class AdViewLayout extends RelativeLayout {
 		if (superView == null) {
 			return;
 		}
-		//Log.i("superview", ""+superView);
 		superView.removeAllViews();
 		RelativeLayout.LayoutParams layoutParams;
 		layoutParams = new RelativeLayout.LayoutParams(
@@ -420,29 +390,22 @@ public class AdViewLayout extends RelativeLayout {
 	}
 
 	public void reportImpression() {
-		// if(AdViewTargeting.getRunMode()==RunMode.TEST)
-		// Log.d(AdViewUtil.ADVIEW, "reportImpression");
 		this.activeRation = nextRation;
 		countImpression();
 	}
 
+	//目前这个函数已经没用了，百度的新版本流程变了，onshow不会被调用了
 	public void reportBaiduImpression() {
-		// if(AdViewTargeting.getRunMode()==RunMode.TEST)
-		// Log.d(AdViewUtil.ADVIEW, "reportBaiduImpression");
-
 		String url = String.format(AdViewUtil.urlImpression,
 				adViewManager.keyAdView, activeRation.nid,
-				AdViewUtil.NETWORK_TYPE_BAIDU, 0, "hello", AdViewUtil.VERSION,
-				adViewManager.mSimulator, keyDev,new Date().getTime()/1000);
+				AdViewUtil.NETWORK_TYPE_BAIDU, 0, "hello", appVersion,
+				adViewManager.mSimulator, keyDev,AdViewUtil.currentSecond(),AdViewUtil.VERSION,adViewManager.configVer);
 		scheduler.schedule(new PingUrlRunnable(url), 0, TimeUnit.SECONDS);
 		if (adViewInterface != null)
 			adViewInterface.onDisplayAd();
 	}
 
 	public void reportClick() {
-		// if(AdViewTargeting.getRunMode()==RunMode.TEST)
-		// Log.d(AdViewUtil.ADVIEW, "reportClick");
-		// this.activeRation = nextRation;
 		countClick();
 	}
 
@@ -452,25 +415,30 @@ public class AdViewLayout extends RelativeLayout {
 	}
 
 	private void countImpression() {
+//		AdViewUtil.storeInfo(activityReference.get(), adViewManager.keyAdView, activeRation.type, "show");
 		if (activeRation != null) {
 			String url = String.format(AdViewUtil.urlImpression,
 					adViewManager.keyAdView, activeRation.nid,
-					activeRation.type, 0, "hello", AdViewUtil.VERSION,
-					adViewManager.mSimulator, keyDev,new Date().getTime()/1000);
-			//Log.i(AdViewUtil.ADVIEW, url);
+					activeRation.type, 0, "hello", appVersion,
+					adViewManager.mSimulator, keyDev,AdViewUtil.currentSecond(),AdViewUtil.VERSION,adViewManager.configVer);
 			scheduler.schedule(new PingUrlRunnable(url), 0, TimeUnit.SECONDS);
 			if (adViewInterface != null)
 				adViewInterface.onDisplayAd();
+//			AdViewUtil.logInfo(url);
 		}
 	}
 
 	private void countClick() {
+//		AdViewUtil.storeInfo(activityReference.get(), adViewManager.keyAdView, activeRation.type, "click");
+		
 		if (activeRation != null) {
 			String url = String.format(AdViewUtil.urlClick,
 					adViewManager.keyAdView, activeRation.nid,
-					activeRation.type, 0, "hello", AdViewUtil.VERSION,
-					adViewManager.mSimulator, keyDev,new Date().getTime()/1000);
+					activeRation.type, 0, "hello", appVersion,
+					adViewManager.mSimulator, keyDev,AdViewUtil.currentSecond(),AdViewUtil.VERSION,adViewManager.configVer);
 			scheduler.schedule(new PingUrlRunnable(url), 0, TimeUnit.SECONDS);
+
+//			AdViewUtil.logInfo(url);
 			if (adViewInterface != null)
 				adViewInterface.onClickAd();
 		}
@@ -479,9 +447,9 @@ public class AdViewLayout extends RelativeLayout {
 	public void appReport() {
 		String url = String.format(AdViewUtil.appReport, keyAdView, keyDev,
 				typeDev, osVer, resolution, servicePro, netType, channel,
-				platform,new Date().getTime()/1000);
+				platform,AdViewUtil.currentSecond(),AdViewUtil.VERSION,adViewManager.configVer);
+//		AdViewUtil.logInfo(url);
 		scheduler.schedule(new PingUrlRunnable(url), 0, TimeUnit.SECONDS);
-
 	}
 
 	public void kyAdviewReport(String url, String content) {
@@ -541,7 +509,6 @@ public class AdViewLayout extends RelativeLayout {
 				.getSystemService(Context.TELEPHONY_SERVICE);
 		if (tm == null)
 			return;
-		// keyDev = new String(tm.getDeviceId());
 		String devid = tm.getDeviceId();
 		if (devid != null && devid.length() > 0) {
 			keyDev = new String(devid);
@@ -551,33 +518,18 @@ public class AdViewLayout extends RelativeLayout {
 		osVer = new String(Build.VERSION.RELEASE);
 		osVer = osVer.replaceAll(" ", "");
 		DisplayMetrics dm = new DisplayMetrics();
-		// dm =
-		// context.getApplicationContext().getResources().getDisplayMetrics();
-		// if (dm == null)
-		// return;
 		activityReference.get().getWindowManager().getDefaultDisplay()
 				.getMetrics(dm);
 		mDensity = dm.density;
-		/*
-		 * double density = dm.density; int screenWidth =
-		 * (int)(density*(dm.widthPixels + 0.5f)); int screenHeight =
-		 * (int)(density*(dm.heightPixels + 0.5f)); resolution=new
-		 * String(Integer
-		 * .toString(screenWidth)+"*"+Integer.toString(screenHeight));
-		 */
 		resolution = new String(Integer.toString(dm.widthPixels) + "*"
 				+ Integer.toString(dm.heightPixels));
-		// if(AdViewTargeting.getRunMode()==RunMode.TEST)
-		// Log.d(AdViewUtil.ADVIEW, "resolution="+resolution);
 
 		if (tm.getSimState() == TelephonyManager.SIM_STATE_READY) {
 			String service = tm.getSimOperator();
 			if (service != null && service.length() > 0) {
 				servicePro = new String(service);
 			}
-			// servicePro=new String(tm.getSimOperator());
-		} else
-			;
+		}
 
 		ConnectivityManager cm = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -594,19 +546,24 @@ public class AdViewLayout extends RelativeLayout {
 		} else {
 			netType = new String("Wi-Fi");
 		}
-		// Log.d(AdViewUtil.ADVIEW, "netType="+netType);
-
-		/*
-		 * int type=tm.getNetworkType(); switch(type){ case
-		 * TelephonyManager.NETWORK_TYPE_UNKNOWN : netType=new String("Wi-Fi");
-		 * break; default: netType=new String("2G/3G"); break; }
-		 */
-		/*
-		 * Channel cha=AdViewTargeting.getChannel(); if(cha==null) return;
-		 * channel=new String(cha.toString());
-		 */
 		channel = getChannel(context);
+
+		appVersion = getAppVersion(context);
 	}
+	private String getAppVersion(Context context){
+		 PackageManager packageManager = context.getPackageManager();
+	     PackageInfo packInfo=null;
+		try {
+			packInfo = packageManager.getPackageInfo(context.getPackageName(),0);
+			return packInfo.versionName;
+		} catch (NameNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	     return "0.0";//packInfo.versionName;
+	}
+
+	
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent event) {
@@ -635,13 +592,10 @@ public class AdViewLayout extends RelativeLayout {
 					}
 					// return true;
 				}
-
 				countClick();
-
 				break;
 			}
 		}
-
 		// Return false so subViews can process event normally.
 		return false;
 	}
@@ -650,7 +604,7 @@ public class AdViewLayout extends RelativeLayout {
 		this.adViewInterface = adViewInterface;
 	}
 
-	private static class InitRunnable implements Runnable {
+	private  class InitRunnable implements Runnable {
 		private WeakReference<AdViewLayout> adViewLayoutReference;
 		private String keyAdView;
 
@@ -687,7 +641,7 @@ public class AdViewLayout extends RelativeLayout {
 				if (adViewLayout.extra == null) {
 					adViewLayout.scheduler.schedule(this, 30, TimeUnit.SECONDS);
 				} else {
-					if (adViewLayout.adViewManager.bGetConfig == false)
+					if (null!=adViewManager&&adViewManager.needUpdateConfig())
 						adViewLayout.fetchConfigThreadedDelayed(10);
 					else
 						adViewLayout
@@ -777,9 +731,11 @@ public class AdViewLayout extends RelativeLayout {
 		}
 
 		public void run() {
-			AdViewUtil.logInfo("GetConfigFromServer");
 			AdViewLayout adViewLayout = adViewLayoutReference.get();
 			if (adViewLayout != null) {
+				if (adViewLayout.hasWindow == false)
+					return;
+								
 				if (adViewLayout.adViewManager != null) {
 					adViewLayout.adViewManager.fetchConfigFromServer();
 				}
@@ -801,9 +757,8 @@ public class AdViewLayout extends RelativeLayout {
 
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpGet httpGet = new HttpGet(url);
-//			if(AdViewTargeting.getRunMode()==RunMode.TEST)
-//			Log.e(AdViewUtil.ADVIEW, "PingUrlRunnable, url="+url);
-
+			//AdViewUtil.logInfo("PingUrlRunnable, url="+url);
+			
 			try {
 				httpClient.execute(httpGet);
 
@@ -812,10 +767,9 @@ public class AdViewLayout extends RelativeLayout {
 				AdViewUtil.logError("Caught ClientProtocolException in PingUrlRunnable", e);
 			} catch (IOException e) {	
 				AdViewUtil.logError("Caught IOException in PingUrlRunnable", e);			
-			}
-
+			}finally{
 			httpClient.getConnectionManager().shutdown();
-
+			}
 		}
 	}
 
@@ -829,28 +783,18 @@ public class AdViewLayout extends RelativeLayout {
 		}
 
 		public void run() {
-
-			// String strResult=null;
 			HttpPost httpRequest = new HttpPost(url);
 			List<NameValuePair> params = new ArrayList<NameValuePair>();
 			params.add(new BasicNameValuePair("name", content));
 			HttpClient httpClient = new DefaultHttpClient();
-
 			try {
-
-				// ����HTTP request
 				httpRequest.setEntity(new UrlEncodedFormEntity(params,
 						HTTP.UTF_8));
-
-				// ȡ��HTTP response
 				HttpResponse httpResponse = httpClient.execute(httpRequest);
 				if (httpResponse.getStatusLine().getStatusCode() == 200) {
 
 					EntityUtils.toString(httpResponse.getEntity(), "UTF_8");
-				} else {
-
 				}
-
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();
 			} catch (UnsupportedEncodingException e) {
@@ -859,17 +803,7 @@ public class AdViewLayout extends RelativeLayout {
 				e.printStackTrace();
 			} finally {
 				httpClient.getConnectionManager().shutdown();
-			}
-			
-
+			}			
 		}
-	}
-	public void release(){
-		this.removeAllViewsInLayout();
-		this.requestLayout();
-		this.invalidate();
-		AdViewAdapter.onRelease();
-
-		
 	}
 }

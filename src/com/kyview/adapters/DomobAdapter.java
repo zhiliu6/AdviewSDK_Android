@@ -88,8 +88,7 @@ public class DomobAdapter extends AdViewAdapter implements DomobAdEventListener 
 		if (adViewLayout == null) {
 			return;
 		}
-		adViewLayout.adViewManager.resetRollover_pri();
-		adViewLayout.rotateThreadedPri();
+		adViewLayout.rotateThreadedPri(1);
 
 	}
 

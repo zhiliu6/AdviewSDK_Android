@@ -53,8 +53,7 @@ public class EventAdapter extends AdViewAdapter {
 				listenerMethod.invoke(adViewLayout.adViewInterface, (Object[])null);
 			} catch (Exception e) { 
 				AdViewUtil.logError("Caught exception in handle()", e);
-				//adViewLayout.rollover();
-				adViewLayout.rotateThreadedPri();
+				adViewLayout.rotateThreadedPri(1);
 				return;
 			}
 		}
