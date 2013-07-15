@@ -1,6 +1,6 @@
 package com.kyview;
 
-import java.util.HashMap;
+import android.util.SparseArray;
 
 import com.kyview.adapters.AdMobAdapter;
 import com.kyview.adapters.AdViewAdapter;
@@ -14,10 +14,11 @@ public class AdViewAdRegistry {
 	
 	private static AdViewAdRegistry mInstance = null;
 	
-	private HashMap<Integer, Class<? extends AdViewAdapter>> mAdapterMap = null;
-	
+//	private HashMap<Integer, Class<? extends AdViewAdapter>> mAdapterMap = null;
+	private SparseArray<Class<? extends AdViewAdapter>> sparseArray=null;
 	private AdViewAdRegistry() {
-		mAdapterMap = new HashMap<Integer, Class<? extends AdViewAdapter>>();
+		sparseArray=new SparseArray<Class<? extends AdViewAdapter>>();
+//		mAdapterMap = new HashMap<Integer, Class<? extends AdViewAdapter>>();
 	}
 	
 	public static AdViewAdRegistry getInstance() {
@@ -47,7 +48,7 @@ public class AdViewAdRegistry {
 		try {EventAdapter.load(this);}catch(Error e){}
 //		try {FractalAdapter.load(this);}catch(Error e){}
 //		try {GreystripeAdapter.load(this);}catch(Error e){}
-//		try {InmobiAdapter.load(this);}catch(Error e){}
+		try {InmobiAdapter.load(this);}catch(Error e){}
 //		try {IzpAdapter.load(this);}catch(Error e){}
 //		try {LmMobAdapter.load(this);}catch(Error e){}
 //		try {LsenseAdapter.load(this);}catch(Error e){}
@@ -63,20 +64,22 @@ public class AdViewAdRegistry {
 //		try {UmengAdapter.load(this);}catch(Error e){}
 //		try {VponAdapter.load(this);}catch(Error e){}
 //		try {WiyunAdapter.load(this);}catch(Error e){}
-//		try {WoobooAdapter.load(this);	}catch(Error e){}
+//		try {WoobooAdapter.load(this);}catch(Error e){}
 //		try {WqAdapter.load(this);}catch(Error e){}
 //		try {YoumiAdapter.load(this);}catch(Error e){}
 //		try {ZestADZAdapter.load(this);}catch(Error e){}	
 //		try {YunYunAdapter.load(this);}catch(Error e){}	
-	
 	}
 	
 	public void registerClass(int adType, Class<? extends AdViewAdapter> adapterClass) {
-		mAdapterMap.put(Integer.valueOf(adType), adapterClass);
+//		mAdapterMap.put(Integer.valueOf(adType), adapterClass);
+		sparseArray.put(adType, adapterClass);
+		
 	}
 	
 	public Class<? extends AdViewAdapter> adapterClassForAdType(int adType) {
-		return mAdapterMap.get(Integer.valueOf(adType));
+		return sparseArray.get(adType);
+//		return mAdapterMap.get(Integer.valueOf(adType));
 	}
 	
 }

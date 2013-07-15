@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -27,7 +28,6 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
@@ -89,10 +89,10 @@ public class AdViewLayout extends RelativeLayout {
 	//private boolean firstScheduled = true;
 
 	private String mDefaultChannel[] = { "EOE", "GOOGLEMARKET", "APPCHINA",
-			"HIAPK", "GFAN", "GOAPK", "NDUOA", "91Store", "LIQUCN", "WAPTW",
-			"ANDROIDCN", "GGDWON", "ANDROIDAI", "STARANDROID", "ANDROIDD",
-			"YINGYONGSO", "IMOBILE", "SOUAPP", "MUMAYI", "MOBIOMNI", "PAOJIAO",
-			"AIBALA", "COOLAPK", "ANFONE", "APKOK", "OTHER" };
+			"HIAPK", "GFAN", "GOAPK", "NDUOA", "91Store", "LIQUCN",
+			 "ANDROIDAI", "ANDROIDD",
+			"YINGYONGSO", "IMOBILE", "MUMAYI", "PAOJIAO",
+			"AIBALA", "COOLAPK", "ANFONE", "APKOK", "360MARKET","OTHER" };
 
 	private int maxWidth;
 
@@ -130,13 +130,7 @@ public class AdViewLayout extends RelativeLayout {
 		this.maxHeight = 0;
 	}
 
-	@Override
-	protected void onFocusChanged(boolean gainFocus, int direction,
-			Rect previouslyFocusedRect) {
-		// TODO Auto-generated method stub
-		super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
-		Log.i("onFocusChanged", gainFocus+"");
-	}
+
 	
 	
 	public AdViewLayout(Context context, AttributeSet attrs) {
@@ -367,6 +361,7 @@ public class AdViewLayout extends RelativeLayout {
 		if (superView == null) {
 			return;
 		}
+		//Log.i("superview", ""+superView);
 		superView.removeAllViews();
 		RelativeLayout.LayoutParams layoutParams;
 
@@ -396,6 +391,7 @@ public class AdViewLayout extends RelativeLayout {
 		if (superView == null) {
 			return;
 		}
+
 		superView.removeAllViews();
 		RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
 				320, 48);
@@ -411,13 +407,14 @@ public class AdViewLayout extends RelativeLayout {
 		if (superView == null) {
 			return;
 		}
+		//Log.i("superview", ""+superView);
 		superView.removeAllViews();
 		RelativeLayout.LayoutParams layoutParams;
 		layoutParams = new RelativeLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 		superView.addView(subView, layoutParams);
-		AdViewUtil.logInfo("AddSubView");
+		//AdViewUtil.logInfo("AddSubView");
 		this.activeRation = nextRation;
 		// countImpression();
 	}
@@ -436,7 +433,7 @@ public class AdViewLayout extends RelativeLayout {
 		String url = String.format(AdViewUtil.urlImpression,
 				adViewManager.keyAdView, activeRation.nid,
 				AdViewUtil.NETWORK_TYPE_BAIDU, 0, "hello", AdViewUtil.VERSION,
-				adViewManager.mSimulator, keyDev);
+				adViewManager.mSimulator, keyDev,new Date().getTime()/1000);
 		scheduler.schedule(new PingUrlRunnable(url), 0, TimeUnit.SECONDS);
 		if (adViewInterface != null)
 			adViewInterface.onDisplayAd();
@@ -456,11 +453,11 @@ public class AdViewLayout extends RelativeLayout {
 
 	private void countImpression() {
 		if (activeRation != null) {
-
 			String url = String.format(AdViewUtil.urlImpression,
 					adViewManager.keyAdView, activeRation.nid,
 					activeRation.type, 0, "hello", AdViewUtil.VERSION,
-					adViewManager.mSimulator, keyDev);
+					adViewManager.mSimulator, keyDev,new Date().getTime()/1000);
+			//Log.i(AdViewUtil.ADVIEW, url);
 			scheduler.schedule(new PingUrlRunnable(url), 0, TimeUnit.SECONDS);
 			if (adViewInterface != null)
 				adViewInterface.onDisplayAd();
@@ -469,11 +466,10 @@ public class AdViewLayout extends RelativeLayout {
 
 	private void countClick() {
 		if (activeRation != null) {
-
 			String url = String.format(AdViewUtil.urlClick,
 					adViewManager.keyAdView, activeRation.nid,
 					activeRation.type, 0, "hello", AdViewUtil.VERSION,
-					adViewManager.mSimulator, keyDev);
+					adViewManager.mSimulator, keyDev,new Date().getTime()/1000);
 			scheduler.schedule(new PingUrlRunnable(url), 0, TimeUnit.SECONDS);
 			if (adViewInterface != null)
 				adViewInterface.onClickAd();
@@ -481,10 +477,9 @@ public class AdViewLayout extends RelativeLayout {
 	}
 
 	public void appReport() {
-
 		String url = String.format(AdViewUtil.appReport, keyAdView, keyDev,
 				typeDev, osVer, resolution, servicePro, netType, channel,
-				platform);
+				platform,new Date().getTime()/1000);
 		scheduler.schedule(new PingUrlRunnable(url), 0, TimeUnit.SECONDS);
 
 	}
